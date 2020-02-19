@@ -5,12 +5,12 @@
 所有代码**按需生成**，不允许将用不上的代码生成出来，违者追究责任。生成完代码后请将所有生成的类进行格式化、优化导包、安装规范删除实体中不需要的字段
 :::
 - 属性配置
-![属性配置1](/img/generate_01.png)
-![属性配置2](/img/generate_02.png)
+<img :src="$withBase('/img/generate_01.png')" alt="属性配置1"/>
+<img :src="$withBase('/img/generate_02.png')" alt="属性配置2"/>
 
 - 配置菜单  
 假如我生成了`company_user`这个表的前端代码，那么新建一个菜单如下：
-![菜单配置](/img/generate_03.png)
+<img :src="$withBase('/img/generate_03.png')" alt="菜单配置"/>
 1. 路由名称使用中横线隔开
 2. 组件地址值得是列表组件所在的相对路径 views目录开始
 3. 如果生成代码的时候勾选了自定义列，则需要配置菜单的自定义列
@@ -18,7 +18,7 @@
 
 ## 2、子系统间接口调用
 每个子系统之间调用有feign组件协调，关于包名请看[RPC规范](./normative-java.md#_7、rpc-相关)  
-![rpc_01](/img/rpc_01.png)  
+<img :src="$withBase('/img/rpc_01.png')" alt="rpc_01"/>
 需要注意的是`@PostMapping`默认的请求头是`application/json`，所以提供方需要添加`@RequestBody`注解才能获取到参数  
 如果需要form表单提交需要在类注解上添加`configuration = FeignFormEncoderConfig.class`属性，这是时候`@PostMapping`会以form的形式请求接口，提供方也就不需要`@RequestBody`注解就能获取到参数  
 ```java
@@ -81,7 +81,7 @@
 ## 7、前端状态动态tag样式
 状态对应的tag类型后后端配置（只限制于静态枚举）  
 例如：
-![菜单列表](/img/list_01.png)
+<img :src="$withBase('/img/list_01.png')" alt="菜单列表"/>
 Java 静态枚举配置则是
 ```java 
 public enum UserEnableStatus implements BaseTagEnum<Integer> {
