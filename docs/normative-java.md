@@ -13,14 +13,14 @@
 后端永远不要相信前端传输的参数值，所有提交参数必须通过校验才可以入库。
 :::
 * 工具类校验方式
-![validate]($withBase('/img/java_validate.png'))
+![validate](/img/java_validate.png)
 
 * 使用注解 
     1. 单个参数校验，在参数前面加上校验注解`@Validated`和规则注解`@NotNull`, 更多的规则注解请看下面面
-    ![validate]($withBase('/img/z_validate.png'))
+    ![validate](/img/z_validate.png)
     2. 实体校验
     在实体中配置校验规则，方法参数中添加`@Valid`即可
-    ![实体校验]($withBase('/img/st_validate.png'))
+    ![实体校验](/img/st_validate.png)
 
   ::: details 点击查看常用的校验规则
   ```java
@@ -77,9 +77,9 @@
 
 2. 添加权限方式
     ```java 
-    @PreAuthorize("hasRole('admin')")  是否拥有admin角色    
-    @PreAnyAuthorize("hasRole('admin','test')")  是否拥有admin角色   
-    @PreAuthorize("hasAuthority('sys:user:delete')")  是否有`sys:user:delete`权限    
+    @PreAuthorize("hasRole('admin")  是否拥有admin角色    
+    @PreAnyAuthorize("hasRole('admin','test")  是否拥有admin角色   
+    @PreAuthorize("hasAuthority('sys:user:delete")  是否有`sys:user:delete`权限    
     @PreAuthorize("isAuthenticated()") 添加登录权限判断，登录才可以调用   
     @PostAuthorize 方法调用之后，如果表达式的结果为false，则抛出异常   
     @PreFilter 方法调用之前，过滤进入方法的输入值     
@@ -123,7 +123,7 @@ Jar包是整个项目最禁忌的地方，不允许开发者擅自改动Maven Ja
 在web模块下新建一个叫provider，下面写对应的控制器
 2. 调用方  
 在service模块下新建一个叫client的包用来放置接口调用，client包中新建一个fallback包用来放置接口调用异常降级处理工厂类。示例如下：
-![feign 调用方目录结构示例图]($withBase('/img/feign.png'))
+![feign 调用方目录结构示例图](/img/feign.png)
 
 ## 8、开发工具
 开发工具统一使用IntelliJ IDEA，安装好后统一配置好自己的IDEA。需要配置如下：
@@ -148,28 +148,28 @@ Jar包是整个项目最禁忌的地方，不允许开发者擅自改动Maven Ja
 1. 忽略大小写开关 <Badge text="强制" type="error"/>  
 IDEA默认是匹配大小写，此开关如果未关。你输入字符一定要符合大小写。比如你敲string是不会出现代码提示或智能补充。
 但是，如果你开了这个开关，你无论输入String或者string都会出现代码提示或者智能补充！
-![webp]($withBase('/img/640.webp'))
+![webp](/img/640.webp)
 
 2. 智能导包开关 <Badge text="强制" type="error"/>
 如下图所示，将自动导入不明确的结构，智能优化包  
 这两个选项勾上。那么有什么效果呢？  
 你在代码中，只要敲list，就会出现提示，自动导入java.util.List这个类  
-![webp]($withBase('/img/641.webp'))
+![webp](/img/641.webp)
 
 3. 悬浮提示开关  
 打开这个开关后。只要把鼠标放在相应的类上，就会出现提示，如下图所示:
-![webp]($withBase('/img/642.jfif'))
+![webp](/img/642.jfif)
 
 4. 取消单行显示tabs的操作  
 如下图所示，把该按钮去了:
-![webp]($withBase('/img/643.jfif'))
+![webp](/img/643.jfif)
 那么去掉后有什么效果呢？打开多个文件的时候，会换行显示，非常直观。大大提升效率！
-![webp]($withBase('/img/644.jfif'))
+![webp](/img/644.jfif)
 
 5. 项目文件编码
 如下图所示进行设置:
-![webp]($withBase('/img/645.jfif'))
+![webp](/img/645.jfif)
 
 6. 设置行号显示 <Badge text="强制" type="error"/>  
 这个的重要性就不用多说了，勾上后代码中，会显示行数!
-![webp]($withBase('/img/645.webp'))
+![webp](/img/645.webp)
