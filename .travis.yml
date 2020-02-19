@@ -14,4 +14,4 @@ after_success:
     - git add -A
     - git commit -m 'deploy'
     - git push --quiet --force "https://${GITHUB_TOKEN}@${GITHUB_REPO}" master:${BRANCH}
-    - git push --quiet --force "http://${NAME}:${GP}@gitee.com${GITEE_REPO}" master:${BRANCH}
+    - git push --quiet --force "https://${NAME}:${GEP}@${GITEE_REPO}" master:${BRANCH}
