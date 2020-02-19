@@ -7,7 +7,7 @@ install:
 script:
     - yarn build
 after_success:
-    - cd html/.vuepress/dist
+    - cd html
     - git init
     - git config --global user.name "${NAME}"
     - git config --global user.email "${EMAIL}"
