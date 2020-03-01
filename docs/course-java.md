@@ -105,7 +105,7 @@ public enum UserEnableStatus implements BaseTagEnum<Integer> {
 ```xml
   <dependency>
     <groupId>cn.dian1</groupId>
-    <artifactId>feign-spring-boot-starter</artifactId>
+    <artifactId>oss-spring-boot-starter</artifactId>
   </dependency>          
 ```
 - 属性  
