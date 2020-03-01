@@ -98,3 +98,112 @@ public enum UserEnableStatus implements BaseTagEnum<Integer> {
     private final String tagType;
 ```
 需要继承`BaseTagEnum`并且设置对应的tag类型
+
+## 8、文件上传
+懿点网文件存储在阿里云服务器。每个项目配置一个文件桶，请开发人员上传文件的时候设置好文件夹
+- 添加依赖
+```xml
+  <dependency>
+    <groupId>cn.dian1</groupId>
+    <artifactId>feign-spring-boot-starter</artifactId>
+  </dependency>          
+```
+- 属性  
+
+| 属性 | 类型 | 说明 |
+|---|---|---|
+| yidian\.oss\.way                    | enum   | 上传类型。mq：使用消息队列上传，synchronous：同步上传               |
+| yidian\.oss\.mode                   | enum   | 上传到哪个供应商，默认ali。ali：阿里云，tencent：腾讯云（未实现）  |
+| yidian\.oss\.ali\.endpoint          | String | Endpoint以杭州为例，其它Region请按实际情况填写。   |
+| yidian\.oss\.ali\.accessKeyId       | String | RAM账号 |
+| yidian\.oss\.ali\.accessKeySecret   | String | 账号秘钥   |
+| yidian\.oss\.ali\.defaultBucketName | String | 当前项目定义的通，yidian开头，链接项目代码用户中横杠“\-”隔开，例如：yidian\-cms|
+
+
+- 最佳使用  
+定义项目文件存储的文件夹
+```java
+/**
+ * @author laizuan
+ * @since 2020年01月07日 15:50
+ */
+public enum UploadFolder {
+    license("license");
+    private final String value;
+    UploadFolder(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
+}
+
+```
+上传下载
+```java
+@Autowired
+private UploadFileProvider uploadFileProvider;
+
+// 注意，如果配置的是mq队列上传，上传附件的时候只能用此方法，
+// 这个方法会返回上传后的文件地址目录地址，并且在定义的文件夹后面添加当前的日期：2020-03-01
+String fileKey = uploadFileProvider.upload(new UploadFileDTO(byte[], UploadFolder.license.getValue(), "存储文件名"));
+// fileKye = license/2020-03-01/存储文件名
+// 这个fileKey即下载时候用到的key
+// UploadFileDTO 对象上传图片（jpg,jpeg,webp,png,gif）的时候会进行压缩。详情请看imgCompression该属性
+
+// 下载， 下载的时候会在阿里云上再次压缩，减少网络传输。
+uploadFileProvider.downLoad(fileKey, imgCompression);
+// imgCompression 图片的绝对质量，将原图质量压缩至imgCompression%，
+// 如果原图质量小于指定参数值，则按照原图质量重新进行压缩。
+// 例如，如果原图质量是95%，添加imgCompression = 90参数会得到质量90％的图片。
+// 如果原图质量是80%，添加imgCompression = 90只能得到质量80%的图片。如果小于0不做处理
+```
+
+下载java代码
+```java
+
+    /**
+     * 下载阿里云存储文件
+     *
+     * @param fileKey 文件存储key
+     * @param bucketName 桶名称，如果为空下载当前项目配置的通
+     * @param response
+     */
+    @GetMapping(value = "/downAttachment")
+    public void downAttachment(String fileKey, String bucketName, HttpServletResponse response) {
+        Assert.notNull(fileKey, "fileKey not be null");
+        String ext = fileKey.substring(fileKey.lastIndexOf('.') + 1);
+        response.setCharacterEncoding("utf-8");
+        response.setHeader("Content-Disposition", String.format("inline;fileName=%s.%s", UUID.randomUUID().toString(), ext));
+        response.setContentType("text/html; charset=UTF-8");
+        UpmsBucket ossBucketConst = EnumUtils.getEnumByKey(UpmsBucket.class, bucketName);
+        if (ossBucketConst == null) {
+            throw new BusinessInvalidException("未设置有效的bucket name");
+        }
+        String ext = fileKey.substring(fileKey.lastIndexOf('.') + 1, fileKey.length());
+        if (ext.equalsIgnoreCase("jpeg") || ext.equalsIgnoreCase("jpg") || ext.equalsIgnoreCase("png")) {
+            response.setContentType("image/".concat(ext));
+        } else if (ext.equalsIgnoreCase("pdf")) {
+            response.setContentType("application/pdf");
+        } else {
+            response.setContentType("application/x-download");
+        }
+
+        byte[] bytes = null;
+        if (StringUtils.isBlank(bucketName)) {
+            bytes = uploadFileProvider.downLoad(fileKey, 50);
+        } else {
+            bytes = uploadFileProvider.downLoad(fileKey, bucketName, 50);
+        }
+      
+      
+        try(OutputStream out = response.getOutputStream()) {
+            out.write(bytes);
+            out.flush();
+        } catch (Exception e) {
+            log.error("输出文件失败：" + e.getMessage(), e);
+             throw new FileUploadException("下载文件出错");
+        } 
+    }
+```
