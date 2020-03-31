@@ -2,7 +2,8 @@ module.exports = {
     port: '3000',
     dest: 'html',
     ga: 'UA-85414008-1',
-    base: '/blog/',
+   // base: '/blog/',
+    base: '/',
     markdown: {
         lineNumbers: true,
         externalLinks: {
