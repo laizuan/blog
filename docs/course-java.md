@@ -20,11 +20,12 @@
 每个子系统之间调用有feign组件协调，关于包名请看[RPC规范](./normative-java.md#_7、rpc-相关)  
 <img :src="$withBase('/img/rpc_01.png')" alt="rpc_01"/>
 需要注意的是`@PostMapping`默认的请求头是`application/json`，所以提供方需要添加`@RequestBody`注解才能获取到参数  
-如果需要form表单提交需要在类注解上添加`configuration = FeignFormEncoderConfig.class`属性，这是时候`@PostMapping`会以form的形式请求接口，提供方也就不需要`@RequestBody`注解就能获取到参数  
+<s>如果需要form表单提交需要在类注解上添加`configuration = FeignFormEncoderConfig.class`属性，这是时候`@PostMapping`会以form的形式请求接口，提供方也就不需要`@RequestBody`注解就能获取到参数  </s>
 ```java
 @FeignClient(name = SystemConst.UPMS_APPLICATION_NAME, fallbackFactory = UserServiceFallbackFactory.class,
     decode404 = true, configuration = FeignFormEncoderConfig.class)
 ```
+
 
 ## 3、枚举字段返回json格式
 添加` @JSONField(serializeUsing = EnumSerializer.class)`注解即可，注意需要序列化的枚举必须实现`BaseEnum.java`
@@ -206,4 +207,90 @@ uploadFileProvider.downLoad(fileKey, imgCompression);
              throw new FileUploadException("下载文件出错");
         } 
     }
+```
+
+## 9、日志
+每个子系统测试和生产环境日志统一收集到日志中心，由日志中心统一搜索查看日志。服务器不在分配权限查看系统日志。
+- 日志打印规范  
+1. **如果打印日志有参数必须使用占位符** 
+正例  
+> log.info("姓名：{}，年龄：{}", name, age);  
+
+反例 
+> log.info("姓名："+name+"， 年龄：" + age);
+
+2. 异常日志
+::: warning
+不同的业务异常请抛出相对的业务异常子类。请勿抛出Exception
+:::
+正例：  
+```java {6}
+    public Long add(@RequestBody @Valid SysDeptForm form) {
+           String deptCode = form.getDeptCode();
+           final Long companyId = getCompanyId();
+           SysDept pojo = sysDeptService.findByDeptCode(deptCode, companyId);
+           if (pojo != null) {
+               throw new BusinessInvalidException(String.format("部门代码【%s】已存在，请重新输入", deptCode));
+           } else {
+               pojo = new SysDept();
+           }
+           BeanUtils.copyProperties(form, pojo);
+           pojo.setCompanyId(companyId);
+           sysDeptService.save(pojo);
+           return pojo.getDeptId();
+       }
+```
+```java {5}
+        try {
+            // todo
+            ....
+        } catch (BusinessInvalidException e) {
+            log.error("保存部门异常：" + e.getMessage(), e);
+        } 
+```
+反例：  
+```java {5,6}
+        try {
+            // todo
+            ....
+        } catch (BusinessInvalidException e) {
+            e.printStackTrace();
+            log.error(e.getMessage());
+        } 
+```
+
+- 将日志输出到日志中心  
+添加Maven 依赖
+```maven
+        <dependency>
+            <groupId>cn.dian1</groupId>
+            <artifactId>elasticsearch-spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.dian1</groupId>
+            <artifactId>log-spring-boot-starter</artifactId>
+        </dependency>
+```
+1. 注解方式 
+::: warning
+请在有必要的接口才记录日志，比如：修改重要数据，删除数据，查询接口请不要添加注解 
+:::
+ ```java
+@Log(type = LogType.SYSTEM, description = "修改部门信息")
+```
+ 属性：
+> type: SYSTEM系统日志 or INTERFACE_REQUEST接口日志  
+> description：方法描述
+
+2. 工具类方式  
+::: warning
+请删除没有必要的日志输出
+:::
+字符串格式化规则请参考：java.long.String.format();
+```java
+     LogUtils.info(log, "姓名：%s，年龄：%s", name, age);
+     LogUtils.info(log, "打印日志测试");
+     LogUtils.error(log, "保存部门异常: %s", e, e.getMessage());
+     LogUtils.error(log, "保存部门异常", e);
 ```
