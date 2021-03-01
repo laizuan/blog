@@ -317,10 +317,10 @@ uploadFileProvider.downLoad(fileKey, imgCompression);
 ::: warning
 各个子系统请勿随意定义工具类
 :::
-- (Hutool)[https://www.hutool.cn/docs]工具类，引用模块如下  
-(核心，包括Bean操作、日期、各种Util等 hutool-core)[https://www.hutool.cn/docs/#/core/%E5%85%8B%E9%9A%86/%E6%94%AF%E6%8C%81%E6%B3%9B%E5%9E%8B%E7%9A%84%E5%85%8B%E9%9A%86%E6%8E%A5%E5%8F%A3%E5%92%8C%E5%85%8B%E9%9A%86%E7%B1%BB]
-(加解密模块 hutool-crypto)[https://www.hutool.cn/docs/#/crypto/%E6%A6%82%E8%BF%B0]
-(扩展模块，对第三方封装（模板引擎、邮件、Servlet、二维码、Emoji、FTP、分词等） hutool-extra)[https://www.hutool.cn/docs/#/extra/%E6%A6%82%E8%BF%B0]
+- [Hutool](https://www.hutool.cn/docs)工具类，引用模块如下  
+1. [hutool-core：核心，包括Bean操作、日期、各种Util等](https://www.hutool.cn/docs/#/core/%E5%85%8B%E9%9A%86/%E6%94%AF%E6%8C%81%E6%B3%9B%E5%9E%8B%E7%9A%84%E5%85%8B%E9%9A%86%E6%8E%A5%E5%8F%A3%E5%92%8C%E5%85%8B%E9%9A%86%E7%B1%BB)
+2. [hutool-crypto：加解密模块](https://www.hutool.cn/docs/#/crypto/%E6%A6%82%E8%BF%B0)
+3. [hutool-extra：扩展模块，对第三方封装（模板引擎、邮件、Servlet、二维码、Emoji、FTP、分词等）](https://www.hutool.cn/docs/#/extra/%E6%A6%82%E8%BF%B0)
 
 - apache 工具类
-(参考文档)[https://www.cnblogs.com/nhdlb/p/14070643.html]
+1. [参考文档](https://www.cnblogs.com/nhdlb/p/14070643.html)
