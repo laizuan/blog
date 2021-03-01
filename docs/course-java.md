@@ -49,9 +49,8 @@
 ```
 
 ## 5、动态枚举
-添加注解`@DynamicEnum`  
-`type` 字典表里面的key  
-`basicType` 字典类型，user用户私有字典数据，system公用的系统字典数据
+添加注解`@DynamicEnum`，一般会搭配本章节第7小结使用
+`type` 字典表里面的key
 ```java
     /**
      * 启用状态(1启用 0禁用 2注销)
@@ -79,8 +78,27 @@
 }
 ```
 
-## 7、前端状态动态tag样式
-状态对应的tag类型后后端配置（只限制于静态枚举）  
+## 7、将枚举转换成value对应的类型
+前端传枚举对象 {"value":"1", "desc":"启用"} ，后端将value解析成对应类型字段。一般用于动态枚举，前端回传枚举对象使用
+```java Form对象
+    /**
+     * 企业类型(1,舱单供应商，2.报关行供应商，3舱单和报关行供应商,4 普通货代)
+     */
+    @JSONField(deserializeUsing = JsonDeserializer.class)
+    private Integer companyType;
+```
+
+```java VO 对象
+
+    /**
+     * 企业类型(1,舱单供应商，2.报关行供应商，3舱单和报关行供应商,4 普通货代)
+     */
+    @DynamicEnum(type = "company_type")
+    private Integer companyType;
+```
+
+## 7、 前端枚举tag类型
+状态对应的tag类型后后端配置（只限制于静态枚举）可选值：primary/success/info/warning/danger/volcano/orange/gold/yellow/lime/blue/purple/magenta  
 例如：
 <img :src="$withBase('/img/list_01.png')" alt="菜单列表"/>
 Java 静态枚举配置则是
@@ -294,3 +312,15 @@ uploadFileProvider.downLoad(fileKey, imgCompression);
      LogUtils.error(log, "保存部门异常: %s", e, e.getMessage());
      LogUtils.error(log, "保存部门异常", e);
 ```
+
+## 10、工具类
+::: warning
+各个子系统请勿随意定义工具类
+:::
+- (Hutool)[https://www.hutool.cn/docs]工具类，引用模块如下  
+(核心，包括Bean操作、日期、各种Util等 hutool-core)[https://www.hutool.cn/docs/#/core/%E5%85%8B%E9%9A%86/%E6%94%AF%E6%8C%81%E6%B3%9B%E5%9E%8B%E7%9A%84%E5%85%8B%E9%9A%86%E6%8E%A5%E5%8F%A3%E5%92%8C%E5%85%8B%E9%9A%86%E7%B1%BB]
+(加解密模块 hutool-crypto)[https://www.hutool.cn/docs/#/crypto/%E6%A6%82%E8%BF%B0]
+(扩展模块，对第三方封装（模板引擎、邮件、Servlet、二维码、Emoji、FTP、分词等） hutool-extra)[https://www.hutool.cn/docs/#/extra/%E6%A6%82%E8%BF%B0]
+
+- apache 工具类
+(参考文档)[https://www.cnblogs.com/nhdlb/p/14070643.html]
