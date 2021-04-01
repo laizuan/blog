@@ -329,12 +329,172 @@ uploadFileProvider.downLoad(fileKey, imgCompression);
 1. 设置角色的数据权限范围
 <img :src="$withBase('/img/data-scoped.png')" alt="属性配置2"/>
 
+2. 接收用户中心同步的角色、用户、部门数据
+角色
+```java
+    @Override
+    @Transactional
+    public boolean synchronousDataInfo(RoleDTO dto) {
+        SysRole entity = new SysRole();
+        boolean status = false;
+        sysRoleMenuService.deleteByRoleId(dto.getRoleId());
+        this.sysRoleMapper.deleteDeptByRoleId(dto.getRoleId());
+        if (dto.getOptType().equals(OptType.delete)) {
+            SysRole sysRole = this.getById(dto.getRoleId());
+            if (sysRole != null) {
+                status = this.removeById(dto.getRoleId());
+                try {
+                    // 删除数据权限缓存
+                    dataScopeService.deleteCache(null, sysRole.getCompanyCode());
+                } catch (Exception e) {
+
+                }
+            }
+        } else {
+            BeanUtil.copyProperties(dto, entity);
+            entity.setEnableStatus(EnableStatus.enable.getValue().equals(dto.getEnableStatus()) ? EnableStatus.enable
+                : EnableStatus.disabled);
+            if (dto.getOptType().equals(OptType.add)) {
+                status = this.save(entity) != null;
+            } else if (dto.getOptType().equals(OptType.update)) {
+                if (null != this.getById(dto.getRoleId())) {
+                    status = this.updateById(entity);
+                } else {
+                    status = this.save(entity) != null;
+                }
+            }
+            saveRoleMenu(dto, dto.getRoleId());
+            Set<Long> deptIdList = dto.getDeptIdList();
+            if (deptIdList != null) {
+                for (Long deptId : deptIdList) {
+                    sysRoleMapper.insertDeptRole(deptId, dto.getRoleId());
+                }
+            }
+            try {
+                // 删除数据权限缓存
+                dataScopeService.deleteCache(null, dto.getCompanyCode());
+            } catch (Exception e) {
+
+            }
+        }
+        return status;
+    }
+```
+部门
+```java
+  @Override
+    @Transactional
+    public boolean synchronousDataInfo(DeptDTO dto) {
+        OptType optType = dto.getOptType();
+        Long deptId = dto.getDeptId();
+
+        if (OptType.delete.equals(optType)) {
+            SysDept sysDept = this.sysDeptMapper.selectById(dto.getDeptId());
+            if (sysDept == null) {
+                return true;
+            }
+            sysDeptMapper.deleteUserDeptByDeptId(deptId);
+            this.sysDeptMapper.deleteById(deptId);
+            try {
+                // 删除数据权限缓存
+                SysCompany sysCompany = sysCompanyService.getById(sysDept.getCompanyId());
+                dataScopeService.deleteCache(null, sysCompany.getCompanyCode());
+            } catch (Exception e) {
+
+            }
+        } else {
+            SysDept sysDept = this.sysDeptMapper.selectById(deptId);
+            boolean update = true;
+            if (sysDept == null) {
+                sysDept = new SysDept();
+                update = false;
+            }
+            sysDept.setParentId(dto.getParentId());
+            sysDept.setDeptId(dto.getDeptId());
+            sysDept.setCompanyId(dto.getCompanyId());
+            sysDept.setDeptName(dto.getDeptName());
+            sysDept.setEnableStatus(dto.getEnableStatus() == 1 ? EnableStatus.enable : EnableStatus.disabled);
+            sysDept.setDeptCode(dto.getDeptCode());
+            sysDept.setRemark(dto.getRemark());
+            sysDept.setUpdateTime(new Date());
+
+            if (update) {
+                this.sysDeptMapper.updateById(sysDept);
+            } else {
+                this.sysDeptMapper.insert(sysDept);
+            }
+
+        }
+        return true;
+    }
+```
+用户
+```java
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean synchronousDataInfo(UserDTO dto) {
+
+        SysUserService sysUserService = ApplicationContextUtils.getBean(SysUserService.class);
+        SysUser entity = new SysUser();
+        boolean status = false;
+        if (dto.getOptType().equals(OptType.delete)) {
+            SysUser sysUser = sysUserService.getById(dto.getId());
+            if (sysUser != null) {
+                status = sysUserService.removeById(dto.getId());
+                try {
+                    // 删除数据权限缓存
+                    dataScopeService.deleteCache(dto.getId(), sysUser.getCompanyCode());
+                } catch (Exception e) {
+
+                }
+            }
+        } else {
+            BeanUtil.copyProperties(dto, entity);
+            if (UserEnableStatus.cancelled.getValue().equals(dto.getEnableStatus())) {
+                entity.setEnableStatus(UserEnableStatus.cancelled);
+            } else {
+                entity.setEnableStatus(UserEnableStatus.enable.getValue().equals(dto.getEnableStatus())
+                    ? UserEnableStatus.enable : UserEnableStatus.disabled);
+            }
+            if (dto.getOptType().equals(OptType.add)) {
+                status = this.save(entity) != null;
+            } else if (dto.getOptType().equals(OptType.update)) {
+                Integer count = sysUserMapper
+                    .selectCount(SqlUtils.queryWrapper(SysUser.class).lambda().eq(SysUser::getId, dto.getId()));
+                if (SqlUtils.retCount(count) > 0) {
+                    status = sysUserService.updateById(entity);
+                } else {
+                    status = sysUserService.save(entity) != null;
+                }
+            }
+            Set<Long> userRoleIdList = dto.getUserRoleIdList();
+            sysRoleService.deleteByUserId(dto.getId());
+            if (CollectionUtils.isNotEmpty(userRoleIdList)) {
+                sysRoleService.insertUserRole(dto.getId(), userRoleIdList);
+            }
+            Set<Long> deptIdList = dto.getDeptIdList();
+            sysDeptService.deleteUserDeptByUserId(dto.getId());
+            if (CollectionUtils.isNotEmpty(deptIdList)) {
+                sysDeptService.saveUserDept(dto.getId(), deptIdList);
+            }
+
+            try {
+                // 删除数据权限缓存
+                dataScopeService.deleteCache(dto.getId(), dto.getCompanyCode());
+            } catch (Exception e) {
+
+            }
+        }
+        return status;
+    }
+```
+
 2. `SearchForm`模型集成`DataScopeSearchForm`类
 ```java 
 @Getter
 @Setter
 public class OceanCustomsOrderHeaderSearchForm extends DataScopeSearchForm {
-
     /**
      * 集装箱号
      */
@@ -354,4 +514,46 @@ public class OceanCustomsOrderHeaderSearchForm extends DataScopeSearchForm {
         form.setScopeName("auditUserId");
         ...
     }
+```
+4. 实现`DataScopeService`
+默认是通过jdbc实时查询数据库。建议自己实现获取用户主键接口。*注意修改角色后请删除缓存*  
+
+```java
+/**
+ * 
+ * 数据权限获取角色对应的用户主键
+ * 
+ * @author laizuan
+ * @version 1.0
+ * @since 2021/2/9 12:01
+ */
+@Service
+public class DataScopeServiceImpl implements DataScopeService {
+    private final static String CACHE_NAMES = "DataScope";
+    private final DataSource dataSource;
+    private final RedisRepository redisRepository;
+
+    public DataScopeServiceImpl(DataSource dataSource, RedisRepository redisRepository) {
+        this.dataSource = dataSource;
+        this.redisRepository = redisRepository;
+    }
+
+    @Override
+    @Cacheable(cacheNames = CACHE_NAMES, key = "#companyCode + ':'+ #userId")
+    public Set<Long> getScopeUserId(Long userId, Set<String> roleCodes, String companyCode) {
+        return new DefaultDataScopeServiceImpl(new NamedParameterJdbcTemplate(new JdbcTemplate(dataSource)))
+            .getScopeUserId(userId, roleCodes, companyCode);
+    }
+
+    @Override
+    public void deleteCache(Long userId, String companyCode) {
+        if (StringUtils.isNotBlank(companyCode)) {
+            if (userId != null) {
+                redisRepository.del(CACHE_NAMES + "::" + companyCode + ":" + userId);
+            } else {
+                redisRepository.del(CACHE_NAMES + "::" + companyCode + ":*");
+            }
+        }
+    }
+}
 ```
