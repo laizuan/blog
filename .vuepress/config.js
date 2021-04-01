@@ -1,4 +1,5 @@
 module.exports = {
+    host: '127.0.0.1',
     port: '3000',
     dest: 'html',
     ga: 'UA-85414008-1',
@@ -33,25 +34,45 @@ module.exports = {
                 lastUpdated: '上次更新',
                 nav: require('./nav/zh'),
                 sidebar: {
-                    '/docs/': getDocSidebar(true)
+                    '/docs/java': [
+                        {
+                            title: '规范' ,
+                            collapsable: false,
+                            children: ['/docs/java/norm-code', '/docs/java/norm-idea']
+                        },
+                        {
+                            title: '教程' ,
+                            collapsable: false,
+                            children: ['/docs/java/teach-code']
+                        }
+                    ],
+                    '/docs/web': [
+                        {
+                            title: '规范' ,
+                            collapsable: false,
+                            children: ['/docs/web/norm-code', '/docs/web/norm-style', '/docs/web/norm-idea']
+                        },
+                        {
+                            title: '教程' ,
+                            collapsable: false,
+                            children: ['/docs/web/teach-code']
+                        }
+                    ],
+                    '/docs/database':  [
+                        {
+                            title: '规范' ,
+                            collapsable: false,
+                            children: ['/docs/database/norm-design', '/docs/database/norm-sql']
+                        },
+                        {
+                            title: '教程' ,
+                            collapsable: false,
+                            children: []
+                        }
+                    ]
                 }
             }
         }
     },
-    plugins: ['@vuepress/active-header-links', '@vuepress/back-to-top']
+    plugins: ['@vuepress/active-header-links', '@vuepress/back-to-top','@vuepress/plugin-medium-zoom' ]
 };
-
-function getDocSidebar(isZh) {
-    return [
-        {
-            title: isZh ? '规范' : 'Normative',
-            collapsable: false,
-            children: ['', 'normative-java', 'normative-database', 'normative-web']
-        },
-        {
-            title: isZh ? '教程' : 'Course',
-            collapsable: false,
-            children: ['course-java']
-        }
-    ];
-}

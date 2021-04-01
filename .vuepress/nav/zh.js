@@ -1,6 +1,8 @@
 module.exports = [
-    { text: '开发文档', link: '/docs/' },
-    { text: '更新记录', link: '/changelog' },
+    { text: 'JAVA', link: '/docs/java/' },
+    { text: '前端', link: '/docs/web/' },
+    { text: '数据库', link: '/docs/database/' },
+    { text: '更新记录', link: '/docs/changelog/' },
     {
         text: '在线工具',
         items: [

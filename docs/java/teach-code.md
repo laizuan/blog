@@ -1,4 +1,4 @@
-# Java 后端教程
+# 代码层面
 ## 1、代码生成
 代码生成函数名：`CodeGenerateUtils`，改好配置后运行main方法。
 ::: warning 警告 <Badge text="强制" type="error"/> 
@@ -14,10 +14,10 @@
 1. 路由名称使用中横线隔开
 2. 组件地址值得是列表组件所在的相对路径 views目录开始
 3. 如果生成代码的时候勾选了自定义列，则需要配置菜单的自定义列
-4. 添加按钮权限。请看[权限规范](./normative-java.md#_3、权限)
+4. 添加按钮权限。请看[权限规范](./norm-code.md#_3、权限)
 
 ## 2、子系统间接口调用
-每个子系统之间调用有feign组件协调，关于包名请看[RPC规范](./normative-java.md#_7、rpc-相关)  
+每个子系统之间调用有feign组件协调，关于包名请看[RPC规范](./norm-code.md#_7、rpc-相关)  
 <img :src="$withBase('/img/rpc_01.png')" alt="rpc_01"/>
 需要注意的是`@PostMapping`默认的请求头是`application/json`，所以提供方需要添加`@RequestBody`注解才能获取到参数  
 <s>如果需要form表单提交需要在类注解上添加`configuration = FeignFormEncoderConfig.class`属性，这是时候`@PostMapping`会以form的形式请求接口，提供方也就不需要`@RequestBody`注解就能获取到参数  </s>
@@ -324,3 +324,34 @@ uploadFileProvider.downLoad(fileKey, imgCompression);
 
 - apache 工具类
 1. [参考文档](https://www.cnblogs.com/nhdlb/p/14070643.html)
+
+## 11、数据权限
+1. 设置角色的数据权限范围
+<img :src="$withBase('/img/data-scoped.png')" alt="属性配置2"/>
+
+2. `SearchForm`模型集成`DataScopeSearchForm`类
+```java 
+@Getter
+@Setter
+public class OceanCustomsOrderHeaderSearchForm extends DataScopeSearchForm {
+
+    /**
+     * 集装箱号
+     */
+    private String containerNo;
+}
+```
+3. 查询设置
+```java
+ @Override
+    public OceanCustomsPage<OceanCustomsOrderHeaderListVO, CustomsTotalData>
+        supplierList(Page<OceanCustomsOrderHeaderListVO> page, OceanCustomsOrderHeaderSearchForm form) {
+        # 开启数据权限查询
+        form.setOpenDataScope(true);
+        # 过滤字段表别名
+        form.setAlias("h");
+        # 过滤字段，默认`createUserId`
+        form.setScopeName("auditUserId");
+        ...
+    }
+```
