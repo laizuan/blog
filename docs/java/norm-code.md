@@ -63,8 +63,8 @@
     ```
   :::
 
- * List 集合获取校验失败项的下标
-只需要在消息中添加`${index}`即可，注意`${index}`是固定的，并且index是重**1**开始
+ * List 集合获取校验失败项的下标  
+只需要在消息中添加`${index}`即可，注意`${index}`是固定的，并且index是重**1**开始  
  示例代码：
  ```java
 public class Test {
@@ -75,6 +75,9 @@ public class Test {
     @NotBlank(message = "第${index}项，字符串不能为空")
     @Length(message = "第${index}项，字符串长度不能超过9个字符", max = 9)
     private String str;
+
+    // sout
+    //第1项，字符串不能为空
  ``` 
 
 ## 3、权限
