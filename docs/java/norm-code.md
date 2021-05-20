@@ -19,7 +19,7 @@
     1. 单个参数校验，在参数前面加上校验注解`@Validated`和规则注解`@NotNull`, 更多的规则注解请看下面面
     <img :src="$withBase('/img/z_validate.png')" alt="validate"/>
     2. 实体校验
-    在实体中配置校验规则，方法参数中添加`@Valid`即可
+    在实体中配置校验规则，方法参数中添加`@Validated`即可
     <img :src="$withBase('/img/st_validate.png')" alt="实体校验"/>
 
   ::: details 点击查看常用的校验规则
@@ -62,6 +62,20 @@
     @Range(min=,max=,message=)  
     ```
   :::
+
+ * List 集合获取校验失败项的下标
+只需要在消息中添加`${index}`即可，注意`${index}`是固定的，并且index是重**1**开始
+ 示例代码：
+ ```java
+public class Test {
+
+    /**
+     * 测试
+     */
+    @NotBlank(message = "第${index}项，字符串不能为空")
+    @Length(message = "第${index}项，字符串长度不能超过9个字符", max = 9)
+    private String str;
+ ``` 
 
 ## 3、权限
 所有的敏感操作都必须要有权限控制，不能只在前端控制。敏感操作比如：新增、修改、删除等操作数据的动作。像查询这种一般不设置权限，但是**重要数据**必须加权限。

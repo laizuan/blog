@@ -47,3 +47,34 @@ IDEA默认是匹配大小写，此开关如果未关。你输入字符一定要�
 6. 设置行号显示 <Badge text="强制" type="error"/>  
 这个的重要性就不用多说了，勾上后代码中，会显示行数!
 <img :src="$withBase('/img/645.webp')" alt="设置行号显示"/>
+
+7. 格式化配置 <Badge text="强制" type="error"/>  
+`@formatter:off`和`@formatter:on`包裹后的代码不会给格式化
+<img :src="$withBase('/img/code-formatter.png')" alt="设置行号显示"/>
+
+```java 
+// 没有包裹格式化后的代码
+public enum AbnormalStatus implements BaseTagEnum<Integer> {
+    UNPROCESSED(5, "未处理", "danger"), PROCESSED(10, "已处理", "success");
+
+    AbnormalStatus(Integer value, String desc, String tagType) {
+        this.value = value;
+        this.desc = desc;
+        this.tagType = tagType;
+    }
+}
+
+// 包裹后格式化后代码
+public enum AbnormalStatus implements BaseTagEnum<Integer> {
+    // @formatter:off
+    UNPROCESSED(5, "未处理", "danger"),
+    PROCESSED(10, "已处理", "success");
+    // @formatter:on
+    AbnormalStatus(Integer value, String desc, String tagType) {
+        this.value = value;
+        this.desc = desc;
+        this.tagType = tagType;
+    }
+}
+```
+
