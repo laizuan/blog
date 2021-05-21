@@ -21,3 +21,4 @@
 -   `Path Intellisense` - 自动路径补全
 -   `vscode-element-helper` - 用 element 的就知道它的好，支持 element 代码自动补全
 -   `Vue VSCode Snippets` - vue 代码提示
+-   `Settings Sync` - VSCode 设置同步到 Gist
