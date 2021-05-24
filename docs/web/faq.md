@@ -9,3 +9,5 @@ git config --global core.autocrlf false
 ```
 
 **注意：git 全局配置之后，你需要重新拉取代码。**
+
+## 缓存

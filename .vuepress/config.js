@@ -48,7 +48,7 @@ module.exports = {
                         {
                             title: '常见问题',
                             collapsable: false,
-                            children: ['/docs/java/feq']
+                            children: ['/docs/java/faq']
                         }
                     ],
                     '/docs/web': [
@@ -65,7 +65,7 @@ module.exports = {
                         {
                             title: '常见问题',
                             collapsable: false,
-                            children: ['/docs/web/feq']
+                            children: ['/docs/web/faq']
                         }
                     ],
                     '/docs/database': [
@@ -82,7 +82,7 @@ module.exports = {
                         {
                             title: '常见问题',
                             collapsable: false,
-                            children: ['/docs/database/feq']
+                            children: ['/docs/database/faq']
                         }
                     ]
                 }
