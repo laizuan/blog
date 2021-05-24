@@ -1,14 +1,14 @@
 # 代码层面
 ## 1、代码生成
 代码生成函数名：`CodeGenerateUtils`，改好配置后运行main方法。
-::: warning 警告 <Badge text="强制" type="error"/> 
+::: warning 警告 <Badge text="强制" type="error"/>
 所有代码**按需生成**，不允许将用不上的代码生成出来，违者追究责任。生成完代码后请将所有生成的类进行格式化、优化导包、安装规范删除实体中不需要的字段
 :::
 - 属性配置
 <img :src="$withBase('/img/generate_01.png')" alt="属性配置1"/>
 <img :src="$withBase('/img/generate_02.png')" alt="属性配置2"/>
 
-- 配置菜单  
+- 配置菜单
 假如我生成了`company_user`这个表的前端代码，那么新建一个菜单如下：
 <img :src="$withBase('/img/generate_03.png')" alt="菜单配置"/>
 1. 路由名称使用中横线隔开
@@ -17,9 +17,9 @@
 4. 添加按钮权限。请看[权限规范](./norm-code.md#_3、权限)
 
 ## 2、子系统间接口调用
-每个子系统之间调用有feign组件协调，关于包名请看[RPC规范](./norm-code.md#_7、rpc-相关)  
+每个子系统之间调用有feign组件协调，关于包名请看[RPC规范](./norm-code.md#_7、rpc-相关)
 <img :src="$withBase('/img/rpc_01.png')" alt="rpc_01"/>
-需要注意的是`@PostMapping`默认的请求头是`application/json`，所以提供方需要添加`@RequestBody`注解才能获取到参数  
+需要注意的是`@PostMapping`默认的请求头是`application/json`，所以提供方需要添加`@RequestBody`注解才能获取到参数
 <s>如果需要form表单提交需要在类注解上添加`configuration = FeignFormEncoderConfig.class`属性，这是时候`@PostMapping`会以form的形式请求接口，提供方也就不需要`@RequestBody`注解就能获取到参数  </s>
 ```java
 @FeignClient(name = SystemConst.UPMS_APPLICATION_NAME, fallbackFactory = UserServiceFallbackFactory.class,
@@ -61,7 +61,7 @@
 
 ## 6、用户主键序列化成用户对象
 添加注解` @JSONField(serializeUsing = ParseUserSerializer.class)`会将用户的主键序列化成json格式的用户数据，前提是必须实现`BaseParseUserService`的接口，并且能被spring注册
-```java 
+```java
     /**
      * 修改人主键
      */
@@ -98,11 +98,11 @@
 ```
 
 ## 7、 前端枚举tag类型
-状态对应的tag类型后后端配置（只限制于静态枚举）可选值：primary/success/info/warning/danger/volcano/orange/gold/yellow/lime/blue/purple/magenta  
+状态对应的tag类型后后端配置（只限制于静态枚举）可选值：primary/success/info/warning/danger/volcano/orange/gold/yellow/lime/blue/purple/magenta
 例如：
 <img :src="$withBase('/img/list_01.png')" alt="菜单列表"/>
 Java 静态枚举配置则是
-```java 
+```java
 public enum UserEnableStatus implements BaseTagEnum<Integer> {
     enable(1, "启用", "success"),
     cancelled(2, "注销", "warning"),
@@ -125,9 +125,9 @@ public enum UserEnableStatus implements BaseTagEnum<Integer> {
   <dependency>
     <groupId>cn.dian1</groupId>
     <artifactId>oss-spring-boot-starter</artifactId>
-  </dependency>          
+  </dependency>
 ```
-- 属性  
+- 属性
 
 | 属性 | 类型 | 说明 |
 |---|---|---|
@@ -139,7 +139,7 @@ public enum UserEnableStatus implements BaseTagEnum<Integer> {
 | yidian\.oss\.ali\.defaultBucketName | String | 当前项目定义的通，yidian开头，链接项目代码用户中横杠“\-”隔开，例如：yidian\-cms|
 
 
-- 最佳使用  
+- 最佳使用
 定义项目文件存储的文件夹
 ```java
 /**
@@ -215,33 +215,33 @@ uploadFileProvider.downLoad(fileKey, imgCompression);
         } else {
             bytes = uploadFileProvider.downLoad(fileKey, bucketName, 50);
         }
-      
-      
+
+
         try(OutputStream out = response.getOutputStream()) {
             out.write(bytes);
             out.flush();
         } catch (Exception e) {
             log.error("输出文件失败：" + e.getMessage(), e);
              throw new FileUploadException("下载文件出错");
-        } 
+        }
     }
 ```
 
 ## 9、日志
 每个子系统测试和生产环境日志统一收集到日志中心，由日志中心统一搜索查看日志。服务器不在分配权限查看系统日志。
-- 日志打印规范  
-1. **如果打印日志有参数必须使用占位符** 
-正例  
-> log.info("姓名：{}，年龄：{}", name, age);  
+- 日志打印规范
+1. **如果打印日志有参数必须使用占位符**
+正例
+> log.info("姓名：{}，年龄：{}", name, age);
 
-反例 
+反例
 > log.info("姓名："+name+"， 年龄：" + age);
 
 2. 异常日志
 ::: warning
 不同的业务异常请抛出相对的业务异常子类。请勿抛出Exception
 :::
-正例：  
+正例：
 ```java {6}
     public Long add(@RequestBody @Valid SysDeptForm form) {
            String deptCode = form.getDeptCode();
@@ -264,9 +264,9 @@ uploadFileProvider.downLoad(fileKey, imgCompression);
             ....
         } catch (BusinessInvalidException e) {
             log.error("保存部门异常：" + e.getMessage(), e);
-        } 
+        }
 ```
-反例：  
+反例：
 ```java {5,6}
         try {
             // todo
@@ -274,10 +274,10 @@ uploadFileProvider.downLoad(fileKey, imgCompression);
         } catch (BusinessInvalidException e) {
             e.printStackTrace();
             log.error(e.getMessage());
-        } 
+        }
 ```
 
-- 将日志输出到日志中心  
+- 将日志输出到日志中心
 添加Maven 依赖
 ```maven
         <dependency>
@@ -290,18 +290,18 @@ uploadFileProvider.downLoad(fileKey, imgCompression);
             <artifactId>log-spring-boot-starter</artifactId>
         </dependency>
 ```
-1. 注解方式 
+1. 注解方式
 ::: warning
-请在有必要的接口才记录日志，比如：修改重要数据，删除数据，查询接口请不要添加注解 
+请在有必要的接口才记录日志，比如：修改重要数据，删除数据，查询接口请不要添加注解
 :::
  ```java
 @Log(type = LogType.SYSTEM, description = "修改部门信息")
 ```
  属性：
-> type: SYSTEM系统日志 or INTERFACE_REQUEST接口日志  
+> type: SYSTEM系统日志 or INTERFACE_REQUEST接口日志
 > description：方法描述
 
-2. 工具类方式  
+2. 工具类方式
 ::: warning
 请删除没有必要的日志输出
 :::
@@ -317,7 +317,7 @@ uploadFileProvider.downLoad(fileKey, imgCompression);
 ::: warning
 各个子系统请勿随意定义工具类
 :::
-- [Hutool](https://www.hutool.cn/docs)工具类，引用模块如下  
+- [Hutool](https://www.hutool.cn/docs)工具类，引用模块如下
 1. [hutool-core：核心，包括Bean操作、日期、各种Util等](https://www.hutool.cn/docs/#/core/%E5%85%8B%E9%9A%86/%E6%94%AF%E6%8C%81%E6%B3%9B%E5%9E%8B%E7%9A%84%E5%85%8B%E9%9A%86%E6%8E%A5%E5%8F%A3%E5%92%8C%E5%85%8B%E9%9A%86%E7%B1%BB)
 2. [hutool-crypto：加解密模块](https://www.hutool.cn/docs/#/crypto/%E6%A6%82%E8%BF%B0)
 3. [hutool-extra：扩展模块，对第三方封装（模板引擎、邮件、Servlet、二维码、Emoji、FTP、分词等）](https://www.hutool.cn/docs/#/extra/%E6%A6%82%E8%BF%B0)
@@ -491,7 +491,7 @@ uploadFileProvider.downLoad(fileKey, imgCompression);
 ```
 
 2. `SearchForm`模型集成`DataScopeSearchForm`类
-```java 
+```java
 @Getter
 @Setter
 public class OceanCustomsOrderHeaderSearchForm extends DataScopeSearchForm {
@@ -516,13 +516,13 @@ public class OceanCustomsOrderHeaderSearchForm extends DataScopeSearchForm {
     }
 ```
 4. 实现`DataScopeService`
-默认是通过jdbc实时查询数据库。建议自己实现获取用户主键接口。*注意修改角色后请删除缓存*  
+默认是通过jdbc实时查询数据库。建议自己实现获取用户主键接口。*注意修改角色后请删除缓存*
 
 ```java
 /**
- * 
+ *
  * 数据权限获取角色对应的用户主键
- * 
+ *
  * @author laizuan
  * @version 1.0
  * @since 2021/2/9 12:01
