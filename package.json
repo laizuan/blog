@@ -10,8 +10,15 @@
         "@vuepress/plugin-active-header-links": "^1.8.2",
         "@vuepress/plugin-back-to-top": "^1.8.2",
         "@vuepress/plugin-medium-zoom": "^1.8.2",
+        "@vuepress/plugin-nprogress": "^1.8.2",
         "@vuepress/plugin-search": "^1.8.2",
-        "vuepress": "^1.8.2"
+        "vuepress": "^1.8.2",
+        "vuepress-plugin-demo-container": "^0.2.0"
     },
-    "dependencies": {}
+    "dependencies": {
+        "async-validator": "1.11.5",
+        "element-ui": "^2.15.3",
+        "fuse.js": "3.6.1",
+        "vuedraggable": "^2.24.3"
+    }
 }

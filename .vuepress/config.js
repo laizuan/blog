@@ -19,7 +19,9 @@ module.exports = {
             description: '懿点网在线文档'
         }
     },
-    head: [['link', { rel: 'icon', href: `/favicon.ico` }]],
+    head: [
+      ['link', { rel: 'icon', href: `/favicon.ico` }]
+    ],
     themeConfig: {
         logo: '/img/logo-mini.jpg',
         editLinks: true,
@@ -55,12 +57,32 @@ module.exports = {
                         {
                             title: '规范',
                             collapsable: false,
-                            children: ['/docs/web/norm-code', '/docs/web/norm-style', '/docs/web/norm-idea']
+                            children: [
+                              '/docs/web/norm-code',
+                              '/docs/web/norm-style',
+                              '/docs/web/norm-idea'
+                          ]
                         },
                         {
                             title: '教程',
                             collapsable: false,
                             children: ['/docs/web/teach-code']
+                        },
+                        {
+                          title: '组件',
+                          collapsable: false,
+                          children: [
+                            '/docs/web/component',
+                            '/docs/web/component/tool',
+                            '/docs/web/component/input',
+                            '/docs/web/component/form',
+                            '/docs/web/component/table',
+                            '/docs/web/component/select',
+                            '/docs/web/component/switch',
+                            '/docs/web/component/date',
+                            '/docs/web/component/tag',
+                            '/docs/web/component/remind'
+                          ]
                         },
                         {
                             title: '常见问题',
@@ -89,5 +111,5 @@ module.exports = {
             }
         }
     },
-    plugins: ['@vuepress/active-header-links', '@vuepress/back-to-top', '@vuepress/plugin-medium-zoom']
+    plugins: ['demo-container','@vuepress/active-header-links', '@vuepress/back-to-top', '@vuepress/plugin-medium-zoom','@vuepress/nprogress']
 };
