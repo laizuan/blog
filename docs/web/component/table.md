@@ -26,10 +26,6 @@
 | pageSizes           | 每页显示个数选择器的选项设置，设置了该属性则该属性优先级最高。没设置该属性则取全局设置，没有全局设置则使用默认值 | Number[] | [10, 20, 50, 100, 150]                    |
 | showColumnConfig    | 是否显示列配置 | Boolean  | false                                     |
 | showRefreshBtn      | 是否显示刷新按钮                                             | Boolean  | true                                      |
-|  |  |          |                                           |
-|                     |                                                              |          |                                           |
-| | | | |
-| | | | |
 
 - Column属性
 
@@ -41,7 +37,6 @@
 | enumDescName | 枚举label字段名称                                            | String                      | desc    |
 | tagTypeName  | 枚举状态类型字段名称。值内容参考`Tag`组件                    | String                      | tagType |
 | timeFormat   | 格式化日期                                                   |                             |         |
-|              |                                                              |                             |         |
 
 - RowButton属性
 
@@ -65,7 +60,6 @@
 | ------------ | ------------------------------------------------ | ------ | ------ |
 | label        | 列说明                                           | String | 操作   |
 | header-align | 表头对齐方式，若不设置该项，则使用表格的对齐方式 | String | center |
-|              |                                                  |        |        |
 
 - DropdownAttr属性
 
@@ -85,16 +79,21 @@
 
 ## Events
 
+支持element官方table所有的事件
+
 | 事件名称             | 说明                     | 回调参数 |
 | :------------------- | :----------------------- | :------- |
 | handlerSizeChange    | pageSize 改变时会触发    | 每页条数 |
 | handlerCurrentChange | currentPage 改变时会触发 | 当前页   |
 | handleColumnConfig   | 点击列配置回调           | -        |
 | handleRefresh        | 点击刷新按钮             | -        |
+| handelSaveColumns    | 保存自定义列回调         | columns  |
+
+
 
 ## Example
 
-::: demo 有些文字显示`undefined`是文档插件的BUG，在实际应用中不存在这个问题
+::: demo 
 ```html
 <template>
   <div>

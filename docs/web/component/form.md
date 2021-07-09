@@ -25,7 +25,7 @@
 
 | 参数       | 说明                                                         | 类型                         | 可选值                                                       | 默认值    |
 | ---------- | ------------------------------------------------------------ | ---------------------------- | ------------------------------------------------------------ | --------- |
-| tag        | 主键名称，规则：原生组件去掉`el-`前缀                        | String                       | input，select，date，radio，checkbox，cascader，textarea，upload,checkbox-group,switch |           |
+| tag        | 组件名称，规则：`el-`开头标识`elementUi`组件。去除`el-`表示拓展组件库中的组件。 | String                       | `el-radio/el-checkbox/el-cascader/el-upload/el-checkbox-group/el-switch` <br /><br /> `input/date/select/switch` |           |
 | itemAttrs  | `form-item`属性配置，支持全部原生属性                        | Object                       |                                                              |           |
 | attrs      | 元素属性，支持原生所有属性，如果是定制主键支持定制主键独有的属性 | Object                       |                                                              |           |
 | name       | 字段名称，支持多级字符串`a.b.c`，最终会得到这个对象`{a:{b:{c:null}}}` | String                       |                                                              |           |
@@ -40,22 +40,22 @@
 
   提交按钮属性
 
-| 参数        | 说明                     | 类型    | 可选值                  | 默认值         |
-| ----------- | ------------------------ | ------- | ----------------------- | -------------- |
-| show        | 是否显示该按钮           | Boolean |                         | true           |
-| validate    | 点击按钮是否校验表单     | Boolean |                         | false          |
-| text        | 按钮名称                 | String  |                         | 查询           |
-| type        | 按钮类型                 | String  |                         | primary        |
-| icon        | 按钮图标                 | String  |                         | el-icon-search |
-| loading     | 是否显示加载中           | Boolean |                         | false          |
-| plain       | 是否朴素按钮             | boolean | —                       | false          |
-| round       | 是否圆角按钮             | boolean | —                       | false          |
-| circle      | 是否圆形按钮             | boolean | —                       | false          |
-| disabled    | 是否禁用状态             | boolean | —                       | false          |
-| icon        | 图标类名                 | string  | —                       | —              |
-| autofocus   | 是否默认聚焦             | boolean | —                       | false          |
-| native-type | 原生 type 属性           | string  | button / submit / reset | button         |
-| wait        | 点击后多少毫秒才能继续点 | Number  |                         | 500            |
+| 参数        | 说明                     | 类型    | 可选值                  | 默认值  |
+| ----------- | ------------------------ | ------- | ----------------------- | ------- |
+| show        | 是否显示该按钮           | Boolean |                         | true    |
+| validate    | 点击按钮是否校验表单     | Boolean |                         | false   |
+| text        | 按钮名称                 | String  |                         | 提交    |
+| type        | 按钮类型                 | String  |                         | primary |
+| icon        | 按钮图标                 | String  |                         | -       |
+| loading     | 是否显示加载中           | Boolean |                         | false   |
+| plain       | 是否朴素按钮             | boolean | —                       | false   |
+| round       | 是否圆角按钮             | boolean | —                       | false   |
+| circle      | 是否圆形按钮             | boolean | —                       | false   |
+| disabled    | 是否禁用状态             | boolean | —                       | false   |
+| icon        | 图标类名                 | string  | —                       | —       |
+| autofocus   | 是否默认聚焦             | boolean | —                       | false   |
+| native-type | 原生 type 属性           | string  | button / submit / reset | button  |
+| wait        | 点击后多少毫秒才能继续点 | Number  |                         | 500     |
 
 - resetOption
 
@@ -68,7 +68,6 @@
 | type          | 按钮类型                                   | String  |                         | info                  |
 | icon          | 按钮图标                                   | String  |                         | el-icon-refresh-right |
 | executeSubmit | 点击重置按钮是否执行`submitOption`点击事件 | Boolean |                         | false                 |
-| loading       | 是否显示加载中                             | Boolean |                         | false                 |
 | plain         | 是否朴素按钮                               | boolean | —                       | false                 |
 | round         | 是否圆角按钮                               | boolean | —                       | false                 |
 | circle        | 是否圆形按钮                               | boolean | —                       | false                 |
@@ -124,110 +123,110 @@ export default {
   data() {
     return {
        fields: {
-        input: {
-          name: 'name',
-          tag: 'input',
-          itemAttrs: {
-            label: '姓名',
-            rules: [{ required: true, message: '姓名不能为空' }]
-          },
-          attrs: {
-            placeholder: '请输入姓名'
-          }
+         'select.a.b': {
+        name: 'select.a.b',
+        tag: 'select',
+        value: '1',
+        itemAttrs: {
+          label: 'Select',
+          rules: [{ required: true, message: 'select不能为空' }]
         },
-        age: {
-          name: 'age',
-          tag: 'input',
-          itemAttrs: {
-            label: '年龄'
-          },
-          attrs: {
-            placeholder: '请输入年龄'
-          }
-        },
-
-        test: {
-          name: 'test',
-          slot: 'test',
-          itemAttrs: {
-            label: '测试'
-          }
-        },
-
-        'select.a.b': {
-          name: 'select.a.b',
-          tag: 'select',
-          value: '1',
-          itemAttrs: {
-            label: 'Select',
-            rules: [{ required: true, message: 'select不能为空' }]
-          },
-          attrs: {
-            options: [
-              { label: '阿里云', value: '1' },
-              { label: '腾讯云', value: '2' },
-              { label: '华为云', value: '3' }
-            ]
-          }
-        },
-        'checkbox-group': {
-          name: 'checkboxGroup',
-          tag: 'checkbox-group',
-          itemAttrs: {
-            label: 'CheckboxGroup'
-          },
-          attrs: {
-            options: [
-              { label: '阿里云', value: '1' },
-              { label: '腾讯云', value: '2' },
-              { label: '华为云', value: '3' }
-            ]
-          }
-        },
-        switch: {
-          name: 'switch',
-          tag: 'switch',
-          itemAttrs: {
-            label: '开关'
-          }
-        },
-        faq: {
-          name: 'faq',
-          tag: 'input',
-          showRemind: true,
-          tooltip: '测试提示语',
-          placement: 'left',
-          itemAttrs: {
-            label: 'FAQ'
-          }
-        },
-        slot: {
-          name: 'slot',
-          tag: 'input'
-        },
-        'checkbox.n.v': {
-          name: 'checkbox.n.v',
-          tag: 'checkbox',
-          itemAttrs: {
-            label: 'CheckBox'
-          },
-          attrs: {}
-        },
-
-        cloud: {
-          name: 'cloud',
-          tag: 'radio',
-          itemAttrs: {
-            label: '云厂商'
-          },
-          attrs: {
-            options: [
-              { label: '阿里云', value: '1' },
-              { label: '腾讯云', value: '2' },
-              { label: '华为云', value: '3' }
-            ]
-          }
+        attrs: {
+          options: [
+            { label: '阿里云', value: '1' },
+            { label: '腾讯云', value: '2' },
+            { label: '华为云', value: '3' }
+          ]
         }
+      },
+      input: {
+        name: 'name',
+        tag: 'input',
+        itemAttrs: {
+          label: '姓名',
+          rules: [{ required: true, message: '姓名不能为空' }]
+        },
+        attrs: {
+          placeholder: '请输入姓名'
+        }
+      },
+      age: {
+        name: 'age',
+        tag: 'input',
+        itemAttrs: {
+          label: '年龄'
+        },
+        attrs: {
+          placeholder: '请输入年龄'
+        }
+      },
+
+      test: {
+        name: 'test',
+        slot: 'test',
+        itemAttrs: {
+          label: '测试'
+        }
+      },
+
+      'checkbox-group': {
+        name: 'checkboxGroup',
+        tag: 'el-checkbox-group',
+        itemAttrs: {
+          label: 'CheckboxGroup'
+        },
+        attrs: {
+          options: [
+            { label: '阿里云', value: '1' },
+            { label: '腾讯云', value: '2' },
+            { label: '华为云', value: '3' }
+          ]
+        }
+      },
+      switch: {
+        name: 'switch',
+        tag: 'switch',
+        itemAttrs: {
+          label: '开关'
+        }
+      },
+      faq: {
+        name: 'faq',
+        tag: 'input',
+        showRemind: true,
+        tooltip: '测试提示语',
+        placement: 'left',
+        itemAttrs: {
+          label: 'FAQ'
+        }
+      },
+      slot: {
+        name: 'slot',
+        tag: 'input'
+      },
+      'checkbox.n.v': {
+        name: 'checkbox.n.v',
+        tag: 'el-checkbox',
+        itemAttrs: {
+          label: 'CheckBox'
+        },
+        attrs: {}
+      },
+
+      cloud: {
+        name: 'cloud',
+        tag: 'el-radio-group',
+        itemAttrs: {
+          label: '云厂商'
+        },
+        attrs: {
+          options: [
+            { label: '阿里云', value: '1' },
+            { label: '腾讯云', value: '2' },
+            { label: '华为云', value: '3' }
+          ]
+        }
+      }
       },
       formValues: {}
     };
