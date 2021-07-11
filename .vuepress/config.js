@@ -77,8 +77,10 @@ module.exports = {
                             '/docs/web/component/input',
                             '/docs/web/component/form',
                             '/docs/web/component/table',
+                            '/docs/web/component/formTable',
                             '/docs/web/component/select',
                             '/docs/web/component/switch',
+                            '/docs/web/component/dialog',
                             '/docs/web/component/date',
                             '/docs/web/component/tag',
                             '/docs/web/component/remind'

@@ -8,16 +8,18 @@
 
   表单属性，除以下属性外支持Element Form 的全部属性
 
-| 参数         | 说明                                            | 类型    | 可选值 | 默认值           |
-| ------------ | ----------------------------------------------- | ------- | ------ | ---------------- |
-| fields       | 配置项                                          | Array   |        |                  |
-| submitOption | 提交按钮配置项                                  | Object  |        |                  |
-| resetOption  | 重置按钮配置项                                  | Object  |        |                  |
-| gutter       | 每一项的间距，`el-row`属性                      | Number  |        | 10               |
-| col          | `el-col`配置，支持所有属性                      | Object  |        | { md: 8, xl: 6 } |
-| actionCol    | 按钮区`el-col`配置                              | Object  |        | { md: 8, xl: 6 } |
-| showMore     | 是否显示更多，需要配合`limit`使用               | Boolean |        | false            |
-| limit        | 最多显示多少个item项，`showMore=true`的时候有效 | Number  |        | 4                |
+| 参数               | 说明                                            | 类型    | 可选值 | 默认值           |
+| ------------------ | ----------------------------------------------- | ------- | ------ | ---------------- |
+| fields             | 配置项                                          | Array   |        |                  |
+| submitOption       | 提交按钮配置项                                  | Object  |        |                  |
+| resetOption        | 重置按钮配置项                                  | Object  |        |                  |
+| gutter             | 每一项的间距，`el-row`属性                      | Number  |        | 10               |
+| col                | `el-col`配置，支持所有属性                      | Object  |        | { md: 8, xl: 6 } |
+| actionCol          | 按钮区`el-col`配置                              | Object  |        | { md: 8, xl: 6 } |
+| showMore           | 是否显示更多，需要配合`limit`使用               | Boolean |        | false            |
+| limit              | 最多显示多少个item项，`showMore=true`的时候有效 | Number  |        | 4                |
+| enterExecuteSubmit | 回车执行提交按钮点击事件                        | Boolean |        | false            |
+| firstAutoFocus     | 第一个元素是否自动获取焦点                      | Boolean |        | true             |
 
 - fields
 

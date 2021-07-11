@@ -73,8 +73,8 @@
 
 | 名称  | 说明                   |
 | ----- | ---------------------- |
-| header-`${column.prop}` | 自定义列头内容，`${column.prop}`列为字段名称。没有回调参数   |
-| colunm-`${column.prop}` | 自定义列字段内容，`${column.prop}`列为字段名称。返回row和index参数 |
+| header-`${column.prop}` | 自定义列头内容，`${column.prop}`列为字段名称。没有回调参数 |
+| column-`${column.prop}` | 自定义列字段内容，`${column.prop}`列为字段名称。返回row和index参数。注意列需要配置属性`slot=true` |
 | footer | 表格底部（和分页区平行）自定义内容 |
 
 ## Events
@@ -115,7 +115,7 @@
     >
       <template v-slot:header-pageviews><el-tag>阅读量</el-tag></template>
 
-      <template v-slot:colunm-author="scope">
+      <template v-slot:column-author="scope">
         <el-tag>{{ scope.row.author }}</el-tag>
       </template>
     </s-table>

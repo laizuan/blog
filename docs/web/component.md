@@ -1,5 +1,5 @@
 # 快速开始
-它基于 ElementUI 2.x 版本上开发的组件库
+它是基于 ElementUI 2.x 基础上增强的懿点网前端组件库
 
 ### 依赖
 - [Vue 2.x](https://cn.vuejs.org/v2/guide/)
@@ -16,6 +16,3 @@ Vue.use(UI, {
   pageSize, // 表格每页显示个数选择器的选项设置
 });
 ```
-
-### 组件列表
-- [`Form` json驱动表单](./component/form.md)
