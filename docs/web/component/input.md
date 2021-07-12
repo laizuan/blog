@@ -18,10 +18,10 @@
 ```html
 <template>
   <el-row :gutter="20">
-    <el-col span="12">
+    <el-col :span="12">
       <s-input lowerCase v-model="input" placeholder="输入大写会转小写" />
     </el-col>
-    <el-col span="12">
+    <el-col :span="12">
         <s-input upperCase v-model="input" placeholder="输入小写会转大写" />
      </el-col>
     </el-row>
