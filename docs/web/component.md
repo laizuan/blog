@@ -8,6 +8,28 @@
 
 ### 使用
 
+- 设置npm仓库源
+```sh
+npm config set registry http://nexus.1-dian.cn/repository/npm/
+```
+
+### 安装
+#### npm 安装
+```sh
+npm i pro-element-ui -S
+```
+#### Yarn 安装
+```sh
+yarn add pro-element-ui
+```
+#### CDN
+```sh
+<!-- 引入样式 -->
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>、
+```
+
 ### 全局设置
 
 ```js
