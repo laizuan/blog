@@ -13,7 +13,9 @@
 | columns             | 列配置，见下方`Column属性`。支持`.sync`                         | Array    | -                                         |
 | loading             | 是否显示加载中                                               | Boolean  | false                                     |
 | showSelect          | 是否可选择行                                                 | Boolean  | false                                     |
+| selectionFixed | 选择行是否固定在左边 | Boolean | false |
 | showIndex           | 是否显示行号                                                 | Boolean  | true                                      |
+| indexFixed | 行号是否固定在左边 | Boolean | false |
 | showOverflowTooltip | 当内容过长被隐藏时显示 tooltip。如果`Column属性`配置了这个属性则以`Column属性`的为准 | Boolean  | true                                      |
 | rowButtons          | 数据行按钮配置，见下方`RowButton属性`                        | Array    | -                                         |
 | actionAttr          | 操作列配置，见下方`ActionAttr属性`                           | Object   | -                                         |

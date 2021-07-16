@@ -11,6 +11,8 @@
 | confirmBtnAttr | 确定按钮属性配置，支持`el-button`的所有属性。另外添加`show`和`text`属性 | Object  | `{ text: '确定', show: true, type: 'primary' }` |
 | align          | 底部按钮对齐方式。`left/center/right`                        | String  | `right`                                         |
 | confirmClose   | 点击却按钮的时候是否关闭弹窗                                 | Boolean | true                                            |
+| showFooter     | 是否显示底部区域原生插槽                                     | Boolean | true                                            |
+| move           | 是否可拖拽                                                   | Boolean | true                                            |
 
 ## Events
 
@@ -27,7 +29,6 @@
 | 名称   | 说明                             |
 | ------ | -------------------------------- |
 | title  | Dialog 标题区的内容              |
-| close  | 自定义显示关闭时的内容           |
 | before | 自定义底部内容在（关闭按钮）之前 |
 | after  | 自定义底部内容在（确定按钮）之后 |
 

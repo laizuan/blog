@@ -3,6 +3,7 @@ module.exports = [
     { text: '前端', link: '/docs/web/' },
     { text: '数据库', link: '/docs/database/' },
     { text: '更新记录', link: '/docs/changelog/' },
+    { text: '常见问题收录', link: '/docs/faq/' },
     {
         text: '在线工具',
         items: [

@@ -9,8 +9,8 @@
 | upperCase         |     是否输入的时候字母转大写                                                    | Boolean                 | false  |
 | lowerCase          | 是否输入的时候字母转小写                  | Boolean  | false |
 | trim  | 是否去除左右空格                     | Boolean                 | true  |
-| trimAll | 是否去除所有空格，只有`trim=true`的时候有效 | Boolean | true |
-| clearable      | 是否显示清除文本图标                     | Boolean                 | false |
+| trimAll | 是否去除所有空格，只有`trim=true`的时候有效 | Boolean | false |
+| clearable      | 是否显示清除文本图标                     | Boolean                 | true |
 
 ## Example
 

@@ -10,6 +10,10 @@
 - blue
 - purple
 - magenta
+- red
+- green
+- cyan
+- geekblue
 
 ## Example
 
@@ -40,6 +44,18 @@
     </el-col>
     <el-col :span="4">
       <el-tag type="magenta">magenta</el-tag>
+    </el-col>
+    <el-col :span="4">
+      <el-tag type="red">red</el-tag>
+    </el-col>
+    <el-col :span="4">
+      <el-tag type="green">green</el-tag>
+    </el-col>
+    <el-col :span="4">
+      <el-tag type="cyan">cyan</el-tag>
+    </el-col>
+    <el-col :span="4">
+      <el-tag type="geekblue">geekblue</el-tag>
     </el-col>
   </el-row>
 </template>

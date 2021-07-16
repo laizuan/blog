@@ -74,13 +74,17 @@ module.exports = {
                           children: [
                             '/docs/web/component',
                             '/docs/web/component/tool',
+                            '/docs/web/component/wrap',
+                            '/docs/web/component/card',
                             '/docs/web/component/input',
                             '/docs/web/component/form',
                             '/docs/web/component/table',
                             '/docs/web/component/formTable',
                             '/docs/web/component/select',
+                            '/docs/web/component/treeSelect',
                             '/docs/web/component/switch',
                             '/docs/web/component/dialog',
+                            '/docs/web/component/dialogForm',
                             '/docs/web/component/date',
                             '/docs/web/component/tag',
                             '/docs/web/component/remind'

@@ -14,8 +14,8 @@
 | submitOption       | 提交按钮配置项                                  | Object  |        |                  |
 | resetOption        | 重置按钮配置项                                  | Object  |        |                  |
 | gutter             | 每一项的间距，`el-row`属性                      | Number  |        | 10               |
-| col                | `el-col`配置，支持所有属性                      | Object  |        | { md: 8, xl: 6 } |
-| actionCol          | 按钮区`el-col`配置                              | Object  |        | { md: 8, xl: 6 } |
+| col                | `el-col`配置，支持所有属性。                    | Object  |        | { md: 8, xl: 6 } |
+| actionCol          | 按钮区`el-col`配置。并且支持`class style`属性   | Object  |        | { md: 8, xl: 6 } |
 | showMore           | 是否显示更多，需要配合`limit`使用               | Boolean |        | false            |
 | limit              | 最多显示多少个item项，`showMore=true`的时候有效 | Number  |        | 4                |
 | enterExecuteSubmit | 回车执行提交按钮点击事件                        | Boolean |        | false            |
@@ -23,7 +23,7 @@
 
 - fields
 
-  字段属性
+  字段属性。
 
 | 参数       | 说明                                                         | 类型                         | 可选值                                                       | 默认值    |
 | ---------- | ------------------------------------------------------------ | ---------------------------- | ------------------------------------------------------------ | --------- |
@@ -33,10 +33,13 @@
 | name       | 字段名称，支持多级字符串`a.b.c`，最终会得到这个对象`{a:{b:{c:null}}}` | String                       |                                                              |           |
 | value      | 字段值                                                       | 查看主键对应支持的绑定值类型 |                                                              |           |
 | show       | 是否显示该item                                               | Boolean                      |                                                              | true      |
+| ifDisabled | 是否禁用。返回true和false控制。这个有限级高于`disabled`属性 | Function(model) ||                       |
 | ifRender   | 动态控制是否显示，返回true和false                            | Function(model)              | -                                                            | -         |
 | showRemind | 显示label提示语                                              | Boolean                      |                                                              | false     |
 | tooltip    | 提示语                                                       | String                       |                                                              | -         |
 | placement  | 提示语的显示方向                                             | String                       |                                                              | top-start |
+| labelSlot  | 是否自定义label文本内容                                      | Boolean                      |                                                              | false     |
+| slot       | 是否自定义`form-item`内容                                    | Boolean                      |                                                              | false     |
 
 - submitOption
 
@@ -78,184 +81,473 @@
 | autofocus     | 是否默认聚焦                               | boolean | —                       | false                 |
 | native-type   | 原生 type 属性                             | string  | button / submit / reset | button                |
 
+## 字段分组
+
+- 字段分组示例，更多复杂分组请看示例
+
+如果需要字段分组那么你需要在每一组字段包裹一个对象。这个对象有3个字段。`title`: 显示在页面上的分组名称。`type`: 样式类型，`card`和`title`。请参考`Card`组件属性，支持它的全部属性。`children`这个分组的字段。
+
+```js
+{
+          type: 'title',
+          title: '测试一',
+          children: [
+            {
+              name: 'name',
+              tag: 'input',
+              itemAttrs: {
+                label: '姓名',
+                rules: [{ required: true, message: '姓名不能为空' }]
+              },
+              attrs: {
+                placeholder: '请输入姓名'
+              }
+            },
+            {
+              name: 'name2',
+              tag: 'input',
+              itemAttrs: {
+                label: '姓名',
+                rules: [{ required: true, message: '姓名不能为空' }]
+              },
+              attrs: {
+                placeholder: '请输入姓名'
+              }
+            }
+          ]
+        }
+```
+
 ## Events
 
-| 事件名 | 说明                 | 返回值       |
-| ------ | -------------------- | ------------ |
-| submit | 点击提交按钮时候触发 | 当前表单的值 |
-| reset  | 点重置按钮时候触发   | -            |
+| 事件名     | 说明                 | 返回值               |
+| ---------- | -------------------- | -------------------- |
+| submit     | 点击提交按钮时候触发 | 当前表单的值         |
+| reset      | 点重置按钮时候触发   | -                    |
+| handleMore | 点击更多按钮是触发   | true 显示，false隐藏 |
 
 ## Slot
 
-| 名称                | 说明                                                         |
-| ------------------- | ------------------------------------------------------------ |
-| `fields.slot`       | 动态插槽，插槽名称就是自定义的`slot`。会回调当前`Form`表单的值 |
-| item-`fitelds.name` | `form-item`标签文本的内容插槽，它和`itemAttrs.showRemind`互斥 |
-| beforeAction        | 操作按钮，放在默认按钮前面                                   |
-| afterAction         | 操作按钮，放在默认按钮后面，如果开启`showMore`则在`showMore`按钮之前 |
+| 名称                 | 说明                                                         |
+| -------------------- | ------------------------------------------------------------ |
+| item-`fitelds.name`  | 自定义`el-form-item`内容，需要设置`slot=true`。回调`item`值  |
+| label-`fitelds.name` | `form-item`标签文本的内容插槽，需要设置`labelSlot=true`它和`itemAttrs.showRemind`互斥。回调`item`值 |
+| beforeAction         | 操作按钮，放在默认按钮前面                                   |
+| afterAction          | 操作按钮，放在默认按钮后面，如果开启`showMore`则在`showMore`按钮之前 |
+| formFooter           | 自定义表单底部区域                                           |
 
 ## Example
 
-::: demo 有些文字显示`undefined`是文档插件的BUG，在实际应用中不存在这个问题
+::: demo
 ```html
 <template>
-  <s-form
-    v-model="formValues"
-    :col="{ md: 24, xl: 24 }"
-    :actionCol="{ md: 24, xl: 24 }"
-    showMore
-    :fields="fields"
-    :submitOption="{ validate: true }"
-    @submit="handleSubmit"
-  >
-    <template v-slot:item-slot>测试slotItem</template>
-    <template v-slot:test="scope">
-        <el-input :value="JSON.stringify(scope)" type="textarea"></el-input>
-    </template>
-    <template v-slot:beforeAction>
-      <el-button>测试按钮一</el-button>
-    </template>
-    <template v-slot:afterAction>
-      <el-button>测试按钮二</el-button>
-    </template>
-  </s-form>
+  <div>
+    <h2>常规的</h2>
+    <s-form
+      v-model="formValues1"
+      :col="{ md: 8, xl: 6 }"
+      :actionCol="{ md: 12, xl: 8 }"
+      :fields="fields"
+      :submitOption="{ validate: true }"
+      @submit="handleSubmit1"
+    >
+      <template v-slot:item-slot>测试slotItem</template>
+      <template v-slot:test="scope"><el-input :value="JSON.stringify(scope)" type="textarea"></el-input></template>
+      <template v-slot:beforeAction>
+        <el-button>测试按钮一</el-button>
+      </template>
+      <template v-slot:afterAction>
+        <el-button>测试按钮二</el-button>
+      </template>
+    </s-form>
+
+    <h2>正常分组</h2>
+    <s-form
+      v-model="formValues2"
+      :col="{ md: 8, xl: 6 }"
+      :actionCol="{ md: 12, xl: 8 }"
+      :fields="fields2"
+      :submitOption="{ validate: true }"
+      @submit="handleSubmit2"
+    >
+      <template v-slot:item-slot>测试slotItem</template>
+      <template v-slot:test="scope"><el-input :value="JSON.stringify(scope)" type="textarea"></el-input></template>
+      <template v-slot:beforeAction>
+        <el-button>测试按钮一</el-button>
+      </template>
+      <template v-slot:afterAction>
+        <el-button>测试按钮二</el-button>
+      </template>
+    </s-form>
+
+    <h2>复杂分组</h2>
+    <s-form
+      v-model="formValues3"
+      :col="{ md: 8, xl: 6 }"
+      :actionCol="{ md: 12, xl: 8 }"
+      :fields="fieldsByRow"
+      :submitOption="{ validate: true }"
+      @submit="handleSubmit3"
+    >
+      <template v-slot:item-slot>测试slotItem</template>
+      <template v-slot:test="scope"><el-input :value="JSON.stringify(scope)" type="textarea"></el-input></template>
+      <template v-slot:beforeAction>
+        <el-button>测试按钮一</el-button>
+      </template>
+      <template v-slot:afterAction>
+        <el-button>测试按钮二</el-button>
+      </template>
+    </s-form>
+  </div>
 </template>
+
 <script>
 export default {
+  components: {},
   data() {
     return {
-       fields: {
-         'select.a.b': {
-        name: 'select.a.b',
-        tag: 'select',
-        value: '1',
-        itemAttrs: {
-          label: 'Select',
-          rules: [{ required: true, message: 'select不能为空' }]
+      input: null,
+      fields: [
+        {
+          name: 'select.a.b',
+          tag: 'select',
+          value: '1',
+          itemAttrs: {
+            label: 'Select',
+            rules: [{ required: true, message: 'select不能为空' }]
+          },
+          attrs: {
+            options: [
+              { label: '阿里云', value: '1' },
+              { label: '腾讯云', value: '2' },
+              { label: '华为云', value: '3' }
+            ]
+          }
         },
-        attrs: {
-          options: [
-            { label: '阿里云', value: '1' },
-            { label: '腾讯云', value: '2' },
-            { label: '华为云', value: '3' }
+        {
+          name: 'name',
+          tag: 'input',
+          itemAttrs: {
+            label: '姓名',
+            rules: [{ required: true, message: '姓名不能为空' }]
+          },
+          attrs: {
+            placeholder: '请输入姓名'
+          }
+        },
+        {
+          name: 'age',
+          tag: 'input',
+          itemAttrs: {
+            label: '年龄'
+          },
+          attrs: {
+            placeholder: '请输入年龄'
+          }
+        },
+
+        {
+          name: 'test',
+          slot: 'test',
+          itemAttrs: {
+            label: '测试'
+          }
+        },
+
+        {
+          name: 'checkboxGroup',
+          tag: 'el-checkbox-group',
+          itemAttrs: {
+            label: 'CheckboxGroup'
+          },
+          attrs: {
+            options: [
+              { label: '阿里云', value: '1' },
+              { label: '腾讯云', value: '2' },
+              { label: '华为云', value: '3' }
+            ]
+          }
+        },
+        {
+          name: 'switch',
+          tag: 'switch',
+          itemAttrs: {
+            label: '开关'
+          }
+        },
+        {
+          name: 'faq',
+          tag: 'input',
+          showRemind: true,
+          tooltip: '测试提示语',
+          placement: 'left',
+          itemAttrs: {
+            label: 'FAQ'
+          }
+        },
+
+        {
+          name: 'checkbox.n.v',
+          tag: 'el-checkbox',
+          itemAttrs: {
+            label: 'CheckBox'
+          },
+          attrs: {}
+        },
+
+        {
+          name: 'cloud',
+          tag: 'el-radio-group',
+          itemAttrs: {
+            label: '云厂商'
+          },
+          attrs: {
+            options: [
+              { label: '阿里云', value: '1' },
+              { label: '腾讯云', value: '2' },
+              { label: '华为云', value: '3' }
+            ]
+          }
+        }
+      ],
+      fields2: [
+        {
+          type: 'title',
+          title: '测试一',
+          children: [
+            {
+              name: 'name1',
+              tag: 'input',
+              itemAttrs: {
+                label: '姓名',
+                rules: [{ required: true, message: '姓名不能为空' }]
+              },
+              attrs: {
+                placeholder: '请输入姓名'
+              }
+            },
+            {
+              name: 'name2',
+              tag: 'input',
+              itemAttrs: {
+                label: '姓名',
+                rules: [{ required: true, message: '姓名不能为空' }]
+              },
+              attrs: {
+                placeholder: '请输入姓名'
+              }
+            },
+            {
+              name: 'name3',
+              tag: 'input',
+              itemAttrs: {
+                label: '姓名',
+                rules: [{ required: true, message: '姓名不能为空' }]
+              },
+              attrs: {
+                placeholder: '请输入姓名'
+              }
+            },
+            {
+              name: 'name4',
+              tag: 'input',
+              itemAttrs: {
+                label: '姓名',
+                rules: [{ required: true, message: '姓名不能为空' }]
+              },
+              attrs: {
+                placeholder: '请输入姓名'
+              }
+            }
+          ]
+        },
+        {
+          type: 'title',
+          title: '测试二',
+          children: [
+            {
+              name: 'name3',
+              tag: 'input',
+              itemAttrs: {
+                label: '姓名',
+                rules: [{ required: true, message: '姓名不能为空' }]
+              },
+              attrs: {
+                placeholder: '请输入姓名'
+              }
+            },
+            {
+              name: 'name4',
+              tag: 'input',
+              itemAttrs: {
+                label: '姓名',
+                rules: [{ required: true, message: '姓名不能为空' }]
+              },
+              attrs: {
+                placeholder: '请输入姓名'
+              }
+            }
           ]
         }
-      },
-      input: {
-        name: 'name',
-        tag: 'input',
-        itemAttrs: {
-          label: '姓名',
-          rules: [{ required: true, message: '姓名不能为空' }]
+      ],
+      fieldsByRow: [
+        {
+          name: 'name5',
+          tag: 'input',
+          itemAttrs: {
+            label: '姓名',
+            rules: [{ required: true, message: '姓名不能为空' }]
+          },
+          attrs: {
+            placeholder: '请输入姓名'
+          }
         },
-        attrs: {
-          placeholder: '请输入姓名'
-        }
-      },
-      age: {
-        name: 'age',
-        tag: 'input',
-        itemAttrs: {
-          label: '年龄'
+        {
+          name: 'name6',
+          tag: 'input',
+          itemAttrs: {
+            label: '姓名',
+            rules: [{ required: true, message: '姓名不能为空' }]
+          },
+          attrs: {
+            placeholder: '请输入姓名'
+          }
         },
-        attrs: {
-          placeholder: '请输入年龄'
-        }
-      },
-
-      test: {
-        name: 'test',
-        slot: 'test',
-        itemAttrs: {
-          label: '测试'
-        }
-      },
-
-      'checkbox-group': {
-        name: 'checkboxGroup',
-        tag: 'el-checkbox-group',
-        itemAttrs: {
-          label: 'CheckboxGroup'
+        {
+          name: 'name7',
+          tag: 'input',
+          itemAttrs: {
+            label: '姓名',
+            rules: [{ required: true, message: '姓名不能为空' }]
+          },
+          attrs: {
+            placeholder: '请输入姓名'
+          }
         },
-        attrs: {
-          options: [
-            { label: '阿里云', value: '1' },
-            { label: '腾讯云', value: '2' },
-            { label: '华为云', value: '3' }
+        {
+          type: 'title',
+          title: '测试一',
+          children: [
+            {
+              name: 'name',
+              tag: 'input',
+              itemAttrs: {
+                label: '姓名',
+                rules: [{ required: true, message: '姓名不能为空' }]
+              },
+              attrs: {
+                placeholder: '请输入姓名'
+              }
+            },
+            {
+              name: 'name2',
+              tag: 'input',
+              itemAttrs: {
+                label: '姓名',
+                rules: [{ required: true, message: '姓名不能为空' }]
+              },
+              attrs: {
+                placeholder: '请输入姓名'
+              }
+            }
           ]
-        }
-      },
-      switch: {
-        name: 'switch',
-        tag: 'switch',
-        itemAttrs: {
-          label: '开关'
-        }
-      },
-      faq: {
-        name: 'faq',
-        tag: 'input',
-        showRemind: true,
-        tooltip: '测试提示语',
-        placement: 'left',
-        itemAttrs: {
-          label: 'FAQ'
-        }
-      },
-      slot: {
-        name: 'slot',
-        tag: 'input'
-      },
-      'checkbox.n.v': {
-        name: 'checkbox.n.v',
-        tag: 'el-checkbox',
-        itemAttrs: {
-          label: 'CheckBox'
         },
-        attrs: {}
-      },
-
-      cloud: {
-        name: 'cloud',
-        tag: 'el-radio-group',
-        itemAttrs: {
-          label: '云厂商'
-        },
-        attrs: {
-          options: [
-            { label: '阿里云', value: '1' },
-            { label: '腾讯云', value: '2' },
-            { label: '华为云', value: '3' }
+        {
+          type: 'title',
+          title: '测试二',
+          children: [
+            {
+              name: 'name3',
+              tag: 'input',
+              itemAttrs: {
+                label: '姓名',
+                rules: [{ required: true, message: '姓名不能为空' }]
+              },
+              attrs: {
+                placeholder: '请输入姓名'
+              }
+            },
+            {
+              name: 'name4',
+              tag: 'input',
+              itemAttrs: {
+                label: '姓名',
+                rules: [{ required: true, message: '姓名不能为空' }]
+              },
+              attrs: {
+                placeholder: '请输入姓名'
+              }
+            },
+            {
+              name: 'name10',
+              tag: 'input',
+              itemAttrs: {
+                label: '姓名',
+                rules: [{ required: true, message: '姓名不能为空' }]
+              },
+              attrs: {
+                placeholder: '请输入姓名'
+              }
+            },
+            {
+              name: 'name11',
+              tag: 'input',
+              itemAttrs: {
+                label: '姓名',
+                rules: [{ required: true, message: '姓名不能为空' }]
+              },
+              attrs: {
+                placeholder: '请输入姓名'
+              }
+            }
           ]
+        },
+        {
+          name: 'name8',
+          tag: 'input',
+          itemAttrs: {
+            label: '姓名',
+            rules: [{ required: true, message: '姓名不能为空' }]
+          },
+          attrs: {
+            placeholder: '请输入姓名'
+          }
+        },
+        {
+          name: 'name9',
+          tag: 'input',
+          itemAttrs: {
+            label: '姓名',
+            rules: [{ required: true, message: '姓名不能为空' }]
+          },
+          attrs: {
+            placeholder: '请输入姓名'
+          }
         }
-      }
-      },
-      formValues: {}
+      ],
+      formValues1: {},
+      formValues2: {},
+      formValues3: {}
     };
   },
-  created() {
-    // request({
-    //   url: '/getForm/config',
-    //   method: 'get'
-    // }).then(res => {
-    //   const data = res.data;
-    //    // 设置字段事件
-    //   // data["name"].events.blur = function(e) {
-    //   //   console.log(e);
-    //   // }
-    //   //  data["select.a.b"].events.change = function(e) {
-    //   //  console.log(e);
-    //   // }
-
-    //   this.fields = data;
-    // });
-  },
+  created() {},
   methods: {
-    handleSubmit(data) {
-      console.log(data);
+    handleSubmit1(data) {
+      console.log(this.formValues1);
+    },
+    handleSubmit2(data) {
+      console.log(this.formValues2);
+    },
+    handleSubmit3(data) {
+      console.log(this.formValues3);
     }
   }
-}
+};
 </script>
+<style>
+.clear {
+  margin-top: 20px;
+}
+</style>
 ```
 :::
