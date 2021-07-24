@@ -8,6 +8,7 @@
 | :--------------- | :----------------------------------------------------------- | :---------------------------- | :----------------------------------------------------------- |
 | value            | v-model,存储的是treeParams.data里面的id                      | `String` / `Array` / `Number` | `''`                                                         |
 | styles           | el-select样式                                                | `Object`                      | {}                                                           |
+| localSearch      | 是否开启本地搜索                                             | Boolean                       | true                                                         |
 | selectClass      | 下拉框 挂类                                                  | `String`                      | -                                                            |
 | popoverClass     | popover 挂类                                                 | `String`                      | -                                                            |
 | disabled         | 是否禁用文本框                                               | `Boolean`                     | false                                                        |
@@ -26,7 +27,7 @@
 
 | 事件名       | 说明                                                         | 返回值 |
 | :----------- | :----------------------------------------------------------- | :----- |
-| searchFun    | 对外抛出搜索方法，自行判断是走后台查询，还是前端过滤 前端过滤：this.$refs.treeSelect.$refs.tree.filter(value); 后台查询：this.$refs.treeSelect.treeDataUpdateFun(data); | -      |
+| searchFun    | 对外抛出搜索方法。自行判断是走后台查询，还是前端过滤 前端过滤：`this.$refs.treeSelect.$refs.tree.filter(value);` 后台查询：`this.$refs.treeSelect.treeDataUpdateFun(data);`。如果配置`localSearch=true`自身会先做一次过滤。 | -      |
 | node-click   | 点击节点，对外抛出 `data, node, vm` `data:` 当前点击的节点数据 `node:` 当前点击的node `vm:` 当前组件的vm | -      |
 | check        | 点击复选框，对外抛出 `data, node, vm` `data:` 当前点击的节点数据 `node:` 当前点击的node `vm:` 当前组件的vm | -      |
 | removeTag    | -                                                            | -      |

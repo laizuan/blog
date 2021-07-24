@@ -27,14 +27,14 @@
 
 | 参数       | 说明                                                         | 类型                         | 可选值                                                       | 默认值    |
 | ---------- | ------------------------------------------------------------ | ---------------------------- | ------------------------------------------------------------ | --------- |
-| tag        | 组件名称，规则：`el-`开头标识`elementUi`组件。去除`el-`表示拓展组件库中的组件。 | String                       | `el-radio/el-checkbox/el-cascader/el-upload/el-checkbox-group/el-switch` <br /><br /> `input/date/select/switch` |           |
+| tag        | 组件名称，规则：`el-`开头标识`elementUi`组件。去除`el-`表示拓展组件库中的组件。 | String                       | `el-radio/el-checkbox/el-cascader/el-upload/el-checkbox-group/el-switch` <br /><br /> `input/date/select/switch/tree-select` |           |
 | itemAttrs  | `form-item`属性配置，支持全部原生属性                        | Object                       |                                                              |           |
-| attrs      | 元素属性，支持原生所有属性，如果是定制主键支持定制主键独有的属性 | Object                       |                                                              |           |
+| attrs      | 元素属性，支持原生所有属性，如果是定制主键支持定制主键独有的属性。[额外属性](#额外属性) | Object                       |                                                              |           |
 | name       | 字段名称，支持多级字符串`a.b.c`，最终会得到这个对象`{a:{b:{c:null}}}` | String                       |                                                              |           |
 | value      | 字段值                                                       | 查看主键对应支持的绑定值类型 |                                                              |           |
 | show       | 是否显示该item                                               | Boolean                      |                                                              | true      |
 | ifDisabled | 是否禁用。返回true和false控制。这个有限级高于`disabled`属性 | Function(model) ||                       |
-| ifRender   | 动态控制是否显示，返回true和false                            | Function(model)              | -                                                            | -         |
+| ifRender   | 动态控制是否显示，返回true和false。**注意使用该属性必须将show设置成true。** | Function(model)              | -                                                            | -         |
 | showRemind | 显示label提示语                                              | Boolean                      |                                                              | false     |
 | tooltip    | 提示语                                                       | String                       |                                                              | -         |
 | placement  | 提示语的显示方向                                             | String                       |                                                              | top-start |
@@ -81,7 +81,84 @@
 | autofocus     | 是否默认聚焦                               | boolean | —                       | false                 |
 | native-type   | 原生 type 属性                             | string  | button / submit / reset | button                |
 
-## 字段分组
+## 额外属性
+
+| `tag`元素标签     | 额外属性                               | 说明 |
+| ----------------- | -------------------------------------- | ---- |
+| el-checkbox-group | `border`：为`true`设置样式未`按钮样式` |      |
+| el-radio-group    | `border`：为`true`设置样式未`按钮样式` |      |
+|                   |                                        |      |
+
+
+
+## Events
+
+| 事件名     | 说明                 | 返回值               |
+| ---------- | -------------------- | -------------------- |
+| submit     | 点击提交按钮时候触发 | 当前表单的值         |
+| reset      | 点重置按钮时候触发   | -                    |
+| handleMore | 点击更多按钮是触发   | true 显示，false隐藏 |
+
+## Slot
+
+| 名称                 | 说明                                                         |
+| -------------------- | ------------------------------------------------------------ |
+| item-`fitelds.name`  | 自定义`el-form-item`内容，需要设置`slot=true`。回调`item`值  |
+| label-`fitelds.name` | `form-item`标签文本的内容插槽，需要设置`labelSlot=true`它和`itemAttrs.showRemind`互斥。回调`item`值 |
+| beforeAction         | 操作按钮，放在默认按钮前面                                   |
+| afterAction          | 操作按钮，放在默认按钮后面，如果开启`showMore`则在`showMore`按钮之前 |
+| formFooter           | 自定义表单底部区域                                           |
+| before               | 自定义表单开始内容                                           |
+| after                | 自定义表单结束内容。在操作栏之前                             |
+
+## FAQ
+
+### 使用下拉树
+
+`field`设置。支持`TreeSelect`组件的所有属性
+
+```json
+{
+          name: 'treeSelect',
+          tag: 'tree-select',
+          itemAttrs: {
+            label: 'TreeSelect'
+          },
+          attrs: {
+            ref: 'TreeSelect', // 设置ref
+            selectParams: {
+              placeholder: '请输入内容'
+            },
+            treeParams: {
+              clickParent: true,
+              filterable: true,
+              // 只想要子节点，不需要父节点
+              leafOnly: true,
+              includeHalfChecked: false,
+              'check-strictly': false,
+              'default-expand-all': true,
+              'expand-on-click-node': false,
+              'render-content': this._renderFun, // 自定义渲染方法
+              data: [],
+              props: {
+                children: 'children',
+                label: 'name',
+                rootId: '0',
+                disabled: 'disabled',
+                parentId: 'parentId',
+                value: 'id'
+              }
+            }
+          }
+```
+
+设置`tree`数据
+
+```js
+ this.$refs.simpleForm.$refs.TreeSelect.treeDataUpdateFun(data);
+```
+
+### 字段分组
 
 - 字段分组示例，更多复杂分组请看示例
 
@@ -119,22 +196,6 @@
 ```
 
 ## Events
-
-| 事件名     | 说明                 | 返回值               |
-| ---------- | -------------------- | -------------------- |
-| submit     | 点击提交按钮时候触发 | 当前表单的值         |
-| reset      | 点重置按钮时候触发   | -                    |
-| handleMore | 点击更多按钮是触发   | true 显示，false隐藏 |
-
-## Slot
-
-| 名称                 | 说明                                                         |
-| -------------------- | ------------------------------------------------------------ |
-| item-`fitelds.name`  | 自定义`el-form-item`内容，需要设置`slot=true`。回调`item`值  |
-| label-`fitelds.name` | `form-item`标签文本的内容插槽，需要设置`labelSlot=true`它和`itemAttrs.showRemind`互斥。回调`item`值 |
-| beforeAction         | 操作按钮，放在默认按钮前面                                   |
-| afterAction          | 操作按钮，放在默认按钮后面，如果开启`showMore`则在`showMore`按钮之前 |
-| formFooter           | 自定义表单底部区域                                           |
 
 ## Example
 
