@@ -15,13 +15,27 @@
 | placement        | 弹出框位置                                                   | `String`                      | bottom                                                       |
 | treeRenderFun    | 树渲染方法，具体参考el-tree Function(h, { node, data, store }) {} | `Function`                    | -                                                            |
 | filterNodeMethod | 搜索过滤方法，具体参考el-tree Function(h, { value, data, node }) {} | `Function`                    | -                                                            |
-| selectParams     | 文本框参数，几乎支持el-select所有的API 取消参数： 设定下拉框的弹出框隐藏： `:popper-append-to-body="false"` 搜索从弹出框里面执行： `filterable="false"` | `Object`                      | Object默认参数：  是否可以清空选项： `clearable: true,`  是否禁用： `disabled: false,`  搜索框placeholder文字： `placeholder: '请选择',` |
-| treeParams       | 下拉树参数，几乎支持el-tree所有的API 取消参数: `:show-checkbox="selectParams.multiple"` 使用下拉框参数multiple判断是否对树进行多选 取消对el-tree的人为传参show-checkbox `:node-key="propsValue"` 自动获取treeParams.props.value `:draggable="false"` 屏蔽拖动 | `Object`                      | Object默认参数：  在有子级的情况下是否点击父级关闭弹出框,false 只能点击子级关闭弹出框：  `clickParent: false`  是否显示搜索框：  `filterable: false`  是否只是叶子节点：  `leafOnly: false`  是否包含半选节点：  `includeHalfChecked: false`  下拉树的数据：  `data:[]`  下拉树的props：  `props: {` `children: 'children',` `label: 'name',` `value: 'flowId',` `disabled: 'disabled'` `}` |
-| children         | -                                                            | —                             | -                                                            |
-| label            | -                                                            | —                             | -                                                            |
-| code             | -                                                            | —                             | -                                                            |
-| value            | -                                                            | —                             | -                                                            |
-| disabled         | -                                                            | —                             | -                                                            |
+| selectParams     | 文本框参数，几乎支持el-select所有的API。取消参数： 设定下拉框的弹出框隐藏： `:popper-append-to-body="false"`。 搜索从弹出框里面执行： `filterable="false"` | `Object`                      | Object默认参数：  是否可以清空选项： `clearable: true,`  是否禁用： `disabled: false,`  搜索框placeholder文字： `placeholder: '请选择',` |
+| treeParams       | 下拉树参数，几乎支持`el-tree`所有的API。取消参数: `:show-checkbox="selectParams.multiple"` 使用下拉框参数multiple判断是否对树进行多选。取消对`el-tree`的人为传参show-checkbox `:node-key="propsValue"` 自动获取treeParams.props.value。 `:draggable="false"` 屏蔽拖动 | `Object`                      | 参考下方`treeParams `属性列表                                |
+
+- selectParams`el-select`额外属性
+
+| 属性        | 说明                  | 类型    | 默认值 |
+| :---------- | :-------------------- | :------ | :----- |
+| clearable   | 是否可以清空选项      | Boolean | true   |
+| disabled    | 是否禁用              | Boolean | false  |
+| placeholder | 搜索框placeholder文字 | String  | 请选择 |
+
+- treeParams `el-tree`额外属性
+
+| 属性               | 说明                                                         | 类型    | 默认值                                                       |
+| :----------------- | :----------------------------------------------------------- | :------ | :----------------------------------------------------------- |
+| clickParent        | 在有子级的情况下是否点击父级关闭弹出框,false 只能点击子级关闭弹出框 | Boolean | false                                                        |
+| filterable         | 是否显示搜索框                                               | Boolean | false                                                        |
+| leafOnly           | 是否只是叶子节点。*false: 只想要子节点，不需要父节点*        | Boolean | false                                                        |
+| includeHalfChecked | 是否包含半选节点                                             | Boolean | false                                                        |
+| data               | 下拉树的数据                                                 | Array   | []                                                           |
+| props              | 下拉树的props                                                | Object  | `props: {` `children: 'children',` `label: 'name',` `value: 'id',` `disabled: 'disabled'` `}` |
 
 ## Events
 
