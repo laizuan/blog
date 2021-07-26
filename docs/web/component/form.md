@@ -28,18 +28,26 @@
 | 参数       | 说明                                                         | 类型                         | 可选值                                                       | 默认值    |
 | ---------- | ------------------------------------------------------------ | ---------------------------- | ------------------------------------------------------------ | --------- |
 | tag        | 组件名称，规则：`el-`开头标识`elementUi`组件。去除`el-`表示拓展组件库中的组件。 | String                       | `el-radio/el-checkbox/el-cascader/el-upload/el-checkbox-group/el-switch` <br /><br /> `input/date/select/switch/tree-select` |           |
-| itemAttrs  | `form-item`属性配置，支持全部原生属性                        | Object                       |                                                              |           |
+| itemAttrs  | `form-item`属性配置，支持全部原生属性。额外属性参考下方表格  | Object                       |                                                              |           |
 | attrs      | 元素属性，支持原生所有属性，如果是定制主键支持定制主键独有的属性。[额外属性](#额外属性) | Object                       |                                                              |           |
 | name       | 字段名称，支持多级字符串`a.b.c`，最终会得到这个对象`{a:{b:{c:null}}}` | String                       |                                                              |           |
 | value      | 字段值                                                       | 查看主键对应支持的绑定值类型 |                                                              |           |
 | show       | 是否显示该item                                               | Boolean                      |                                                              | true      |
 | ifDisabled | 是否禁用。返回true和false控制。这个有限级高于`disabled`属性 | Function(model) ||                       |
-| ifRender   | 动态控制是否显示，返回true和false。**注意使用该属性必须将show设置成true。** | Function(model)              | -                                                            | -         |
+| ifRender   | 动态控制是否显示，返回true和false。**如果`show=false`那么这个属性则无效** | Function(model)              | -                                                            | -         |
 | showRemind | 显示label提示语                                              | Boolean                      |                                                              | false     |
 | tooltip    | 提示语                                                       | String                       |                                                              | -         |
 | placement  | 提示语的显示方向                                             | String                       |                                                              | top-start |
 | labelSlot  | 是否自定义label文本内容                                      | Boolean                      |                                                              | false     |
 | slot       | 是否自定义`form-item`内容                                    | Boolean                      |                                                              | false     |
+
+- itemAttrs 
+
+  form item 额外属性
+
+| 参数    | 说明                                                         | 类型            | 可选值 | 默认值 |
+| ------- | ------------------------------------------------------------ | --------------- | ------ | ------ |
+| ifRules | 校验规则，这个函数返回的规则会覆盖掉`form-item`的`rules`规则。该函数需要返回一个数组。 | Function(model) |        |        |
 
 - submitOption
 
