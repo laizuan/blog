@@ -87,6 +87,7 @@ module.exports = {
                             '/docs/web/component/dialogForm',
                             '/docs/web/component/date',
                             '/docs/web/component/svgicon',
+                            '/docs/web/component/upload',
                             '/docs/web/component/tag',
                             '/docs/web/component/remind'
                           ]

@@ -13,6 +13,7 @@
 | confirmClose   | 点击却按钮的时候是否关闭弹窗                                 | Boolean | true                                            |
 | showFooter     | 是否显示底部区域原生插槽                                     | Boolean | true                                            |
 | move           | 是否可拖拽                                                   | Boolean | true                                            |
+| fixedHeight    | body高度超出时是否显示滚动条。设置成true的时候top属性无效    | Boolean | false                                           |
 
 ## Events
 
