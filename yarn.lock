@@ -2245,7 +2245,7 @@ cli-boxes@^2.2.0:
   resolved "https://registry.yarnpkg.com/cli-boxes/-/cli-boxes-2.2.1.tgz#ddd5035d25094fce220e9cab40a45840a440318f"
   integrity sha512-y4coMcylgSCdVinjiDBuR8PCC2bLjyGTwEmPb9NHR/QaNU6EUOXcTY/s6VjGMD6ENSEaeQYHCY0GNGS5jfMwPw==
 
-clipboard@^2.0.0:
+clipboard@^2.0.0, clipboard@^2.0.4:
   version "2.0.8"
   resolved "https://registry.yarnpkg.com/clipboard/-/clipboard-2.0.8.tgz#ffc6c103dd2967a83005f3f61976aa4655a4cdba"
   integrity sha512-Y6WO0unAIQp5bLmk1zdThRhgJt/x3ks6f30s3oE3H1mgIEU33XyQjEf8gsf6DxC7NPX8Y1SsNWjUjL/ywLnnbQ==
@@ -4704,10 +4704,10 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
-jstool@1.0.1, jstool@^1.0.1:
-  version "1.0.1"
-  resolved "http://nexus.1-dian.cn/repository/npm/jstool/-/jstool-1.0.1.tgz#875094b42895571a9dc25caa9ca566c90cf35d63"
-  integrity sha512-3bi3CNEJgN/YaiREQQF/EGcSDZkmTQHY+91F2EtIr9GYIQHHxJii18aEVPaAv0iU/HtYLHCCmQPwwbmNJt7aJA==
+jstool@1.0.2, jstool@^1.0.2:
+  version "1.0.2"
+  resolved "http://nexus.1-dian.cn/repository/npm/jstool/-/jstool-1.0.2.tgz#dc6d85bc930ab68b0ad96eac0fba3df3c86f97f4"
+  integrity sha512-sGZAHw3QKhMIFGBnMg0pK2rd1O/fwguj3D7wZbR9wEBJ3QvDKsCb5rHS2ETJTmf50YlVnKdZKNPK+UE5HOxVIQ==
   dependencies:
     babel-polyfill "^6.23.0"
     lodash "^4.17.21"
@@ -6114,16 +6114,17 @@ prismjs@^1.13.0:
   optionalDependencies:
     clipboard "^2.0.0"
 
-pro-element-ui@^1.0.5:
-  version "1.0.5"
-  resolved "http://nexus.1-dian.cn/repository/npm/pro-element-ui/-/pro-element-ui-1.0.5.tgz#e0989569a8c374c82514063d401f2b269c05b21b"
-  integrity sha512-FSNdbQD6lLd0r8CxLmggt8EpGDlUvqpuBTcKyH0tL7vwJWwmv/mmKiqARPZnr/DFmBtdRXujQLLfIzWX+QKUEg==
+pro-element-ui@^1.4.8:
+  version "1.4.8"
+  resolved "http://nexus.1-dian.cn/repository/npm/pro-element-ui/-/pro-element-ui-1.4.8.tgz#c509ad6e2ab33496eafd5d59d45b2e003ecfc6c0"
+  integrity sha512-OHTDFyNyzb4Df40cxtkZjLShpJ40h2siS8WGZXSNHrOHhkJ6Ttagjclk/MUgfj+fiIuTwnX9Bqpl1LZozKtHEA==
   dependencies:
     "@vue/babel-helper-vue-jsx-merge-props" "^1.2.1"
     "@vue/babel-preset-jsx" "^1.2.4"
+    clipboard "^2.0.4"
     core-js "3.15.2"
     fuse.js "3.6.1"
-    jstool "1.0.1"
+    jstool "1.0.2"
     lodash "^4.17.21"
     vuedraggable "^2.24.3"
 
