@@ -1,0 +1,44 @@
+name: Deploy blog website
+on:
+    push:
+        branches:
+          - master
+    pull_request:
+        branches:
+
+env:
+    SERVER_PRIVATE_KEY: ${{ secrets.SERVER_PRIVATE_KEY }}
+    SERVER_HOST: ${{ secrets.SERVER_HOST }}
+    USER_NAME: ${{ secrets.USER_NAME }}
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout branche
+              uses: actions/checkout@master
+              with:
+                ref: master
+
+            - uses: actions/setup-node@v3
+              with:
+                  node-version: 16
+
+            # 装依赖
+            - name: Install
+              run: yarn
+
+            # 打包
+            - name: Build
+              run: yarn docs:build
+
+            # 上传打包资源
+            - name: Deploy
+              uses: easingthemes/ssh-deploy@v2.2.11
+              env:
+                  SSH_PRIVATE_KEY: ${{ env.SERVER_PRIVATE_KEY }}
+                  ARGS: '-avz --delete'
+                  SOURCE: 'docs/.vitepress/dist/'
+                  REMOTE_HOST: ${{ env.SERVER_HOST }}
+                  REMOTE_USER: ${{ env.USER_NAME }}
+                  TARGET: /home/project/client/blog

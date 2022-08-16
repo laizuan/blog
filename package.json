@@ -1,0 +1,26 @@
+{
+  "name": "vitepress-demo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "docs:dev": "vitepress dev docs --port 3633",
+    "docs:build": "vitepress build docs",
+    "docs:serve": "vitepress serve docs --port 3634"
+  },
+  "dependencies": {
+    "element-next": "^1.23.4",
+    "element-plus": "^2.2.13"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "prettier": "^2.5.1",
+    "rollup-plugin-external-globals": "^0.6.1",
+    "sass": "^1.45.0",
+    "vitepress": "^1.0.0-alpha.4",
+    "vitepress-theme-demoblock": "^1.4.2"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
