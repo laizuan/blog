@@ -9,7 +9,7 @@
     "docs:serve": "vitepress serve docs --port 3634"
   },
   "dependencies": {
-    "element-next": "^1.23.9",
+    "element-next": "^1.23.8",
     "element-plus": "^2.2.13"
   },
   "devDependencies": {
@@ -17,7 +17,7 @@
     "prettier": "^2.5.1",
     "rollup-plugin-external-globals": "^0.6.1",
     "sass": "^1.45.0",
-    "vitepress": "^1.0.0-alpha.4",
+    "vitepress": "1.0.0-alpha.4",
     "vitepress-theme-demoblock": "^1.4.2"
   },
   "engines": {

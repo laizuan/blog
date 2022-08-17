@@ -1,43 +1,43 @@
 name: Deploy blog website
 on:
-    push:
-        branches:
-          - master
+  push:
+    branches:
+      - master
 
 env:
-    SERVER_PRIVATE_KEY: ${{ secrets.SERVER_PRIVATE_KEY }}
-    SERVER_HOST: ${{ secrets.SERVER_HOST }}
-    USER_NAME: ${{ secrets.USER_NAME }}
+  SERVER_PRIVATE_KEY: ${{ secrets.SERVER_PRIVATE_KEY }}
+  SERVER_HOST: ${{ secrets.SERVER_HOST }}
+  USER_NAME: ${{ secrets.USER_NAME }}
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout branche
-              uses: actions/checkout@master
-              with:
-                ref: master
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout branche
+        uses: actions/checkout@master
+        with:
+          ref: master
 
-            - uses: actions/setup-node@v3
-              with:
-                  node-version: 16
-                  always-auth: true
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          always-auth: true
 
-            # 装依赖
-            - name: Install & Build
-              run: yarn
+      # 装依赖
+      - name: Install & Build
+        run: yarn
 
-            # 打包
-            - name: Build
-              run: yarn docs:build
+      # 打包
+      - name: Build
+        run: yarn docs:build
 
-            # 上传打包资源
-            - name: Deploy
-              uses: easingthemes/ssh-deploy@v2.2.11
-              env:
-                  SSH_PRIVATE_KEY: ${{ env.SERVER_PRIVATE_KEY }}
-                  ARGS: '-avz --delete'
-                  SOURCE: 'docs/.vitepress/dist/'
-                  REMOTE_HOST: ${{ env.SERVER_HOST }}
-                  REMOTE_USER: ${{ env.USER_NAME }}
-                  TARGET: /home/project/client/blog
+      # 上传打包资源
+      - name: Deploy
+        uses: easingthemes/ssh-deploy@v2.2.11
+        env:
+          SSH_PRIVATE_KEY: ${{ env.SERVER_PRIVATE_KEY }}
+          ARGS: '-avz --delete'
+          SOURCE: 'docs/.vitepress/dist/'
+          REMOTE_HOST: ${{ env.SERVER_HOST }}
+          REMOTE_USER: ${{ env.USER_NAME }}
+          TARGET: /home/project/client/blog
