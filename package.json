@@ -9,7 +9,7 @@
     "docs:serve": "vitepress serve docs --port 3634"
   },
   "dependencies": {
-    "element-next": "^1.23.4",
+    "element-next": "^1.23.9",
     "element-plus": "^2.2.13"
   },
   "devDependencies": {
@@ -21,6 +21,6 @@
     "vitepress-theme-demoblock": "^1.4.2"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=16.0.0"
   }
 }
