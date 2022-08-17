@@ -23,10 +23,13 @@ jobs:
             - uses: actions/setup-node@v3
               with:
                   node-version: 16
+                  always-auth: true
 
             # 装依赖
-            - name: Install
-              run: yarn
+            - name: Install & Build
+              run: |
+              echo "https://packages.aliyun.com/60ab6f7b2c5969c370c58c11/npm/npm-registry/:_authToken=NjBhYjZmNjA2ZGEyZjczODMxZWIzMTNlJTNBb1IlMjlJRTRxZkJTVko=" > .npmrc
+              echo "always-auth=true" >> .npmrc
 
             # 打包
             - name: Build
