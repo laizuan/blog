@@ -3,8 +3,6 @@ on:
     push:
         branches:
           - master
-    pull_request:
-        branches:
 
 env:
     SERVER_PRIVATE_KEY: ${{ secrets.SERVER_PRIVATE_KEY }}
