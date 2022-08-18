@@ -4,10 +4,6 @@ export const createArticleNav = () => {
     link: '/article/index',
     items: [
       {
-        text: '小技巧',
-        link: '/article/tips/',
-      },
-      {
         text: '后端相关文章',
         link: '/article/java/index',
       },
@@ -20,8 +16,20 @@ export const createArticleNav = () => {
         link: '/article/database/index',
       },
       {
+        text: '网络相关文章',
+        link: '/article/network/index',
+      },
+      {
+        text: 'Redis相关文章',
+        link: '/article/redis/index',
+      },
+      {
         text: '面试相关文章',
         link: '/article/interview/index',
+      },
+      {
+        text: '小技巧',
+        link: '/article/tips/index',
       },
     ],
   }
