@@ -40,6 +40,10 @@
   }
 }
 
+.aside-curtain {
+  z-index: 8 !important;
+}
+
 .demo-block-control {
   background-color: var(--vp-custom-block-info-bg) !important;
   border-top-color: var(--vp-c-divider-light) !important;
@@ -51,4 +55,20 @@
 
 .demo-block.hover {
   box-shadow: var(--el-box-shadow) !important;
+}
+.meta {
+  border-top: none !important;
+  background-color: var(--vp-code-block-bg) !important;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  background: none !important;
+}
+
+.demo-block-control.is-fixed {
+  border-right: none !important;
 }

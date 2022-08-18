@@ -156,8 +156,8 @@ export default {
 
 ## Props
 
-| Name           | Description                              | Type    | Options   | Default   |
-| -------------- | ---------------------------------------- | ------- | --------- | --------- | --- |
+| Name           | Description      | Type    | Options   | Default   |
+| -------------- | ---------------- | ------- | -------- | --------- |
 | title          | 标题名称                                 | string  | -         | -         |
 | card           | 是否卡片模式                             | boolean | -         | false     |
 | border         | 是否显示 border，在`card=true`的时候有效 | boolean | -         | false     |
