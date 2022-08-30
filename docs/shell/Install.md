@@ -1115,3 +1115,200 @@ yum remove zabbix-nginx-conf-5.4.3-1.el8.noarch
 ```shell
 find / -name zabbix
 ```
+## 16. ElasticSearch8.x & Kibana8.x 安装
+
+### ElasticSearch
+
+- 创建用户
+
+  ```sh
+  # 创建用户
+  useradd es
+  
+  # 设置用户名密码
+  passwd es
+  
+  # 设置用户名目录权限
+  chown -R es /home/elasticsearch
+  ```
+
+- 下载Elasticsearch
+
+  https://www.elastic.co/cn/downloads/enterprise-search
+
+  ```sh
+  wget https://artifacts.elastic.co/downloads/enterprise-search/enterprise-search-8.4.0.tar.gz
+  ```
+
+- 修改配置文件
+
+  ```yaml
+  vi config/elasticsearch.yml
+  
+  cluster.name: my-application
+  node.name: node-1
+  network.host: 0.0.0.0
+  # 服务发现部分,这里我们有多少台机器就写多少个IP,也可以使用域名的形式.至于通信端口我们可以使用默认的就行,无需手动配置.
+  discovery.seed_hosts:["192.168.1.11"] 
+  # 默认初始化主节点的节点
+  cluster.initial_master_nodes: ["node-1"]   #节点名
+  ```
+
+- 修改linux最大文件句柄数
+
+  在最后添加以下内容，**要退出root用户重新登录后才会生效**
+
+  ```sh
+   vi /etc/security/limits.conf
+  
+  *   soft    nofile          65536
+  *   hard    nofile          65536
+  
+  vi /etc/sysctl.conf
+  vm.max_map_count = 655360
+  sysctl -p
+  ```
+
+- 启动Elastic
+
+  ```sh
+  ./bin/elasticsearch
+  
+  ## 后台运行
+  ./bin/elasticsearch -d -p pid
+  ```
+
+- 记录凭证
+
+  **需要记录起来，后面要用到**
+
+  ```txt
+  ℹ️  Password for the elastic user (reset with `bin/elasticsearch-reset-password -u elastic`):
+    YZ5poGjja3yr24*+NxwQ
+  
+  ℹ️  HTTP CA certificate SHA-256 fingerprint:
+    7fdfff85494ace42498f261457c5ab23c9c2d2d8965b006552c00b5e781feabf
+  
+  ℹ️  Configure Kibana to use this cluster:
+  • Run Kibana and click the configuration link in the terminal when Kibana starts.
+  • Copy the following enrollment token and paste it into Kibana in your browser (valid for the next 30 minutes):
+    eyJ2ZXIiOiI4LjQuMCIsImFkciI6WyIxOTIuMTY4LjEuMTE6OTIwMCJdLCJmZ3IiOiI3ZmRmZmY4NTQ5NGFjZTQyNDk4ZjI2MTQ1N2M1YWIyM2M5YzJkMmQ4OTY1YjAwNjU1MmMwMGI1ZTc4MWZlYWJmIiwia2V5IjoiLWJUeDRvSUI5b0szMTVTeTBTclY6ODE4elFiWWZUT2k5VFhaMVRzcU1TZyJ9
+  
+  ℹ️ Configure other nodes to join this cluster:
+  • Copy the following enrollment token and start new Elasticsearch nodes with `bin/elasticsearch --enrollment-token <token>` (valid for the next 30 minutes):
+    eyJ2ZXIiOiI4LjQuMCIsImFkciI6WyIxOTIuMTY4LjEuMTE6OTIwMCJdLCJmZ3IiOiI3ZmRmZmY4NTQ5NGFjZTQyNDk4ZjI2MTQ1N2M1YWIyM2M5YzJkMmQ4OTY1YjAwNjU1MmMwMGI1ZTc4MWZlYWJmIiwia2V5IjoiLTdUeDRvSUI5b0szMTVTeTBTcnA6cVVQSzRNY3FUMFNKUjRfZ1hyaWpZdyJ9
+  ```
+
+  1. `elastic`用户的密码（登录ElasticSearch与Kibana的Web界面时需要~）；
+
+     可以使用下面命令修改elastic的密码
+
+     ```undefined
+     bin/elasticsearch-reset-password --username elastic -i
+     输入密码：123456
+     ```
+
+  2. HTTP `CA`证书`SHA-256`指纹；
+
+  3. 用于Kibana连接当前`ElasticSearch`服务的`enrollment token`（注意有效期为30分钟！！）；
+
+  4. 说明了如何让其他`ElasticSearch`节点加入当前集群的操作步骤（我会在下一篇介绍`ElasticSearch8.0`分布式搜索引擎集群及其高可用测试）
+
+- 访问验证
+
+  ```sh
+  curl --cacert /home/elasticsearch/config/certs/http_ca.crt -u elastic https://192.168.1.11:9200
+  
+  # 输入es密码
+  
+  {
+    "name" : "node-1",
+    "cluster_name" : "my-application",
+    "cluster_uuid" : "5Q-_pasUQNqh7DhKIZe2hA",
+    "version" : {
+      "number" : "8.4.0",
+      "build_flavor" : "default",
+      "build_type" : "tar",
+      "build_hash" : "f56126089ca4db89b631901ad7cce0a8e10e2fe5",
+      "build_date" : "2022-08-19T19:23:42.954591481Z",
+      "build_snapshot" : false,
+      "lucene_version" : "9.3.0",
+      "minimum_wire_compatibility_version" : "7.17.0",
+      "minimum_index_compatibility_version" : "7.0.0"
+    },
+    "tagline" : "You Know, for Search"
+  }
+  ```
+
+- 注册加入主节点
+
+  ```sh
+  bin/elasticsearch --enrollment-token
+  eyJ2ZXIiOiI4LjQuMCIsImFkciI6WyIxOTIuMTY4LjEuMTE6OTIwMCJdLCJmZ3IiOiI3ZmRmZmY4NTQ5NGFjZTQyNDk4ZjI2MTQ1N2M1YWIyM2M5YzJkMmQ4OTY1YjAwNjU1MmMwMGI1ZTc4MWZlYWJmIiwia2V5IjoiLWJUeDRvSUI5b0szMTVTeTBTclY6ODE4elFiWWZUT2k5VFhaMVRzcU1TZyJ9
+  ```
+
+- 开启防火墙
+
+  ```sh
+  firewall-cmd --permanent --add-port=9200/tcp && \
+  firewall-cmd --permanent --add-port=9300/tcp && \
+  firewall-cmd --reload
+  ```
+
+  
+
+### Kibana
+
+[下载地址](https://www.elastic.co/cn/downloads/kibana)
+
+- 解压后进入编辑`config/kibana.yml`配置文件
+
+  ```sh
+  i18n.locale: "zh-CN"
+  server.host: "0.0.0.0"
+  server.port: 9250
+  ```
+
+- 开防火墙
+
+  ```sh
+  firewall-cmd --permanent --add-port=9250/tcp && \
+  firewall-cmd --reload
+  ```
+
+- 浏览器访问
+
+  http://192.168.1.11:9250/
+
+  1. 输入启动es时候的秘钥
+
+  ```sh
+  eyJ2ZXIiOiI4LjQuMCIsImFkciI6WyIxOTIuMTY4LjEuMTE6OTIwMCJdLCJmZ3IiOiI3ZmRmZmY4NTQ5NGFjZTQyNDk4ZjI2MTQ1N2M1YWIyM2M5YzJkMmQ4OTY1YjAwNjU1MmMwMGI1ZTc4MWZlYWJmIiwia2V5IjoiLWJUeDRvSUI5b0szMTVTeTBTclY6ODE4elFiWWZUT2k5VFhaMVRzcU1TZyJ9
+  ```
+
+  如果提示过期了使用一下命令在`elasticsearch`目录下重新生成
+
+  ```sh
+  ./bin/elasticsearch-create-enrollment-token -s kibana
+  ```
+
+  2. 输入`kibana`验证码
+
+     在`kibana`目录下运行命令
+
+     ```
+     ./bin/kibana-verification-code
+     ```
+
+  3. 输入`elastic`的账号密码登入
+
+     ```sh
+     # 账号
+     elastic
+     
+     # 密码
+     123456 # es启动时候的密码或者是你修改过后的elastic密码
+     ```
+
+     
+

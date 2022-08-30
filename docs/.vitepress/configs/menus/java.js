@@ -59,6 +59,10 @@ export const createJavaMenu = () => {
           text: '验证码',
           link: '/java/dependencys/captcha',
         },
+        {
+          text: 'Elasticsearch',
+          link: '/java/dependencys/elasticsearch',
+        },
       ],
     },
     {

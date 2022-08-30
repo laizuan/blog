@@ -23,3 +23,7 @@
 ### Elasticsearch
 
 1. [干货 | Elasticsearch 检索类型选型指南](https://mp.weixin.qq.com/s/KeDaA_1CS95FR40ICQYcbg)
+
+### Kubernetes
+
+1. [K8S 各核心架构组件](https://mp.weixin.qq.com/s/bL-85BhOj8H5Dis_94lmrQ)
