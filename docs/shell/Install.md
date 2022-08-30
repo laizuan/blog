@@ -78,16 +78,16 @@ mvn -v
    ```txt
    # docker官网中国区镜像
    https://registry.docker-cn.com
-   
+
    # 网易163 docker镜像 未使用,请自行判断
    http://hub-mirror.c.163.com
-   
+
    # USTC镜像加速
    https://docker.mirrors.ustc.edu.cn
-   
+
    # daocloud镜像 需注册
    http://{your_id}.m.daocloud.io
-   
+
    # alicloud 注册后有自己的加速地址
    https://{your_id}.mirror.aliyuncs.com
    ```
@@ -283,19 +283,19 @@ cd .. && rm -rf nginx-1.20.2
     ```shell
     # 设置开机自启动
     systemctl enable nginx.service
-    
+
     #停止开机自启动
     systemctl disable nginx.service
-    
+
     # 查看nginx状态
     systemctl status nginx.service
-    
+
     # 重启
     systemctl reload nginx
-    
+
     # 启动
     systemctl start nginx
-    
+
     #停止
     systemctl stop nginx
     ```
@@ -305,10 +305,10 @@ cd .. && rm -rf nginx-1.20.2
   ```shell
   #停止
   systemctl stop nginx
-  
+
   # 删除 yum 源
   yum remove nginx
-  
+
   # 删除Nginx相关文件
   # 查看Nginx相关文件，删除掉nginx的文件即可
   find / -name nginx*
@@ -1115,6 +1115,7 @@ yum remove zabbix-nginx-conf-5.4.3-1.el8.noarch
 ```shell
 find / -name zabbix
 ```
+
 ## 16. ElasticSearch8.x & Kibana8.x 安装
 
 ### ElasticSearch
@@ -1124,15 +1125,15 @@ find / -name zabbix
   ```sh
   # 创建用户
   useradd es
-  
+
   # 设置用户名密码
   passwd es
-  
+
   # 设置用户名目录权限
   chown -R es /home/elasticsearch
   ```
 
-- 下载Elasticsearch
+- 下载 Elasticsearch
 
   https://www.elastic.co/cn/downloads/enterprise-search
 
@@ -1144,36 +1145,36 @@ find / -name zabbix
 
   ```yaml
   vi config/elasticsearch.yml
-  
+
   cluster.name: my-application
   node.name: node-1
   network.host: 0.0.0.0
   # 服务发现部分,这里我们有多少台机器就写多少个IP,也可以使用域名的形式.至于通信端口我们可以使用默认的就行,无需手动配置.
-  discovery.seed_hosts:["192.168.1.11"] 
+  discovery.seed_hosts:["192.168.1.11"]
   # 默认初始化主节点的节点
   cluster.initial_master_nodes: ["node-1"]   #节点名
   ```
 
-- 修改linux最大文件句柄数
+- 修改 linux 最大文件句柄数
 
-  在最后添加以下内容，**要退出root用户重新登录后才会生效**
+  在最后添加以下内容，**要退出 root 用户重新登录后才会生效**
 
   ```sh
    vi /etc/security/limits.conf
-  
+
   *   soft    nofile          65536
   *   hard    nofile          65536
-  
+
   vi /etc/sysctl.conf
   vm.max_map_count = 655360
   sysctl -p
   ```
 
-- 启动Elastic
+- 启动 Elastic
 
   ```sh
   ./bin/elasticsearch
-  
+
   ## 后台运行
   ./bin/elasticsearch -d -p pid
   ```
@@ -1185,32 +1186,32 @@ find / -name zabbix
   ```txt
   ℹ️  Password for the elastic user (reset with `bin/elasticsearch-reset-password -u elastic`):
     YZ5poGjja3yr24*+NxwQ
-  
+
   ℹ️  HTTP CA certificate SHA-256 fingerprint:
     7fdfff85494ace42498f261457c5ab23c9c2d2d8965b006552c00b5e781feabf
-  
+
   ℹ️  Configure Kibana to use this cluster:
   • Run Kibana and click the configuration link in the terminal when Kibana starts.
   • Copy the following enrollment token and paste it into Kibana in your browser (valid for the next 30 minutes):
     eyJ2ZXIiOiI4LjQuMCIsImFkciI6WyIxOTIuMTY4LjEuMTE6OTIwMCJdLCJmZ3IiOiI3ZmRmZmY4NTQ5NGFjZTQyNDk4ZjI2MTQ1N2M1YWIyM2M5YzJkMmQ4OTY1YjAwNjU1MmMwMGI1ZTc4MWZlYWJmIiwia2V5IjoiLWJUeDRvSUI5b0szMTVTeTBTclY6ODE4elFiWWZUT2k5VFhaMVRzcU1TZyJ9
-  
+
   ℹ️ Configure other nodes to join this cluster:
   • Copy the following enrollment token and start new Elasticsearch nodes with `bin/elasticsearch --enrollment-token <token>` (valid for the next 30 minutes):
     eyJ2ZXIiOiI4LjQuMCIsImFkciI6WyIxOTIuMTY4LjEuMTE6OTIwMCJdLCJmZ3IiOiI3ZmRmZmY4NTQ5NGFjZTQyNDk4ZjI2MTQ1N2M1YWIyM2M5YzJkMmQ4OTY1YjAwNjU1MmMwMGI1ZTc4MWZlYWJmIiwia2V5IjoiLTdUeDRvSUI5b0szMTVTeTBTcnA6cVVQSzRNY3FUMFNKUjRfZ1hyaWpZdyJ9
   ```
 
-  1. `elastic`用户的密码（登录ElasticSearch与Kibana的Web界面时需要~）；
+  1. `elastic`用户的密码（登录 ElasticSearch 与 Kibana 的 Web 界面时需要~）；
 
-     可以使用下面命令修改elastic的密码
+     可以使用下面命令修改 elastic 的密码
 
-     ```undefined
+     ```txt
      bin/elasticsearch-reset-password --username elastic -i
      输入密码：123456
      ```
 
   2. HTTP `CA`证书`SHA-256`指纹；
 
-  3. 用于Kibana连接当前`ElasticSearch`服务的`enrollment token`（注意有效期为30分钟！！）；
+  3. 用于 Kibana 连接当前`ElasticSearch`服务的`enrollment token`（注意有效期为 30 分钟！！）；
 
   4. 说明了如何让其他`ElasticSearch`节点加入当前集群的操作步骤（我会在下一篇介绍`ElasticSearch8.0`分布式搜索引擎集群及其高可用测试）
 
@@ -1218,9 +1219,9 @@ find / -name zabbix
 
   ```sh
   curl --cacert /home/elasticsearch/config/certs/http_ca.crt -u elastic https://192.168.1.11:9200
-  
+
   # 输入es密码
-  
+
   {
     "name" : "node-1",
     "cluster_name" : "my-application",
@@ -1255,8 +1256,6 @@ find / -name zabbix
   firewall-cmd --reload
   ```
 
-  
-
 ### Kibana
 
 [下载地址](https://www.elastic.co/cn/downloads/kibana)
@@ -1280,7 +1279,7 @@ find / -name zabbix
 
   http://192.168.1.11:9250/
 
-  1. 输入启动es时候的秘钥
+  1. 输入启动 es 时候的秘钥
 
   ```sh
   eyJ2ZXIiOiI4LjQuMCIsImFkciI6WyIxOTIuMTY4LjEuMTE6OTIwMCJdLCJmZ3IiOiI3ZmRmZmY4NTQ5NGFjZTQyNDk4ZjI2MTQ1N2M1YWIyM2M5YzJkMmQ4OTY1YjAwNjU1MmMwMGI1ZTc4MWZlYWJmIiwia2V5IjoiLWJUeDRvSUI5b0szMTVTeTBTclY6ODE4elFiWWZUT2k5VFhaMVRzcU1TZyJ9
@@ -1296,7 +1295,7 @@ find / -name zabbix
 
      在`kibana`目录下运行命令
 
-     ```
+     ```sh
      ./bin/kibana-verification-code
      ```
 
@@ -1305,10 +1304,7 @@ find / -name zabbix
      ```sh
      # 账号
      elastic
-     
+
      # 密码
      123456 # es启动时候的密码或者是你修改过后的elastic密码
      ```
-
-     
-
