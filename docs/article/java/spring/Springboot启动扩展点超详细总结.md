@@ -1,6 +1,6 @@
 # Springboot 启动扩展点超详细总结
 
-[原文链接](jianshu.com/p/38d834db7413)
+[原文链接](https://jianshu.com/p/38d834db7413)
 
 <el-tag>2020.06.28 11:10:38</el-tag>
 

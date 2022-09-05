@@ -9,8 +9,8 @@ altActionLink: https://google.com/
 
 hero:
   name: Seetltd 官方文档
-  text: 前后端开发不过如此.
-  tagline: 丰富的前端封装组件，开箱即用的Springboot Starter，简单高效的后台管理模板。开发也就这样......
+  text: 前后端开发从未如此简单.
+  tagline: 丰富的前端封装组件，开箱即用的Springboot Starter，简单高效的后台管理模板。告别996，把时间留给家人......
   image:
     src: /logo.svg
     alt: VitePress
