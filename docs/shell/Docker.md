@@ -1,7 +1,54 @@
 # docker 
 #### 安装
+
+- [docker](https://so.csdn.net/so/search?q=docker&spm=1001.2101.3001.7020)要求Centos系统的内核版本高于3.10，查看内核版本
+
+  ```sh
+  uname -a
+  ```
+
+- 删除旧版本的docker
+
+  ```sh
+  yum  remove docker docker-common  docker-selinux docker-engine
+  ```
+
+- 设置镜像源 
+
+  ```sh
+  wget https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo -O /etc/yum.repos.d/docker-ce.repo
+  ```
+
+- 查看仓库中所有的docker版本
+
+  ```sh
+  yum  list  docker-ce  --showduplicates |  sort -r
+  ```
+
 - yum源安装docker
-  - yum install docker-io –y
+
+  ```sh
+  # 指定版本安装
+  yum  install  -y --setopt=obsoletes=0  docker-ce-20.10.9-3.el7
+  ```
+
+- 添加docker国内阿里云镜像地址
+
+  可以在[阿里云容器镜像服务](https://cr.console.aliyun.com/cn-qingdao/instances/mirrors) -> 镜像工具 --> 镜像加速器 中开通
+
+  ```sh
+  cat > /etc/docker/daemon.json << EOF
+  {
+    "registry-mirrors": ["https://b9pmyelo.mirror.aliyuncs.com"]
+  }
+  EOF
+  ```
+
+- 查看是否设置成功
+
+  ```sh
+  docker info
+  ```
 
 #### 常用命令
 

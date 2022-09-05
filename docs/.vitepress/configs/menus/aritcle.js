@@ -46,8 +46,13 @@ export const createArticleMenu = () => {
       ],
     },
     {
-      text: '后端',
-      items: [],
+      text: '后端相关文章',
+      items: [
+        {
+          text: 'Springboot启动扩展点超详细总结',
+          link: '/article/java/spring/Springboot启动扩展点超详细总结',
+        },
+      ],
     },
     {
       text: '前端',

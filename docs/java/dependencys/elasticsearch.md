@@ -15,13 +15,13 @@
 
 | **字段**                             | **说明**                                                   | **默认值**               | **可选值** |
 | ------------------------------------ | ---------------------------------------------------------- | ------------------------ | ---------- |
-| seedltd.elastic.enabled              | 是否启用组件                                               | true                     | -          |
-| seedltd.elastic.uris                 | elastic集群地址，只支持`https`并且需要加上各个节点的端口号 | `https://localhost:9200` | -          |
-| seedltd.elastic.username             | elastic登入用户名                                          | -                        | -          |
-| seedltd.elastic.password             | elastic登入密码                                            | -                        | -          |
+| `seedltd.elastic.enabled`            | 是否启用组件                                               | true                     | -          |
+| `seedltd.elastic.uris`               | elastic集群地址，只支持`https`并且需要加上各个节点的端口号 | `https://localhost:9200` | -          |
+| `seedltd.elastic.username`           | elastic登入用户名                                          | -                        | -          |
+| `seedltd.elastic.password`           | elastic登入密码                                            | -                        | -          |
 | `seedltd.elastic.connection-timeout` | 链接超时时间                                               | 3秒                      | -          |
 | `seedltd.elastic.read-timeout`       | 读取数据超时时间                                           | 6秒                      | -          |
-| seedltd.elastic.ca                   | https ca证书路径                                           | -                        | -          |
+| `seedltd.elastic.ca`                 | https ca证书路径                                           | -                        | -          |
 
 ### 测试
 
@@ -292,4 +292,123 @@ seedltd:
         elasticsearchTemplate.update(INDEX_NAME, customsOrder, CustomsOrder.class);
     }
 
+	// 这个方式适合固定的查询条件，如果查询条件是动态的可能渲染出来会JSON格式错误导致查询出错。
+	// [mustache渲染引擎语法](https://mustache.github.io/)
+ 	@Test
+    void addSearchTemplate() {
+        String content = """
+            {
+             {{#queryForm}}
+              "query": {
+                "bool": {
+                  "must": [
+                  {{#searchText}}
+                    {
+                      "multi_match": {
+                        "fields": [
+                          "bookingNo",
+                          "consignerName",
+                          "goodsName",
+                          "orderNo"
+                        ],
+                        "query": "{{searchText}}"
+                      }
+                    },
+                   {{/searchText}}
+                    {
+                      "bool": {
+                        "must": [
+                        {{#beginTime}}
+                            {{#endTime}}
+                              {
+                                "range": {
+                                  "createTime": {
+                                    "gte": "{{beginTime}}",
+                                    "lte": "{{endTime}}"
+                                  }
+                                }
+                              },
+                           {{/endTime}}
+                        {{/beginTime}}
+                        {{#customerCode}}
+                          {
+                            "term": {
+                              "customerCode": {
+                                "value": "{{customerCode}}"
+                              }
+                            }
+                          },
+                        {{/customerCode}}
+                        {{#orderStatus}}
+                          {
+                            "range": {
+                              "orderStatus": {
+                                "gte": {{orderStatus}}
+                              }
+                            }
+                          },
+                         {{/orderStatus}}
+                         {{#createBy}}
+                          {
+                            "terms": {
+                              "createBy": [
+                               {{createBy}}
+                              ]
+                            }
+                          }
+                        {{/createBy}}
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {{/queryForm}}
+              "from": {{start}},
+              "size": {{size}},
+              "sort": [
+                {
+                  "createTime": "desc"
+                }
+              ]
+            }
+            """;
+
+        elasticsearchTemplate.addOrUpdateSearchTemplate(TEMPLATE_NAME, content);
+    }
+
+    @Test
+    void findSearchTemplateByName() {
+        StoredScript searchTemplateByName = elasticsearchTemplate.findSearchTemplateByName(TEMPLATE_NAME);
+        System.out.println(searchTemplateByName.toString());
+    }
+
+    @Test
+    void searchByTemplate() {
+        ElasticPage<CustomsOrder> page = new ElasticPage<>();
+        page.setStart(1);
+        page.setSize(6);
+
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("searchText", "5465-3243-207.012");
+        map.put("beginTime",
+            DateUtil.beginOfDay(DateUtil.offsetMonth(new Date(), -6)).toString(DatePattern.UTC_SIMPLE_MS_FORMAT));
+        map.put("endTime", DateUtil.endOfDay(new Date()).toString(DatePattern.UTC_SIMPLE_MS_FORMAT));
+        map.put("orderStatus", 1);
+        map.put("customerCode", "KD");
+        // 数组渲染会导致JSON格式错误，所有改成后端构造字符串传值
+        map.put("createBy", StringUtils.join(Lists.newArrayList(1,2,3,4), ","));
+        System.out.println(JsonUtils.toJsonString(map));
+
+        Map<String, JsonData> params = Maps.newHashMap();
+        params.put("start", JsonData.of(0));
+        params.put("size", JsonData.of(10));
+        params.put("queryForm", JsonData.of(map));
+
+        System.out.println(JsonUtils.toJsonString(params));
+
+        ElasticPage<CustomsOrder> search =
+            elasticsearchTemplate.searchTemplate(INDEX_NAME, TEMPLATE_NAME, page, params, CustomsOrder.class);
+        System.out.println(JsonUtils.toJsonString(search));
+    }
 ```

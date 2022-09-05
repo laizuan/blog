@@ -7,6 +7,7 @@
 ### Spring
 
 1. [Spring DeferredResult 是个什么玩意？](https://mp.weixin.qq.com/s/UtvdozSluzTq2aKj0682eQ)
+2. [Springboot 启动扩展点超详细总结](/article/java/spring/Springboot%E5%90%AF%E5%8A%A8%E6%89%A9%E5%B1%95%E7%82%B9%E8%B6%85%E8%AF%A6%E7%BB%86%E6%80%BB%E7%BB%93.md)
 
 ### SpringBoot
 
