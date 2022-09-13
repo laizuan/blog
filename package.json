@@ -1,6 +1,6 @@
 {
   "name": "seedltd-blog",
-  "description":"ElementNext 文档",
+  "description": "ElementNext 文档",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
@@ -10,7 +10,7 @@
     "docs:serve": "vitepress serve docs --port 3634"
   },
   "dependencies": {
-    "element-next": "^1.23.8",
+    "element-next": "^1.24.1",
     "element-plus": "^2.2.13"
   },
   "devDependencies": {

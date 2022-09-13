@@ -502,8 +502,8 @@ docker run --restart=always --privileged=true -d \
  -v /mnt/mysql/conf.d:/etc/mysql/conf.d \
  -v /mnt/mysql/config/my.cnf:/etc/mysql/my.cnf \
  -v /etc/localtime:/etc/localtime \
- -e MYSQL_ROOT_PASSWORD="Z%oYiT$IX4cm" -p 3306:3306 --name mysql \
-mysql:8.0.29
+ -e MYSQL_ROOT_PASSWORD="123456" -p 3306:3306 --name mysql \
+mysql:8.0.30
 ```
 
 1. 如果设置 docker 设置密码不能登入试试不用输入密码直接回车
@@ -622,19 +622,19 @@ FLUSH PRIVILEGES;
 
 ```shell
 # 拉取镜像
-docker pull rabbitmq:3.8.9-management
+docker pull rabbitmq:3.10.7-management
 
 # 创建挂载目录
 cd /home && mkdir rabbitmq
 
 # 启动
-docker run -d --name rabbitmq  --privileged=true --restart=always --hostname rabbitmq -v /home/rabbitmq:/var/lib/rabbitmq -e RABBITMQ_DEFAULT_USER=rabbitadmin -e RABBITMQ_DEFAULT_PASS=rabbit123457 -e RABBITMQ_ERLANG_COOKIE='yidian-cookie' -p 5672:5672 -p 9900:15672 rabbitmq:3.8.9-management
+docker run -d --name rabbitmq  --privileged=true --restart=always --hostname rabbitmq -v /home/rabbitmq:/var/lib/rabbitmq -e RABBITMQ_DEFAULT_USER=rabbitadmin -e RABBITMQ_DEFAULT_PASS=rabbit@123457 -p 5672:5672 -p 9900:15672 rabbitmq:3.10.7-management
 ```
 
 - 地址：https://127.0.0.1:9900
 
 - 账号：rabbitadmin
-- 密码：rabbit123457
+- 密码：rabbit@123457
 
 #### 安装版
 
@@ -828,6 +828,7 @@ git yum remove git
 - 编译安装
 
   ```shell
+  cd git-2.36.1
   make prefix=/home/git all
   make prefix=/home/git install
   ```
