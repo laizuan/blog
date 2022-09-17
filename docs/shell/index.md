@@ -6,3 +6,4 @@
 4. [Jenkins 教程](/shell/Jenkins.md)
 5. [Linux 教程](/shell/Linux.md)
 6. [Shell 脚本](/shell/Shell.md)
+7. [K8s 安装部署](/shell/k8s.md)

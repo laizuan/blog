@@ -33,6 +33,12 @@
   yum  install  -y --setopt=obsoletes=0  docker-ce-20.10.9-3.el7
   ```
 
+- 启动docker
+
+  ```she
+  systemctl start docker
+  ```
+  
 - 添加 docker 国内阿里云镜像地址
 
   可以在[阿里云容器镜像服务](https://cr.console.aliyun.com/cn-qingdao/instances/mirrors) -> 镜像工具 --> 镜像加速器 中开通
