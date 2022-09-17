@@ -318,7 +318,7 @@ kubeadm config images list --config kubeadm.yml
 
 控制台打印
 
-```txt
+```sh
 registry.aliyuncs.com/google_containers/kube-apiserver:v1.25.0
 registry.aliyuncs.com/google_containers/kube-controller-manager:v1.25.0
 registry.aliyuncs.com/google_containers/kube-scheduler:v1.25.0
@@ -348,7 +348,7 @@ kubeadm init --config=kubeadm.yml --upload-certs | tee kubeadm-init.log
 
 安装成功后输出
 
-```txt
+```sh
 Your Kubernetes control-plane has initialized successfully!
 
 To start using your cluster, you need to run the following as a regular user:
@@ -388,7 +388,7 @@ kubectl get node
 
 输出
 
-```txt
+```sh
 [root@seedltd-centos7 k8s]# kubectl get node
 NAME         STATUS     ROLES           AGE     VERSION
 k8s-master   NotReady   control-plane   3m14s   v1.25.0
@@ -459,7 +459,7 @@ kubectl get pods -n kube-flannel
 
 输出`Running`表示成功
 
-```txt
+```sh
 NAME                    READY   STATUS    RESTARTS   AGE
 kube-flannel-ds-2vbcx   1/1     Running   0          3m54s
 kube-flannel-ds-frlng   1/1     Running   0          3m54s
@@ -488,7 +488,7 @@ kubectl expose deployment nginx --port=80 --type=NodePort
 kubectl get pod,svc
 ```
 
-访问地址：http://NodeIP:Port  
+访问地址：http://192.168.1.12
 
 
 
