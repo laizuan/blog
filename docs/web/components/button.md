@@ -34,9 +34,9 @@ export default {
 
     return {
       doClick,
-      count,
+      count
     }
-  },
+  }
 }
 </script>
 <style>

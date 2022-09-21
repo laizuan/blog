@@ -1,5 +1,7 @@
 # Kubernetes 安装
 
+普通集群安装
+
 ## 安装要求
 
 在开始之前，部署Kubernetes集群机器需要满足以下几个条件：
@@ -9,9 +11,11 @@
 - 可以访问外网，需要拉取镜像，如果服务器不能上网，需要提前下载镜像并导入节点
 - 禁止swap分区
 
+
+
 ## 准备环境
 
-| 角色   | IP           |
+| 角色     | IP           |
 | ------ | ------------ |
 | master | 192.168.1.12 |
 | node1  | 192.168.1.15 |
@@ -142,13 +146,13 @@ sudo yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/cen
 ### 修改Containerd配置
 
 - 生成默认配置文件并写入到 config.toml 中
-
+  
   ```shell
   containerd config default | sudo tee /etc/containerd/config.toml
   ```
 
 - 使用 `systemd` `cgroup` 驱动程序
-
+  
   ```sh
   vi /etc/containerd/config.toml
   
@@ -162,37 +166,38 @@ sudo yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/cen
   ```
 
 - 国内源替换 containerd 默认的 sand_box 镜像
-
+  
   ```sh
   # 搜索sandbox_image关键字将值设置成registry.aliyuncs.com/google_containers/pause:3.8
   /sandbox_image
-  
+  ```
   
   [plugins]
     .....
     [plugins."io.containerd.grpc.v1.cri"]
-    	...
-  	sandbox_image = "registry.aliyuncs.com/google_containers/pause:3.8"
-  ```
+  
+        ...
+      sandbox_image = "registry.aliyuncs.com/google_containers/pause:3.8"
 
+```
 - 配置镜像加速器地址
 
-  然后再为镜像仓库配置一个加速器，需要在 cri 配置块下面的 `registry` 配置块下面进行配置 `registry.mirrors`**（注意缩进）**
+然后再为镜像仓库配置一个加速器，需要在 cri 配置块下面的 `registry` 配置块下面进行配置 `registry.mirrors`**（注意缩进）**
 
-  [ 镜像来源 registry-mirrors](https://github.com/muzi502/registry-mirrors)
+[ 镜像来源 registry-mirrors](https://github.com/muzi502/registry-mirrors)
 
-  ```sh
-  # 搜索 ".registry.mirrors 关键字
-  /".registry.mirrors
-  
-  [plugins."io.containerd.grpc.v1.cri".registry]
-    [plugins."io.containerd.grpc.v1.cri".registry.mirrors]
-    # 添加下面两个配置
-      [plugins."io.containerd.grpc.v1.cri".registry.mirrors."docker.io"]
-        endpoint = ["https://ekxinbbh.mirror.aliyuncs.com"]
-      [plugins."io.containerd.grpc.v1.cri".registry.mirrors."k8s.gcr.io"]
-        endpoint = ["https://gcr.k8s.li"]
-  ```
+```sh
+# 搜索 ".registry.mirrors 关键字
+/".registry.mirrors
+
+[plugins."io.containerd.grpc.v1.cri".registry]
+  [plugins."io.containerd.grpc.v1.cri".registry.mirrors]
+  # 添加下面两个配置
+    [plugins."io.containerd.grpc.v1.cri".registry.mirrors."docker.io"]
+      endpoint = ["https://ekxinbbh.mirror.aliyuncs.com"]
+    [plugins."io.containerd.grpc.v1.cri".registry.mirrors."k8s.gcr.io"]
+      endpoint = ["https://gcr.k8s.li"]
+```
 
 ### 启动Containerd
 
@@ -243,7 +248,7 @@ kubelet 设置开机启动
 systemctl enable kubelet --now
 ```
 
-## 部署Kubernetes主节点 
+## 部署Kubernetes主节点
 
 **这步骤只需要在Master节点上执行**
 
@@ -263,7 +268,7 @@ kubeadm config print init-defaults --kubeconfig ClusterConfiguration > kubeadm.y
 vi kubeadm.yml
 ```
 
-```sh 
+```sh
 apiVersion: kubeadm.k8s.io/v1beta3
 bootstrapTokens:
 - groups:
@@ -418,13 +423,13 @@ kubeadm token create --print-join-command
 如果不能翻墙，直接在[GitHub仓库](https://github.com/flannel-io/flannel/blob/master/Documentation/kube-flannel.yml)下载kube-fiannel.yml
 
 - 如果k8s集群的时候没有自定义网段使用下方命令创建
-
-    ```sh
-    kubectl apply -f https://github.com/flannel-io/flannel/raw/master/Documentation/kube-flannel.yml
-    ```
+  
+  ```sh
+  kubectl apply -f https://github.com/flannel-io/flannel/raw/master/Documentation/kube-flannel.yml
+  ```
 
 - 自定义了网段使用下面步骤
-
+  
   下载`kube-flannel`
   
   ```sh
@@ -444,12 +449,12 @@ kubeadm token create --print-join-command
   
   修改成初始化`Master`集群时候配置的网段`192.168.0.0/16`
   ```
-
+  
    创建flannel
-
-    ```
-    kubectl apply -f kube-flannel.yml
-    ```
+  
+  ```
+  kubectl apply -f kube-flannel.yml
+  ```
 
 查看状态
 
@@ -486,9 +491,18 @@ kubectl get cm kubeadm-config -n kube-system -o yaml | grep -i podsub
 kubectl create deployment nginx --image=nginx
 kubectl expose deployment nginx --port=80 --type=NodePort
 kubectl get pod,svc
+
+# 输出
+NAME                        READY   STATUS    RESTARTS   AGE
+pod/nginx-76d6c9b8c-gtldd   1/1     Running   0          16h
+
+NAME                 TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
+service/kubernetes   ClusterIP   10.96.0.1      <none>        443/TCP        19h
+service/nginx        NodePort    10.99.65.242   <none>        80:32469/TCP   16h
 ```
 
-访问地址：http://192.168.1.12
+访问地址：
 
+http://192.168.1.14:32469
 
-
+http://192.168.1.15:32469

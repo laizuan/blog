@@ -23,12 +23,29 @@
 | `seedltd.elastic.read-timeout`       | 读取数据超时时间                                           | 6秒                      | -          |
 | `seedltd.elastic.ca`                 | https ca证书路径                                           | -                        | -          |
 
+
+### Elastic 相关说明
+[官网文档](https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html)
+[Elasticsearch 检索性能优化实战指南](https://mp.weixin.qq.com/s/tNrK8KtbSKI8cyTczO73lw)
+
+#### IndexSetting
+[Index setting 官方文档](https://www.elastic.co/guide/en/elasticsearch/reference/current/index-modules.html)
+- 如果对数据写入实时查询要求不高可以设置`refreshInterval`属性，针对实时查询要求高低调整该值。要求不高的甚至可以设置成1分钟及以上
+- 副本数不是越多越好，虽然它能提高查询效率。但是会影响你的修改和更新，并且会增加磁盘的压力。建议使用默认（一个副本）即可
+- 如果预先知道排序字段，可以提前指定。本质是通过降低写入速度间接提升检索速度。
+- 主分片的设置需要结合：集群数据节点规模、全部数据量和日增数据量等综合维度给出值，一般建议：设置为数据节点的1-3倍。
+- 分片不宜过小、过碎。有很多小分片可能会导致大量的网络调用和线程开销，这会严重影响搜索性能。单个分片大小建议在30G左右
+
+#### Mapping
+[Mapping 官方文档](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-params.html)
+- 不需要排序和范围查询的字段尽量使用keyword替代一些long或者int之类
+- doc_values：如果您确定不需要对字段进行排序或聚合，则可以禁用doc值以节省磁盘空间
 ### 测试
 
 `application.yml`
 
 ```yaml
-seedltd:  
+seedltd:
     elastic:
         uris:
           - https://192.168.1.11:9200
@@ -70,27 +87,52 @@ seedltd:
         }
     }
 
+    /**
+     *
+     * Mapping 属性解释
+     *
+     *     <p>enabled：设置 false，仅作存储不支持搜索和聚合分析（数据保存在_source中 用于type为object）</p>
+     *     <p>index：是否倒排索引；设置 false，无法被搜索，但依然支持aggs，sort，并出现在_source中</p>
+     *     <p>norms：用于算分，若字段用来filter过滤和aggs聚合分析，可关闭节约存储</p>
+     *     <p>doc_values：是否启用 doc_values，用于排序和聚合分析。不需要排序和聚合的统一设置成FALSE</p>
+     *     <p>field_data：若要对text类型启用排序和聚合分析，field data需要设置成true</p>
+     *     <p>store：默认false不存储，数据默认存储在_source，若true，额外空间再存储该字段</p>
+     *     <p>coerce：默认 true 开启，是否开启数据类型的自动转换，如字符串转数字</p>
+     *     <p>multifields：多字段特性</p>
+     *     <p>dynamic：true/false/strict 控制mapping的自动更新 字段的自动新增</p>
+     */
     @Test
     void createIndex() {
-        Map<String, Property> typeMapping = Maps.newHashMap();
+                Map<String, Property> typeMapping = Maps.newHashMap();
         typeMapping.put("createTime", Property.of(p -> p.date(date -> date)));
-        typeMapping.put("customsId", new Property(new KeywordProperty.Builder().index(false).store(true).build()));
-        typeMapping.put("orderNo", new Property(new KeywordProperty.Builder().store(false).build()));
-        typeMapping.put("customerCode", new Property(new KeywordProperty.Builder().store(false).build()));
-        typeMapping.put("createBy", new Property(new LongNumberProperty.Builder().store(false).build()));
+        typeMapping.put("customsId", new Property(new KeywordProperty.Builder().docValues(false).index(false).build()));
+        typeMapping.put("orderNo", new Property(new KeywordProperty.Builder().docValues(false).build()));
+        typeMapping.put("customerCode", new Property(new KeywordProperty.Builder().docValues(false).build()));
+        typeMapping.put("createBy", new Property(new KeywordProperty.Builder().docValues(false).build()));
         typeMapping.put("bookingNo",
-            new Property(new TextProperty.Builder().searchAnalyzer("comma").analyzer("comma").store(false).build()));
+            new Property(new TextProperty.Builder().searchAnalyzer("comma").analyzer("comma").build()));
         typeMapping.put("consignerName",
-            new Property(new TextProperty.Builder().analyzer("ik_smart").store(false).build()));
+            new Property(new TextProperty.Builder().analyzer("ik_smart").build()));
         typeMapping.put("goodsName",
-            new Property(new TextProperty.Builder().analyzer("ik_smart").store(false).build()));
-        typeMapping.put("orderStatus", new Property(new IntegerNumberProperty.Builder().store(false).build()));
-        typeMapping.put("totalPrice", new Property(new HalfFloatNumberProperty.Builder().store(false).build()));
-        elasticsearchTemplate.createIndex(INDEX_NAME, TypeMapping.of(tm -> tm.properties(typeMapping)),
+            new Property(new TextProperty.Builder().analyzer("ik_smart").build()));
+        typeMapping.put("orderStatus", new Property(new IntegerNumberProperty.Builder().build()));
+        typeMapping.put("totalPrice", new Property(new FloatNumberProperty.Builder().build()));
+
+
+        // 只保存customsId字段值，其它字段只查询
+        SourceField sourceField = SourceField.of(fn -> fn.includes(List.of("customsId")));
+
+
+        elasticsearchTemplate.createIndex(INDEX_NAME, TypeMapping.of(tm -> tm.properties(typeMapping).source(sourceField)),
             IndexSettings.of(is -> is
                 // 创建一个逗号分词器
                 .analysis(a -> a.analyzer("comma", Analyzer.of(analyzer -> analyzer.pattern(p -> p.pattern(",")))))
-                .numberOfShards("3").refreshInterval(Time.of(t -> t.time("3s")))));
+                    // 设置3个分片，每个分片大小建议在20G-50G
+                    .numberOfShards("3")
+                    // sorting机制通过写入的时候指定了某一个或者多个字段的排序方式，会极大提升检索的性能。
+                    .sort(s -> s.field(List.of("createTime")).order(SegmentSortOrder.Desc))
+                    // 数据写入刷新频率，设置3秒刷新一次
+                    .refreshInterval(Time.of(t -> t.time("3s")))));
     }
 
     @Test
@@ -243,7 +285,7 @@ seedltd:
         page.setSize(6);
 
         String searchText = "SML22613D";
-        
+
         // "bookingNo", "consignerName", "goodsName", "orderNo" 字段模糊匹配，需要注意的是orderNo和bookingNo的类型是keyword所以只能精确匹配
         Query multiMatch = Query.of(q1 -> q1.multiMatch(
             mm -> mm.query(searchText).fields(List.of("bookingNo", "consignerName", "goodsName", "orderNo"))));
@@ -258,7 +300,7 @@ seedltd:
         // 单个字段精确匹配
         Query customerCode = Query.of(q -> q.term(t -> t.field("customerCode").value("YD")));
 
-        
+
         // and 订单状态大于等于1
         Query orderStatusRange = Query.of(q -> q.range(r -> r.field("orderStatus").gte(JsonData.of(1))));
 

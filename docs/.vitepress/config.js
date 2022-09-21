@@ -3,10 +3,33 @@ const base = process.env.BASE || '/'
 const nav = require('./configs/nav')
 const sidebar = require('./configs/sidebar')
 const externalGlobals = require('rollup-plugin-external-globals')
+import plantuml from 'markdown-it-plantuml'
+
+function MdCustomAttrPugin(md, type, mdOptions = null) {
+  var defaultRenderer = md.renderer.rules[type]
+
+  md.renderer.rules[type] = function (tokens, idx, options, env, self) {
+    var token = tokens[idx]
+    if (mdOptions) {
+      for (let i in mdOptions) {
+        token.attrSet(i, mdOptions[i])
+      }
+    }
+    return defaultRenderer(tokens, idx, options, env, self)
+  }
+}
+
 export default defineConfig({
   title: 'Seetltd 官方文档',
   description: '前后端低代码解决方案',
-  head: [['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }]],
+  head: [
+    [
+      'link',
+      { rel: 'stylesheet', href: '/css/fancybox.min.css' },
+      { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }
+    ],
+    ['script', { src: '/js/fancybox.min.js' }]
+  ],
   base: base,
   // lang: 'zh-CN',
   appearance: true,
@@ -14,9 +37,9 @@ export default defineConfig({
   vite: {
     plugins: [
       externalGlobals({
-        vuedraggable: 'vuedraggable',
-      }),
-    ],
+        vuedraggable: 'vuedraggable'
+      })
+    ]
   },
   themeConfig: {
     logo: '/logo.svg',
@@ -24,7 +47,7 @@ export default defineConfig({
     algolia: {
       // appId: '8TBF6K4PZU',
       appKey: 'a953370a8ee3382c31ae89d4cc35acf5',
-      indexName: 'seedltd-online-docs',
+      indexName: 'seedltd-online-docs'
     },
 
     // nav
@@ -35,8 +58,8 @@ export default defineConfig({
     lastUpdatedText: '上次更新',
     footer: {
       message: '粤ICP备2022017444号',
-      copyright: 'Copyright © 2019-present Seetltd',
-    },
+      copyright: 'Copyright © 2019-present Seetltd'
+    }
   },
 
   markdown: {
@@ -48,9 +71,15 @@ export default defineConfig({
     config: (md) => {
       const { demoBlockPlugin } = require('vitepress-theme-demoblock')
       md.use(demoBlockPlugin, {
-        cssPreprocessor: 'scss',
+        cssPreprocessor: 'scss'
       })
-    },
-  },
+      md.use(MdCustomAttrPugin, 'image', {
+        'data-fancybox': 'gallery'
+      })
+      md.use(plantuml, {
+        openMarker: '```plantuml',
+        closeMarker: '```'
+      })
+    }
+  }
 })
-// module.exports = {}
