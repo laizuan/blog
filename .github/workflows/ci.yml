@@ -27,32 +27,29 @@ jobs:
           always-auth: true
 
       # 装依赖
-#       - name: Install & Build
-#         run: yarn
+      #       - name: Install & Build
+      #         run: yarn
 
       # 打包
-#       - name: Build
-#         run: yarn docs:build
+      #       - name: Build
+      #         run: yarn docs:build
 
-#       # 上传打包资源
-#       - name: Deploy
-#         uses: easingthemes/ssh-deploy@v2.2.11
-#         env:
-#           SSH_PRIVATE_KEY: ${{ env.SERVER_PRIVATE_KEY }}
-#           ARGS: '-avz --delete'
-#           SOURCE: 'docs/.vitepress/dist/'
-#           REMOTE_HOST: ${{ env.SERVER_HOST }}
-#           REMOTE_USER: ${{ env.USER_NAME }}
-#           TARGET: /home/project/client/blog
+      #       # 上传打包资源
+      #       - name: Deploy
+      #         uses: easingthemes/ssh-deploy@v2.2.11
+      #         env:
+      #           SSH_PRIVATE_KEY: ${{ env.SERVER_PRIVATE_KEY }}
+      #           ARGS: '-avz --delete'
+      #           SOURCE: 'docs/.vitepress/dist/'
+      #           REMOTE_HOST: ${{ env.SERVER_HOST }}
+      #           REMOTE_USER: ${{ env.USER_NAME }}
+      #           TARGET: /home/project/client/blog
 
       # 上传网站搜索资源
       - name: Algolia crawler creation and crawl
-        uses: algolia/algoliasearch-crawler-github-actions@v1.0.10
+        uses: opstrace/algolia-docs-sync@v1.0.2
         with:
-          crawler-user-id: "870e0ec8-dd93-4356-a95a-ac9ec752ea35"
-          crawler-api-key: "f4bc698fb3a8e0f438cde2f42c97eb1f"
-          algolia-app-id: ${{ env.ALGOLIA_APP_ID }}
-          algolia-api-key: ${{ env.ALGOLIA_API_KEY }}
-          site-url: 'http://docs.seedltd.cn'
-          INDEX_NAME: 'seedltd-online-docs'
+          algoliaId: ${{ env.ALGOLIA_APP_ID }}
+          algoliaKey: ${{ env.ALGOLIA_API_KEY }}
+          algoliaIndex: 'seedltd-online-docs'
           #FILE_PATH: 'docs/algolia.json'
