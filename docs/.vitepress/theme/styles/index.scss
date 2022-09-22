@@ -11,6 +11,10 @@
   --vp-c-green-dimm-3: var(--el-color-primary-light-9);
 }
 
+html:not(.dark) {
+  --docsearch-hit-active-color: var(--vp-c-brand);
+}
+
 .content-container {
   max-width: inherit !important;
 }
