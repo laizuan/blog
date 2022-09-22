@@ -47,9 +47,9 @@ jobs:
 
       # 上传网站搜索资源
       - name: Algolia crawler creation and crawl
-        uses: opstrace/algolia-docs-sync@v1.0.2
+        uses: rxrw/algolia-index-uploader@v1
         with:
-          algoliaId: ${{ env.ALGOLIA_APP_ID }}
-          algoliaKey: ${{ env.ALGOLIA_API_KEY }}
-          algoliaIndex: 'seedltd-online-docs'
-          #FILE_PATH: 'docs/algolia.json'
+          algolia_index_id: ${{ env.ALGOLIA_APP_ID }}
+          algolia_index_admin_key: 'd25d40ad11d1f2831215b67015ddca25'
+          algolia_index_name: 'seedltd-online-docs'
+          index_path: 'docs/algolia.json'
