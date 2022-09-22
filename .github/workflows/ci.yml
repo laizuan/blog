@@ -31,25 +31,28 @@ jobs:
         run: yarn
 
       # 打包
-      - name: Build
-        run: yarn docs:build
+#       - name: Build
+#         run: yarn docs:build
 
-      # 上传打包资源
-      - name: Deploy
-        uses: easingthemes/ssh-deploy@v2.2.11
-        env:
-          SSH_PRIVATE_KEY: ${{ env.SERVER_PRIVATE_KEY }}
-          ARGS: '-avz --delete'
-          SOURCE: 'docs/.vitepress/dist/'
-          REMOTE_HOST: ${{ env.SERVER_HOST }}
-          REMOTE_USER: ${{ env.USER_NAME }}
-          TARGET: /home/project/client/blog
+#       # 上传打包资源
+#       - name: Deploy
+#         uses: easingthemes/ssh-deploy@v2.2.11
+#         env:
+#           SSH_PRIVATE_KEY: ${{ env.SERVER_PRIVATE_KEY }}
+#           ARGS: '-avz --delete'
+#           SOURCE: 'docs/.vitepress/dist/'
+#           REMOTE_HOST: ${{ env.SERVER_HOST }}
+#           REMOTE_USER: ${{ env.USER_NAME }}
+#           TARGET: /home/project/client/blog
 
       # 上传网站搜索资源
       - name: Algolia crawler creation and crawl
         uses: iChochy/Algolia-Upload-Records@main
         with:
-          APPLICATION_ID: ${{ env.ALGOLIA_APP_ID }}
-          ADMIN_API_KEY: ${{ env.ALGOLIA_API_KEY }}
+          crawler-user-id: ""
+          crawler-api-key: ""
+          algolia-app-id: ${{ env.ALGOLIA_APP_ID }}
+          algolia-api-key: ${{ env.ALGOLIA_API_KEY }}
+          site-url: 'http://docs.seedltd.cn'
           INDEX_NAME: 'seedltd-online-docs'
-          FILE_PATH: 'docs/algolia.json'
+          #FILE_PATH: 'docs/algolia.json'
