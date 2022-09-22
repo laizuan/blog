@@ -45,7 +45,7 @@ export default defineConfig({
     logo: '/logo.svg',
     // docsDir: 'docs',
     algolia: {
-      // appId: '8TBF6K4PZU',
+      appId: '8TBF6K4PZU',
       appKey: 'a953370a8ee3382c31ae89d4cc35acf5',
       indexName: 'seedltd-online-docs'
     },

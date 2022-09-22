@@ -8,6 +8,9 @@ env:
   SERVER_PRIVATE_KEY: ${{ secrets.SERVER_PRIVATE_KEY }}
   SERVER_HOST: ${{ secrets.SERVER_HOST }}
   USER_NAME: ${{ secrets.USER_NAME }}
+  # Algolia setting
+  ALGOLIA_API_KEY: ${{secrets.ALGOLIA_API_KEY}}
+  ALGOLIA_API_ID: ${{secrets.ALGOLIA_API_ID}}
 
 jobs:
   build:
@@ -41,3 +44,11 @@ jobs:
           REMOTE_HOST: ${{ env.SERVER_HOST }}
           REMOTE_USER: ${{ env.USER_NAME }}
           TARGET: /home/project/client/blog
+
+      # 上传网站搜索资源
+      - name: Algolia crawler creation and crawl
+        uses: darrenjennings/algolia-docsearch-action@master
+        with:
+          ALGOLIA_APP_ID: ${{ env.ALGOLIA_APP_ID }}
+          ALGOLIA_API_KEY: ${{ env.ALGOLIA_API_KEY }}
+          file: 'docs/algolia.json'
