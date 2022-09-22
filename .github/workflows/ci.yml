@@ -47,8 +47,9 @@ jobs:
 
       # 上传网站搜索资源
       - name: Algolia crawler creation and crawl
-        uses: darrenjennings/algolia-docsearch-action@master
+        uses: iChochy/Algolia-Upload-Records@main
         with:
-          ALGOLIA_APP_ID: ${{ env.ALGOLIA_APP_ID }}
-          ALGOLIA_API_KEY: ${{ env.ALGOLIA_API_KEY }}
-          file: 'docs/algolia.json'
+          APPLICATION_ID: ${{ env.ALGOLIA_APP_ID }}
+          ADMIN_API_KEY: ${{ env.ALGOLIA_API_KEY }}
+          INDEX_NAME: 'seedltd-online-docs'
+          FILE_PATH: 'docs/algolia.json'
