@@ -31,7 +31,7 @@ export default defineConfig({
     ['script', { src: '/js/fancybox.min.js' }]
   ],
   base: base,
-  // lang: 'zh-CN',
+  lang: 'zh-CN',
   appearance: true,
   lastUpdated: true,
   vite: {
@@ -46,7 +46,7 @@ export default defineConfig({
     // docsDir: 'docs',
     algolia: {
       appId: '8TBF6K4PZU',
-      appKey: 'a953370a8ee3382c31ae89d4cc35acf5',
+      apiKey: '0980bf516b159e87fc81e03ecb896ce4',
       indexName: 'seedltd-online-docs'
     },
 
