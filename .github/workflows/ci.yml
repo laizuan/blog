@@ -27,8 +27,8 @@ jobs:
           always-auth: true
 
       # 装依赖
-      - name: Install & Build
-        run: yarn
+#       - name: Install & Build
+#         run: yarn
 
       # 打包
 #       - name: Build
@@ -49,8 +49,8 @@ jobs:
       - name: Algolia crawler creation and crawl
         uses: algolia/algoliasearch-crawler-github-actions@v1.0.10
         with:
-          crawler-user-id: ""
-          crawler-api-key: ""
+          crawler-user-id: "870e0ec8-dd93-4356-a95a-ac9ec752ea35"
+          crawler-api-key: "f4bc698fb3a8e0f438cde2f42c97eb1f"
           algolia-app-id: ${{ env.ALGOLIA_APP_ID }}
           algolia-api-key: ${{ env.ALGOLIA_API_KEY }}
           site-url: 'http://docs.seedltd.cn'
