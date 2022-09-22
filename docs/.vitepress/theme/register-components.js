@@ -1,5 +1,5 @@
 import ElementPlus from 'element-plus'
-import ElementNext from 'element-next'
+import ElementNext from 'element-next/lib/element-next.umd.js'
 import Demo from 'vitepress-theme-demoblock/components/Demo.vue'
 import DemoBlock from 'vitepress-theme-demoblock/components/DemoBlock.vue'
 export function registerComponents(app) {
@@ -10,7 +10,7 @@ export function registerComponents(app) {
     tinymce: {
       tinymceJsUrl: 'https://lib.baomitu.com/tinymce/5.10.3/tinymce.min.js',
       languageUrl: '/resources/tinymce/langs/',
-      skinUrl: '/resources/tinymce/skins/ui/',
-    },
+      skinUrl: '/resources/tinymce/skins/ui/'
+    }
   })
 }
