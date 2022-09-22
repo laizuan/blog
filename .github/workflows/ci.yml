@@ -21,27 +21,27 @@ jobs:
       ALGOLIA_SITE_URL: http://docs.seedltd.cn
       ALGOLIA_INDEX_NAME: seedltd-online-docs
     steps:
-      - name: Checkout code 🛎
+      - name: Checkout code 😀
         uses: actions/checkout@master
         with:
           ref: master
 
-      - name: Setup node16 🛎
+      - name: Setup node16 👀
         uses: actions/setup-node@v3
         with:
           node-version: 16
           always-auth: true
 
       # 装依赖
-      - name: Install dependencies 🧽
+      - name: Install dependencies 🔧
         run: yarn
 
       # 打包
-      - name: Build website 🧽
+      - name: Build website 🤓
         run: yarn docs:build
 
       # 上传打包资源
-      - name: Deploy seedltd docs
+      - name: Deploy seedltd docs 🚀
         uses: easingthemes/ssh-deploy@v2.2.11
         env:
           SSH_PRIVATE_KEY: ${{ env.SERVER_PRIVATE_KEY }}
@@ -51,13 +51,13 @@ jobs:
           REMOTE_USER: ${{ env.USER_NAME }}
           TARGET: /home/project/client/blog
 
-      - name: Clear algolia index 🧽
+      - name: Clear algolia index 🚨
         run: |
           cd .algolia
           pip install --upgrade 'algoliasearch>=2.0,<3.0'
           python clear_index.py
 
-      - name: Scrape the site 🧽
+      - name: Scrape the site 💯
         run: |
           cd .algolia
           touch .env
