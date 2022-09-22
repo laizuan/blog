@@ -27,23 +27,24 @@ jobs:
           always-auth: true
 
       # 装依赖
-      #       - name: Install & Build
-      #         run: yarn
+      - name: Install & Build
+        run: yarn
 
       # 打包
-      #       - name: Build
-      #         run: yarn docs:build
+      - name: Build
+        run:
+          yarn docs:build
 
-      #       # 上传打包资源
-      #       - name: Deploy
-      #         uses: easingthemes/ssh-deploy@v2.2.11
-      #         env:
-      #           SSH_PRIVATE_KEY: ${{ env.SERVER_PRIVATE_KEY }}
-      #           ARGS: '-avz --delete'
-      #           SOURCE: 'docs/.vitepress/dist/'
-      #           REMOTE_HOST: ${{ env.SERVER_HOST }}
-      #           REMOTE_USER: ${{ env.USER_NAME }}
-      #           TARGET: /home/project/client/blog
+          # 上传打包资源
+      - name: Deploy
+        uses: easingthemes/ssh-deploy@v2.2.11
+        env:
+          SSH_PRIVATE_KEY: ${{ env.SERVER_PRIVATE_KEY }}
+          ARGS: '-avz --delete'
+          SOURCE: 'docs/.vitepress/dist/'
+          REMOTE_HOST: ${{ env.SERVER_HOST }}
+          REMOTE_USER: ${{ env.USER_NAME }}
+          TARGET: /home/project/client/blog
 
   scrape:
     runs-on: ubuntu-latest
