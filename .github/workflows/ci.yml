@@ -15,28 +15,33 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      ALGOLIA_APPLICATION_ID: ${{ secrets.ALGOLIA_APPLICATION_ID }}
+      ALGOLIA_WRITE_API_KEY: ${{ secrets.ALGOLIA_ADMIN_API_KEY }}
+      ALGOLIA_SITE_URL: http://docs.seedltd.cn
+      ALGOLIA_INDEX_NAME: seedltd-online-docs
     steps:
-      - name: Checkout branche
+      - name: Checkout code 🛎
         uses: actions/checkout@master
         with:
           ref: master
 
-      - uses: actions/setup-node@v3
+      - name: Setup node16 🛎
+        uses: actions/setup-node@v3
         with:
           node-version: 16
           always-auth: true
 
       # 装依赖
-      - name: Install & Build
+      - name: Install dependencies 🧽
         run: yarn
 
       # 打包
-      - name: Build
-        run:
-          yarn docs:build
+      - name: Build website 🧽
+        run: yarn docs:build
 
-          # 上传打包资源
-      - name: Deploy
+      # 上传打包资源
+      - name: Deploy seedltd docs
         uses: easingthemes/ssh-deploy@v2.2.11
         env:
           SSH_PRIVATE_KEY: ${{ env.SERVER_PRIVATE_KEY }}
@@ -46,23 +51,13 @@ jobs:
           REMOTE_USER: ${{ env.USER_NAME }}
           TARGET: /home/project/client/blog
 
-  scrape:
-    runs-on: ubuntu-latest
-    env:
-      ALGOLIA_APPLICATION_ID: ${{ secrets.ALGOLIA_APPLICATION_ID }}
-      ALGOLIA_WRITE_API_KEY: ${{ secrets.ALGOLIA_ADMIN_API_KEY }}
-      ALGOLIA_SITE_URL: http://docs.seedltd.cn
-      ALGOLIA_INDEX_NAME: seedltd-online-docs
-    steps:
-      - name: check out code 🛎
-        uses: actions/checkout@v2
-
-      - name: clear algolia index 🧽
+      - name: Clear algolia index 🧽
         run: |
           cd .algolia
           pip install --upgrade 'algoliasearch>=2.0,<3.0'
           python clear_index.py
-      - name: scrape the site 🧽
+
+      - name: Scrape the site 🧽
         run: |
           cd .algolia
           touch .env
