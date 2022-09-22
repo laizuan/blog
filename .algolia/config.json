@@ -1,0 +1,33 @@
+{
+  "index_name": "seedltd-online-docs",
+  "start_urls": [
+    {
+      "url": "http://docs.seedltd.cn",
+      "selectors_key": "v2",
+      "tags": ["v2"]
+    }
+  ],
+  "stop_urls": [],
+  "selectors": {
+    "v2": {
+      "lvl0": ".content  h1",
+      "lvl1": ".content  h1",
+      "lvl2": ".content  h3",
+      "lvl3": ".content  h4",
+      "lvl4": ".content  h5",
+      "lvl5": ".content  h6",
+      "text": ".content  p",
+      "lang": {
+        "selector": "/html/@lang",
+        "type": "xpath",
+        "global": true
+      }
+    }
+  },
+  "scrape_start_urls": false,
+  "strip_chars": " .,;:#",
+  "custom_settings": {
+    "attributesForFaceting": ["lang", "tags"]
+  },
+  "nb_hits": 6366
+}
