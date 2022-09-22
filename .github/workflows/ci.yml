@@ -49,7 +49,7 @@ jobs:
       - name: Algolia crawler creation and crawl
         uses: rxrw/algolia-index-uploader@v1
         with:
-          algolia_index_id: ${{ env.ALGOLIA_APP_ID }}
+          algolia_index_id: '8TBF6K4PZU'
           algolia_index_admin_key: 'd25d40ad11d1f2831215b67015ddca25'
           algolia_index_name: 'seedltd-online-docs'
           index_path: 'docs/algolia.json'
