@@ -31,12 +31,12 @@ spring:
 
 ## 内置模块
 
-| 名称                          | 说明                                       | 默认值 | 版本 |
-| ----------------------------- | ------------------------------------------ | ------ | ---- |
-| [seedltd.xss](#XSS)           | xss 过滤配置                               |        |      |
-| [seedltd.sign](#接口验签)     | 接口签名配置，详细配置请看**接口验签**部分 |        |      |
-| [seedltd.logging](#日志)      | 日志配置                                   |        |      |
-| [seedltd.datasource](#数据源) | 数据源配置                                 |        |      |
+| 名称                         | 说明                      | 默认值 | 版本  |
+| -------------------------- | ----------------------- | --- | --- |
+| [seedltd.xss](#XSS)        | xss 过滤配置                |     |     |
+| [seedltd.sign](#接口验签)      | 接口签名配置，详细配置请看**接口验签**部分 |     |     |
+| [seedltd.logging](#日志)     | 日志配置                    |     |     |
+| [seedltd.datasource](#数据源) | 数据源配置                   |     |     |
 
 ## 数据源
 
@@ -44,16 +44,16 @@ spring:
 
 ### 属性说明
 
-| 类型    | 名称                                 | 说明                                                    | 默认值                             | 版本 |
-| ------- | ------------------------------------ | ------------------------------------------------------- | ---------------------------------- | ---- |
-| Boolean | seedltd.datasource.enabled           | 是否启用数据源。如果不需要使用数据库操作请设置成`false` | true                               |      |
-| String  | seedltd.datasource.host              | 数据库 IP 地址                                          | 127.0.0.1                          |      |
-| String  | seedltd.datasource.port              | 端口号                                                  | 3306                               |      |
-| String  | seedltd.datasource.database-name     | 数据库名称                                              |                                    |      |
-| String  | seedltd.datasource.username          | 数据库用户名                                            | root                               |      |
-| String  | seedltd.datasource.password          | 数据库密码                                              | root                               |      |
-| String  | seedltd.datasource.driver-class-name | 数据库驱动                                              | com.mysql.cj.jdbc.Driver           |      |
-| String  | seedltd.datasource.type              | 数据源                                                  | com.zaxxer.hikari.HikariDataSource |      |
+| 类型      | 名称                                   | 说明                              | 默认值                                | 版本  |
+| ------- | ------------------------------------ | ------------------------------- | ---------------------------------- | --- |
+| Boolean | seedltd.datasource.enabled           | 是否启用数据源。如果不需要使用数据库操作请设置成`false` | true                               |     |
+| String  | seedltd.datasource.host              | 数据库 IP 地址                       | 127.0.0.1                          |     |
+| String  | seedltd.datasource.port              | 端口号                             | 3306                               |     |
+| String  | seedltd.datasource.database-name     | 数据库名称                           |                                    |     |
+| String  | seedltd.datasource.username          | 数据库用户名                          | root                               |     |
+| String  | seedltd.datasource.password          | 数据库密码                           | root                               |     |
+| String  | seedltd.datasource.driver-class-name | 数据库驱动                           | com.mysql.cj.jdbc.Driver           |     |
+| String  | seedltd.datasource.type              | 数据源                             | com.zaxxer.hikari.HikariDataSource |     |
 
 ## 日志
 
@@ -61,13 +61,13 @@ spring:
 
 ### 属性说明
 
-| 类型    | 名称                              | 说明                                                             | 默认值                                | 版本 |
-| ------- | --------------------------------- | ---------------------------------------------------------------- | ------------------------------------- | ---- |
-| String  | seedltd.logging.config-file-patch | 指定日志配置文件，如果不想使用内置的配置文件可以通过这个值来重置 | classpath:log/base-logback-spring.xml |      |
-| String  | seedltd.logging.path              | 日志文件存放地址                                                 | `${user.dir}/logs`/seedltd            |      |
-| String  | seedltd.logging.max-size          | 日志文件最大字节数，超过备份当前日志文件，再重启一个新的日志文件 | 50MB                                  |      |
-| Integer | seedltd.logging.max-history       | 日志最大保留多少天                                               | 15                                    |      |
-| String  | seedltd.logging.total-size-cap    | 所有归档日志文件的总大小                                         | 30GB                                  |      |
+| 类型      | 名称                                | 说明                               | 默认值                                   | 版本  |
+| ------- | --------------------------------- | -------------------------------- | ------------------------------------- | --- |
+| String  | seedltd.logging.config-file-patch | 指定日志配置文件，如果不想使用内置的配置文件可以通过这个值来重置 | classpath:log/base-logback-spring.xml |     |
+| String  | seedltd.logging.path              | 日志文件存放地址                         | `${user.dir}/logs`/seedltd            |     |
+| String  | seedltd.logging.max-size          | 日志文件最大字节数，超过备份当前日志文件，再重启一个新的日志文件 | 50MB                                  |     |
+| Integer | seedltd.logging.max-history       | 日志最大保留多少天                        | 15                                    |     |
+| String  | seedltd.logging.total-size-cap    | 所有归档日志文件的总大小                     | 30GB                                  |     |
 
 ### Sql 日志
 
@@ -96,12 +96,12 @@ seedltd.datasource.driver-class-name=com.p6spy.engine.spy.P6SpyDriver
 
 - 属性
 
-| 类型           | 名称                    | 说明                                                                                  | 默认值            | 版本 |
-| -------------- | ----------------------- | ------------------------------------------------------------------------------------- | ----------------- | ---- |
-| boolean        | seedltd.xss.enabled     | 是否开启 xss 脚本过滤                                                                 | false             |      |
-| `List<String>` | seedltd.xss.urlPatterns | 需要拦截的接口地址，支持`*`号匹配。如果开启之后没有配置该属性那么将会拦截处理所有请求 |                   |      |
-| `List<String>` | seedltd.xss.whiteUrl    | 白名单地址，如果有项目名需要加上                                                      |                   |      |
-| Integer        | seedltd.xss.order       | 过滤执行优先级                                                                        | Integer.MAX_VALUE |      |
+| 类型             | 名称                      | 说明                                           | 默认值               | 版本  |
+| -------------- | ----------------------- | -------------------------------------------- | ----------------- | --- |
+| boolean        | seedltd.xss.enabled     | 是否开启 xss 脚本过滤                                | false             |     |
+| `List<String>` | seedltd.xss.urlPatterns | 需要拦截的接口地址，支持`*`号匹配。如果开启之后没有配置该属性那么将会拦截处理所有请求 |                   |     |
+| `List<String>` | seedltd.xss.whiteUrl    | 白名单地址，如果有项目名需要加上                             |                   |     |
+| Integer        | seedltd.xss.order       | 过滤执行优先级                                      | Integer.MAX_VALUE |     |
 
 ## 接口验签
 
@@ -111,24 +111,24 @@ seedltd.datasource.driver-class-name=com.p6spy.engine.spy.P6SpyDriver
 
 ### 属性
 
-| 类型                     | 名称                           | 说明                              | 默认值            | 版本 |
-| ------------------------ | ------------------------------ | --------------------------------- | ----------------- | ---- |
-| boolean                  | seedltd.sign.enabled           | 是否开启接口延签过滤              | false             |      |
-| Integer                  | seedltd.sign.order             | 过滤执行优先级                    | Integer.MAX_VALUE |      |
-| `List<String>`           | seedltd.sign.urlPatterns       | 需要拦截的接口地址，支持`*`号匹配 |                   |      |
-| `List<String>`           | seedltd.sign.whiteUrl          | 白名单地址，如果有项目名需要加上  |                   |      |
-| `List<String>`           | seedltd.sign.whiteThirdId      | 对接第三方标识白名单              |                   |      |
-| `List<ThirdPartyConfig>` | seedltd.sign.thirdPartyConfigs | 第三方配置                        |                   |      |
+| 类型                       | 名称                             | 说明                 | 默认值               | 版本  |
+| ------------------------ | ------------------------------ | ------------------ | ----------------- | --- |
+| boolean                  | seedltd.sign.enabled           | 是否开启接口延签过滤         | false             |     |
+| Integer                  | seedltd.sign.order             | 过滤执行优先级            | Integer.MAX_VALUE |     |
+| `List<String>`           | seedltd.sign.urlPatterns       | 需要拦截的接口地址，支持`*`号匹配 |                   |     |
+| `List<String>`           | seedltd.sign.whiteUrl          | 白名单地址，如果有项目名需要加上   |                   |     |
+| `List<String>`           | seedltd.sign.whiteThirdId      | 对接第三方标识白名单         |                   |     |
+| `List<ThirdPartyConfig>` | seedltd.sign.thirdPartyConfigs | 第三方配置              |                   |     |
 
 #### ThirdPartyConfig
 
-| 类型   | 名称     | 说明                                                  | 默认值 | 版本 |
-| ------ | -------- | ----------------------------------------------------- | ------ | ---- |
-| String | thirdId  | 第三方唯一标识 ID                                     |        |      |
-| String | apiKey   | 签名私钥                                              |        |      |
-| String | url      | 分配的接口地址                                        |        |      |
-| String | timeout  | 请求过期时间，单位：分钟，-1 标识无限制。默认 10 分钟 |        |      |
-| String | signType | 验证类型，默认 MD5                                    |        |      |
+| 类型     | 名称       | 说明                             | 默认值 | 版本  |
+| ------ | -------- | ------------------------------ | --- | --- |
+| String | thirdId  | 第三方唯一标识 ID                     |     |     |
+| String | apiKey   | 签名私钥                           |     |     |
+| String | url      | 分配的接口地址                        |     |     |
+| String | timeout  | 请求过期时间，单位：分钟，-1 标识无限制。默认 10 分钟 |     |     |
+| String | signType | 验证类型，默认 MD5                    |     |     |
 
 ### 签名流程
 
@@ -160,11 +160,11 @@ System.out.println("得到Sign：" + sign);
 
 动态数据转换成枚举 json 字符串，需要转换的值类型尽量避免使用基本数据类型，防止 null 的时候序列化异常。注意：需要实现`DynamicEnumService`接口，该接口接收 3 个参数：
 
-| 类型       | 名称      | 说明                                                                                                                                                                                               | 默认值 | 版本 |
-| ---------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ---- |
-| String     | type      | DynamicEnum.type 类型，可以是数据字典类型                                                                                                                                                          |        |      |
-| `String[]` | attached  | DynamicEnum.attached, 附加值，原路返回的值                                                                                                                                                         |        |      |
-| String     | localData | 本地数据集合。value:desc 格式，多个使用英文逗号隔开。当{@link #type()}是空的时候，会使用该属性的值做解析，value 表示当前字段的值。示例：`1:启用,0:禁用`。**注意顺序，必须是 value 在前 desc 在后** |        |      |
+| 类型         | 名称        | 说明                                                                                                                            | 默认值 | 版本  |
+| ---------- | --------- | ----------------------------------------------------------------------------------------------------------------------------- | --- | --- |
+| String     | type      | DynamicEnum.type 类型，可以是数据字典类型                                                                                                 |     |     |
+| `String[]` | attached  | DynamicEnum.attached, 附加值，原路返回的值                                                                                              |     |     |
+| String     | localData | 本地数据集合。value:desc 格式，多个使用英文逗号隔开。当{@link #type()}是空的时候，会使用该属性的值做解析，value 表示当前字段的值。示例：`1:启用,0:禁用`。**注意顺序，必须是 value 在前 desc 在后** |     |     |
 
 示例：
 
@@ -192,9 +192,9 @@ public class Test {
 
 - 属性
 
-| 类型   | 名称      | 说明              | 版本 |
-| ------ | --------- | ----------------- | ---- |
-| String | separator | 分隔符，默认：`,` |      |
+| 类型     | 名称        | 说明         | 版本  |
+| ------ | --------- | ---------- | --- |
+| String | separator | 分隔符，默认：`,` |     |
 
 示例：
 
@@ -251,9 +251,10 @@ int 0 或者 1 序列化成 false 和 true，boolean true 或者 false 反序列
 
 - 属性
 
-| 类型          | 名称  | 说明                                                                                                                                                                                                    | 版本 |
-| ------------- | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- |
-| SensitiveType | value | 脱敏类型。Sensitive.SensitiveType：CHINESE_NAME:中文名称，ID_CARD：身份证号，FIXED_PHONE：座机号，手机号：MOBILE_PHONE，地址：ADDRESS，电子邮件：EMAIL，银行卡：BANK_CARD，公司开户银行联号：CNAPS_CODE |      |
+| 类型            | 名称             | 说明                                                                                                                                                   | 版本  |
+| ------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
+| SensitiveType | value          | 脱敏类型。Sensitive.SensitiveType：CHINESE_NAME:中文名称，ID_CARD：身份证号，FIXED_PHONE：座机号，手机号：MOBILE_PHONE，地址：ADDRESS，电子邮件：EMAIL，银行卡：BANK_CARD，公司开户银行联号：CNAPS_CODE |     |
+| String        | writeFieldName | 序列化输出字段名称。默认当前字段名称                                                                                                                                   |     |
 
 示例：
 
@@ -261,6 +262,9 @@ int 0 或者 1 序列化成 false 和 true，boolean true 或者 false 反序列
 public class Test {
     @Sensitive(value = Sensitive.SensitiveType.MOBILE_PHONE)
     private String mobile;
+
+   @Sensitive(value = Sensitive.SensitiveType.MOBILE_PHONE, writeFieldName="phone")
+    private String mobile2;
 }
 ```
 
@@ -268,20 +272,28 @@ public class Test {
 
 ```json
 {
-  "mobile": "13******41"
+  "mobile": "13******41",
+  "phone": "13******41"
 }
 ```
 
-#### `@ToUserJsonString` 用户主键转用户枚举对象
+#### `@ToUser` 用户主键转用户枚举对象
 
-当我们只有用户主键却想要获取用户的名称可以使用这个注解，它会将你的字段转成包含名称和主键的 json 字符串。想用这个注解你必须要实现`BaseParseUserService`接口，否则你会得到一个`NullPointerException`，我们建议你在这个接口返回的时候加上缓存，提高运行效率。我们在内存中做了缓存击穿，保证了两分钟内不存在的用户不会调用接口，但是有可能会造成两分钟的用户信息空洞。针对这个情况请设置：seedltd.json.cache.enabled=false
+当我们只有用户主键却想要获取用户的名称可以使用这个注解，它会返回你需要的用户名称。想用这个注解你必须要实现`BaseParseUserService`接口，否则你会得到一个`NullPointerException`，我们建议你在这个接口返回的时候加上缓存，提高运行效率。我们在内存中做了缓存击穿，保证了两分钟内不存在的用户不会调用接口，但是有可能会造成两分钟的用户信息空洞。针对这个情况请设置：`seedltd.json.cache.enabled=false`
+
+| 类型     | 名称    | 说明                         | 版本  |
+| ------ | ----- | -------------------------- | --- |
+| String | value | 序列化输出字段名称。默认当前字段名称加上`Name` |     |
 
 示例：
 
 ```java
 public class Test {
-    @ToUserJsonString
+    @ToUser
     private Long updateUserId;
+
+    @ToUser("createBy")
+    private Long createUserId;
 }
 ```
 
@@ -289,10 +301,10 @@ public class Test {
 
 ```json
 {
-  "updateUserId": {
-    "value": "管理员",
-    "desc": "100000"
-  }
+  "updateUserId": "100000",
+  "updateUserIdName": "管理员",
+  "createUserId": "100000",
+  "createBy": "管理员"
 }
 ```
 
@@ -300,14 +312,14 @@ public class Test {
 
 将 json 指定的字段值转成 java 实体字段的值，例如：把`{value: 1, desc: '启用'}`中的 value 值赋值给`private Long field`，你可以在这个实体字段中加上`@JsonStrToFiled`。最终`filed`的值将变成`1`
 
-| 类型     | 名称        | 说明                                                                                                                                                    | 版本 |
-| -------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- |
-| String   | sourceFiled | 指定 json 中转换字段名称，默认`value`                                                                                                                   |      |
-| boolean  | valid       | 是否校验枚举是否有效。默认：true                                                                                                                        |      |
-| String   | type        | 字典类型                                                                                                                                                |      |
-| String   | localData   | 本地数据集合。value:desc 格式，多个使用英文逗号隔开。当{@link #type()}是空的时候，会使用该属性的值做解析，value 表示当前字段的值。例如：`1:启用,0:禁用` |      |
-| String[] | attached    | 附加值，原路返回的值。                                                                                                                                  |      |
-| boolean  | thrError    | `valid`为`true`的时候校验失败是否抛出异常，true 抛出异常，false 置空                                                                                    |      |
+| 类型       | 名称          | 说明                                                                                              | 版本  |
+| -------- | ----------- | ----------------------------------------------------------------------------------------------- | --- |
+| String   | sourceFiled | 指定 json 中转换字段名称，默认`value`                                                                       |     |
+| boolean  | valid       | 是否校验枚举是否有效。默认：true                                                                              |     |
+| String   | type        | 字典类型                                                                                            |     |
+| String   | localData   | 本地数据集合。value:desc 格式，多个使用英文逗号隔开。当{@link #type()}是空的时候，会使用该属性的值做解析，value 表示当前字段的值。例如：`1:启用,0:禁用` |     |
+| String[] | attached    | 附加值，原路返回的值。                                                                                     |     |
+| boolean  | thrError    | `valid`为`true`的时候校验失败是否抛出异常，true 抛出异常，false 置空                                                  |     |
 
 请求参数：
 
@@ -329,7 +341,7 @@ public class Test {
 
     @Override
     public String toString() {
-    	return "Test{" +
+        return "Test{" +
             "updateUserId=" + updateUserId +
             '}';
 }
@@ -364,7 +376,6 @@ public enum EnableStatus implements BaseTagEnum<Integer> {
     private final String desc;
     private final String tagType;
 }
-
 ```
 
 你将得到这样的字符串
@@ -383,7 +394,7 @@ public enum EnableStatus implements BaseTagEnum<Integer> {
    "enableStatus": {
         "value": 1,
         "desc": "启用",
-       	"tagType": "success"
+        "tagType": "success"
     }
 }
 ```
@@ -410,11 +421,11 @@ public enum EnableStatus implements BaseTagEnum<Integer> {
 ### 拓展方法
 
 - updateAllById
-
+  
   根据主键更新全部字段，排除`createTime`和`createBy`
 
 - checkExists
-
+  
   检查数据是否存在
 
 ### 类型处理器
@@ -508,7 +519,6 @@ public boolean update(SysDictTypeForm form) {
 示例：
 
 ```java
-
 /**
  * 字典类型列表搜索条件
  *
@@ -565,58 +575,58 @@ public SysDictTypeVO findById(Long id) {
 
 ##### @BetweenEnd `between 结束条件`
 
-|    属性    |  类型  | 必须指定 | 默认值 | 描述                                                  |
-| :--------: | :----: | :------: | :----: | ----------------------------------------------------- |
-| startFiled | String |    是    |        | between 开始字段名称，找不到会抛出异常                |
-|   value    | String |    否    |   “”   | 指定数据库字段名称， 默认会将字段名称驼峰转下划线拼接 |
+| 属性         | 类型     | 必须指定 | 默认值 | 描述                          |
+|:----------:|:------:|:----:|:---:| --------------------------- |
+| startFiled | String | 是    |     | between 开始字段名称，找不到会抛出异常     |
+| value      | String | 否    | “”  | 指定数据库字段名称， 默认会将字段名称驼峰转下划线拼接 |
 
 ##### @BetweenStart `between开始条件`。它可以和`@BetweenEnd` 配合出现，理论上两者可以只出现一个，只需要设置好对应的`field`字段即可
 
-|   属性   |  类型  | 必须指定 | 默认值 | 描述                                                  |
-| :------: | :----: | :------: | :----: | ----------------------------------------------------- |
-| endField | String |    是    |        | between 结束字段名称，找不到会抛出异常                |
-|  value   | String |    否    |   “”   | 指定数据库字段名称， 默认会将字段名称驼峰转下划线拼接 |
+| 属性       | 类型     | 必须指定 | 默认值 | 描述                          |
+|:--------:|:------:|:----:|:---:| --------------------------- |
+| endField | String | 是    |     | between 结束字段名称，找不到会抛出异常     |
+| value    | String | 否    | “”  | 指定数据库字段名称， 默认会将字段名称驼峰转下划线拼接 |
 
 ##### @EndTime `结束时间，默认加上value 23:59:59，仅在java日期来下有效`
 
-|    属性     |  类型  | 必须指定 |  默认值  | 描述                                                  |
-| :---------: | :----: | :------: | :------: | ----------------------------------------------------- |
-| suffixValue | String |    否    | 23:59:59 | 年月日后面拼接的时分秒，                              |
-|    value    | String |    否    |    “”    | 指定数据库字段名称， 默认会将字段名称驼峰转下划线拼接 |
+| 属性          | 类型     | 必须指定 | 默认值      | 描述                          |
+|:-----------:|:------:|:----:|:--------:| --------------------------- |
+| suffixValue | String | 否    | 23:59:59 | 年月日后面拼接的时分秒，                |
+| value       | String | 否    | “”       | 指定数据库字段名称， 默认会将字段名称驼峰转下划线拼接 |
 
 ##### @StartTime `开始时间，默认加上value 00:00:01，仅在java日期来下有效`
 
-|    属性     |  类型  | 必须指定 |  默认值  | 描述                                                  |
-| :---------: | :----: | :------: | :------: | ----------------------------------------------------- |
-| suffixValue | String |    否    | 00:00:01 | 年月日后面拼接的时分秒，                              |
-|    value    | String |    否    |    “”    | 指定数据库字段名称， 默认会将字段名称驼峰转下划线拼接 |
+| 属性          | 类型     | 必须指定 | 默认值      | 描述                          |
+|:-----------:|:------:|:----:|:--------:| --------------------------- |
+| suffixValue | String | 否    | 00:00:01 | 年月日后面拼接的时分秒，                |
+| value       | String | 否    | “”       | 指定数据库字段名称， 默认会将字段名称驼峰转下划线拼接 |
 
 ##### @GroupBy `分组`
 
-| 属性 | 类型  | 必须指定 |     默认值      | 描述           |
-| :--: | :---: | :------: | :-------------: | -------------- |
-| sort | short |    否    | Short.MAX_VALUE | 数字越小越靠前 |
+| 属性   | 类型    | 必须指定 | 默认值             | 描述      |
+|:----:|:-----:|:----:|:---------------:| ------- |
+| sort | short | 否    | Short.MAX_VALUE | 数字越小越靠前 |
 
 ##### @OrderBy`排序`，这个注解是在`com.baomidou.mybatisplus.annotation`包下。如果设置了`BaseSearchForm#sortList`那个它的优先级最高
 
-|  属性  |  类型   | 必须指定 |     默认值      | 描述           |
-| :----: | :-----: | :------: | :-------------: | -------------- |
-|  sort  |  short  |    否    | Short.MAX_VALUE | 数字越小越靠前 |
-| isDesc | boolean |    否    |      true       | 是否倒序查询   |
+| 属性     | 类型      | 必须指定 | 默认值             | 描述      |
+|:------:|:-------:|:----:|:---------------:| ------- |
+| sort   | short   | 否    | Short.MAX_VALUE | 数字越小越靠前 |
+| isDesc | boolean | 否    | true            | 是否倒序查询  |
 
 ##### @Like `模糊查询`
 
-|   属性   |   类型   | 必须指定 | 默认值 | 描述                                                  |
-| :------: | :------: | :------: | :----: | ----------------------------------------------------- |
-| likeType | LikeType |    是    |        | 模糊类型。`full, left, right`                         |
-|  value   |  String  |    否    |   “”   | 指定数据库字段名称， 默认会将字段名称驼峰转下划线拼接 |
+| 属性       | 类型       | 必须指定 | 默认值 | 描述                          |
+|:--------:|:--------:|:----:|:---:| --------------------------- |
+| likeType | LikeType | 是    |     | 模糊类型。`full, left, right`    |
+| value    | String   | 否    | “”  | 指定数据库字段名称， 默认会将字段名称驼峰转下划线拼接 |
 
 ##### @SqlSegment `条件构`
 
-|    属性    |  类型   | 必须指定 |   默认值   | 描述                                                                                                           |
-| :--------: | :-----: | :------: | :--------: | -------------------------------------------------------------------------------------------------------------- |
-| sqlKeyword | Segment |    是    | Segment.EQ | 条件类型。`NOT, IN, NOT_IN,EQ,NE: <>, GT: >, GE: >= , LT: <, LE: <=, IS_NULL, IS_NOT_NULL, EXISTS, NOT_EXISTS` |
-|   value    | String  |    否    |     “”     | 指定数据库字段名称， 默认会将字段名称驼峰转下划线拼接                                                          |
+| 属性         | 类型      | 必须指定 | 默认值        | 描述                                                                                                        |
+|:----------:|:-------:|:----:|:----------:| --------------------------------------------------------------------------------------------------------- |
+| sqlKeyword | Segment | 是    | Segment.EQ | 条件类型。`NOT, IN, NOT_IN,EQ,NE: <>, GT: >, GE: >= , LT: <, LE: <=, IS_NULL, IS_NOT_NULL, EXISTS, NOT_EXISTS` |
+| value      | String  | 否    | “”         | 指定数据库字段名称， 默认会将字段名称驼峰转下划线拼接                                                                               |
 
 ### UUID
 
