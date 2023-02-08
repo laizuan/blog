@@ -14,15 +14,16 @@
 
 不推荐安装 AI 代码提示相关插件，因为它可能需要上传代码到云端。尽管有些不需要，但还是不推荐使用，这不是一个好的习惯。
 
-1. `lombok`
+1. `Lombok`
 2. `GsonFormat`一键根据 json 文本生成 java 类
 3. `Maven Helper`一键查看 maven 依赖，查看冲突的依赖，一键进行 exclude 依赖
 4. `GenerateAllSetter`一键调用一个对象的所有 set 方法并且赋予默认值，在对象字段多的时候非常方便 强制
 5. `Translation`翻译
-6. `CodeGlance`代码右侧小地图
+6. `CodeGlance Pro`代码右侧小地图
 7. `Key-Promoter-X`快捷键提示，熟悉之后可以关闭
-8. `mybatisx`Mapper 和 xml 快速跳转插件
+8. `MybatisX`Mapper 和 xml 快速跳转插件
 9. `RestfulTool`通过接口地址快速定位接口所在的方法位置
+10. `Save Actions`在保存的时候做一些事情，比如优化导包等
 
 ## 配置相关
 

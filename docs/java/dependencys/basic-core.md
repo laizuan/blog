@@ -160,11 +160,12 @@ System.out.println("得到Sign：" + sign);
 
 动态数据转换成枚举 json 字符串，需要转换的值类型尽量避免使用基本数据类型，防止 null 的时候序列化异常。注意：需要实现`DynamicEnumService`接口，该接口接收 3 个参数：
 
-| 类型         | 名称        | 说明                                                                                                                            | 默认值 | 版本  |
-| ---------- | --------- | ----------------------------------------------------------------------------------------------------------------------------- | --- | --- |
-| String     | type      | DynamicEnum.type 类型，可以是数据字典类型                                                                                                 |     |     |
-| `String[]` | attached  | DynamicEnum.attached, 附加值，原路返回的值                                                                                              |     |     |
-| String     | localData | 本地数据集合。value:desc 格式，多个使用英文逗号隔开。当{@link #type()}是空的时候，会使用该属性的值做解析，value 表示当前字段的值。示例：`1:启用,0:禁用`。**注意顺序，必须是 value 在前 desc 在后** |     |     |
+| 类型       | 名称           | 说明                                                         | 默认值 | 版本 |
+| ---------- | -------------- | ------------------------------------------------------------ | ------ | ---- |
+| String     | type           | DynamicEnum.type 类型，可以是数据字典类型                    |        |      |
+| `String[]` | attached       | DynamicEnum.attached, 附加值，原路返回的值                   |        |      |
+| String     | localData      | 本地数据集合。value:desc 格式，多个使用英文逗号隔开。当{@link #type()}是空的时候，会使用该属性的值做解析，value 表示当前字段的值。示例：`1:启用,0:禁用`。**注意顺序，必须是 value 在前 desc 在后** |        |      |
+| String     | writeFieldName | 系列化字段名称，默认字段名称后面加上Enum                     |        |      |
 
 示例：
 
@@ -179,7 +180,8 @@ public class Test {
 
 ```json
 {
-  "enableStatus": {
+  "enableStatus": 1,
+  "enableStatusEnum": {
     "value": 1,
     "desc": "启用"
   }
@@ -290,10 +292,10 @@ public class Test {
 ```java
 public class Test {
     @ToUser
-    private Long updateUserId;
+    private Long updateUserBy;
 
     @ToUser("createBy")
-    private Long createUserId;
+    private Long createUserBy;
 }
 ```
 
@@ -301,9 +303,9 @@ public class Test {
 
 ```json
 {
-  "updateUserId": "100000",
-  "updateUserIdName": "管理员",
-  "createUserId": "100000",
+  "updateUserBy": "100000",
+  "updateUserByName": "管理员",
+  "createUserBy": "100000",
   "createBy": "管理员"
 }
 ```
@@ -325,9 +327,9 @@ public class Test {
 
 ```json
 {
-  "updateUserId": {
-    "value": "管理员",
-    "desc": "100000"
+  "enabled": {
+    "value": "1",
+    "desc": "启用"
   }
 }
 ```
@@ -337,16 +339,16 @@ public class Test {
 ```java
 public class Test {
     @JsonStrToFiled
-    private Long updateUserId;
+    private Long enabled;
 
     @Override
     public String toString() {
         return "Test{" +
-            "updateUserId=" + updateUserId +
+            "enabled=" + enabled +
             '}';
 }
 // 输出
-Test{updateUserId=100000}
+Test{enabled=1}
 ```
 
 #### 静态枚举

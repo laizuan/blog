@@ -11,18 +11,20 @@
  * @param options 可选项配置
  */
 export declare const userOpForm: <T>(idKey: string | undefined, options: {
-    getUrl?: string | undefined;
-    addUrl?: string | undefined;
-    updateUrl?: string | undefined;
+    formRef?: Ref<FormExpose> | undefined;
+    getUrl?: string | Ref<string> | undefined;
+    addUrl?: string | Ref<string> | undefined;
+    updateUrl?: string | Ref<string> | undefined;
     updateBeforCb?: ((isValid: boolean, invalidFields: Array<StringObject>) => boolean) | undefined;
     addBeforCb?: ((isValid: boolean, invalidFields: Array<StringObject>) => boolean) | undefined;
     updateAfterCb?: ((res: unknown, done: () => void) => void) | undefined;
     addAfterCb?: ((res: unknown, done: () => void) => void) | undefined;
+    validateConfirmWarningCb?: ((errors: ValidateError[]) => void) | undefined;
 }) => {
     form: Ref<T>;
     submit: (done: () => void, isValid: boolean, invalidFields: Array<StringObject>) => void;
     loadForm: (parmas: HttpRequestConfig) => Promise<UnwrapRef<T>>;
-};
+}
 ```
 
 ### 参数
@@ -34,15 +36,37 @@ export declare const userOpForm: <T>(idKey: string | undefined, options: {
 | options | 配置项                     | Object | -       | -       |
 
 #### Options
-| Name          | Description                                                  | Type                                                         | Options | Default |
-| :------------ | :----------------------------------------------------------- | :----------------------------------------------------------- | :------ | :------ |
-| getUrl        | 获取数据详情后端接口地址                                     | string                                                       | -       | -       |
-| addUrl        | 新增数据后端接口地址                                         | string                                                       | -       | -       |
-| updateUrl     | 修改数据后端接口地址                                         | string                                                       | -       | -       |
-| addBeforCb    | 新增数据前置回调，如果返回`false`则不再继续新增。`isValid:表单数据是否校验通过，invalidFields:表单校验失败的字段集合` | `(isValid: boolean, invalidFields: Array<StringObject>) => boolean)` | -       | -       |
-| updateBeforCb | 修改数据前置回调，如果返回`false`则不再继续修改。`isValid:表单数据是否校验通过，invalidFields:表单校验失败的字段集合` | `(isValid: boolean, invalidFields: Array<StringObject>) => boolean)` | -       | -       |
-| addAfterCb    | 新增数据成功后的回调。`res：后端返回结果，done：关闭loading函数` | (res: unknown, done: () => void) => void                     | -       | -       |
-| updateAfterCb | 修改数据成功后的回调。`res：后端返回结果，done：关闭loading函数` | (res: unknown, done: () => void) => void                     | -       | -       |
+| Name                     | Description                                                  | Type                                                         | Options | Default |
+| :----------------------- | :----------------------------------------------------------- | :----------------------------------------------------------- | :------ | :------ |
+| getUrl                   | 获取数据详情后端接口地址                                     | string                                                       | -       | -       |
+| addUrl                   | 新增数据后端接口地址                                         | string                                                       | -       | -       |
+| updateUrl                | 修改数据后端接口地址                                         | string                                                       | -       | -       |
+| addBeforCb               | 新增数据前置回调，如果返回`false`则不再继续新增。`isValid:表单数据是否校验通过，invalidFields:表单校验失败的字段集合` | `(isValid: boolean, invalidFields: Array<StringObject>) => boolean)` | -       | -       |
+| updateBeforCb            | 修改数据前置回调，如果返回`false`则不再继续修改。`isValid:表单数据是否校验通过，invalidFields:表单校验失败的字段集合` | `(isValid: boolean, invalidFields: Array<StringObject>) => boolean)` | -       | -       |
+| addAfterCb               | 新增数据成功后的回调。`res：后端返回结果，done：关闭loading函数` | (res: unknown, done: () => void) => void                     | -       | -       |
+| updateAfterCb            | 修改数据成功后的回调。`res：后端返回结果，done：关闭loading函数` | (res: unknown, done: () => void) => void                     | -       | -       |
+| formRef                  | form表单ref对象                                              | `Ref<FormExpose>`                                            | -       | -       |
+| validateConfirmWarningCb | 当服务端返回400状态并且返回值包含errors结构的时候。首先会判断是警告异常还是危险异常，警告异常用户点确认后会回调这个函数。如果是危险异常则不会有回调。返回示例如下： | `(errors: ValidateError[]) => void`                          | -       | -       |
+
+```json
+{
+  "status": "400",
+  "msg": "无效请求",
+  "errors": {
+    "success": false,
+    "danger": true, // 是danger还是warning异常。只要errors的type有一个是danger该值为true
+    "errors": [
+      {
+        "field": "roleIdList", // 表单字段名称，如果是集合roleIdList[0].name，如果是对象roleIdList.name
+        "message": "请选择所在部门", // 错误内容
+        "type": "danger" //取值：danger或者warning。warning表示不是致命的错误，用户确认错误后可以继续操作。danger则必须修复错误后才能后续操作
+      }
+    ]
+  }
+}
+```
+
+
 
 ### 返回值
 

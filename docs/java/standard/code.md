@@ -1,6 +1,46 @@
 <script setup>
 import Preview from '../../components/Preview.vue'
 </script>
+## 项目结构
+
+请遵循一下项目结构规划，并注意文件名明门要求。如果项目中有划分小模块则应该在`dto、service、vo、command、mapper、controller`中加多一个小模块名称规划区分
+
+ 以`用户中心`为例：
+
+```bash
+
+upm
+├── upm-facade # 业务对象层，主要存放除数据库对象之外的其它业务对象(DTO、VO等)以及业务接口定义
+│   ├── constants # 系统常量
+│   ├── model # 业务传输对象
+│   │   ├── command # 执行业务命令，比如新增数据、删除数据等。以Cmd结尾。如果有需要还可以进一步区分，比如XxxxAddCmd、XxxxUpdateCmd。
+│   │   │   ├── query # 查询业务数据对象，以Qry结尾。如果有需要还可以进一步区分，比如XxxxGetQry、XxxxListQry
+│   │   └── dto # 网络传输对象，http请求、服务之间数据交互。已DTO结尾
+│   │   ├── enums # 枚举类型，以Enum结尾
+│   │   ├── messaging # 消息队列传输对象。以MQ结尾
+│   │   └── vo # 试图对象，以VO结尾
+│   ├── service # 业务接口，请注意业务接口入参出参都不能包含数据库对象
+├── upm-service # 具体业务实现层
+│   ├── consumer # 服务之间交互接口文件，比如：openfeign的接口文件、MQ消费者
+│   │   ├── dto # 接收数据对象定义，以DTO结尾。不要把系统交互结果对象定义在 facade 模块中
+│   ├── converter # 对象之间转换器
+│   ├── core # 核心文件
+│   │   ├── utils # 工具类
+│   ├── entity # 数据库实体对象
+│   ├── event # Spring 事件对象。以Event结尾。
+│   ├── mapper # Mybatis Mapper 接口。以Mapper结尾
+│   │   ├── xml # Mybatis xml 文件存放。文件名称必须是Mybatis Mapper 接口文件名
+│   ├── scheduler # 定时任务相关
+│   ├── service # 对 facade 模块定义的接口实现
+│   │   ├── impl # 业务实现
+├── upm-web # 接口服务层
+│   ├── controller # 控制器
+│   │   ├── provider # 内部服务接口提供者
+│   ├── core # 核心文件
+│   │   ├── conf # 项目配置
+```
+
+
 
 ## 阿里巴巴 Java 开发手册
 
@@ -24,5 +64,66 @@ import Preview from '../../components/Preview.vue'
 - 展示对象：xxxVO，xxx 一般为网页名称，一般作用于返回调用端数据。
 - 前端表单数据提交对象：xxxForm，xxx 一般为业务领域相关的名称。用户前端用户表单提交数据接收
 - 前端列表查询条件对象：xxxSearchForm，一般用户列表查询用户填写的查询条件对象
-- POJO 是 DO/DTO/BO/VO 的统称，禁止命名成 xxxPOJO。
+- POJO 是 DO/DTO/BO/VO 的统称，**禁止命名成 xxxPOJO**。
 
+## 使用Spring Event对 ***聚合*** 业务解耦
+
+在一个项目中进仓会有业务耦合的情况。拿常见的下单业务类解释，在下单业务逻辑中往往会包含`创建订单`、`扣减库存`等业务操作。通常在`OrderService`中会注入`StoreService`，然后调用库存方法来处理库存相关业务。这种情况就是业务耦合，我们在写代码的时候尽量避免这种情况的发送。可以通过`Spring Event`来对业务的解耦。
+
+解耦改造伪代码示例：
+
+```java
+// 订单对象
+public class Order {
+    
+}
+
+public class DeductOrderStoreEvent extends ApplicationEvent {
+   private final Order order;
+   public DeductOrderStoreEvent(Object source, Order order) {
+       super(source);
+       this.order = order;
+    }
+}
+
+// 订单业务层
+public class OrderServiceImpl {
+        @Autowired
+        private OrderMapper orderMapper;
+    
+        @Autowired
+        private LogMapper logMapper;
+    
+        @Autowired
+        private ApplicationEventPublisher applicationEventPublisher;
+    
+    public void createOrder(Order order) {
+        // 创建订单
+        orderMapper.save(order);
+        
+        // 保存操作日志
+        logMapper.save(...);
+        
+        // 发布扣减库存事件
+        applicationEventPublisher.publishEvent(new DeductOrderStoreEvent(this, order));
+    }
+}
+
+// 库存业务层
+public class StoreServiceImpl implements ApplicationListener<DeductOrderStoreEvent> {
+    
+    public void deduct(Order order) {
+        // ...
+    }
+    
+    
+	@Override
+    public void onApplicationEvent(DeductOrderStoreEvent event) {
+        this.deduct(event.getOrder());
+    }
+}
+```
+
+通过改造后，以后想要拆分库存和订单模块就会变得简单的多。当然上面的示例中还是有偶尔，那个就Order对象。其实我们可以把`Order`对象转换成`DeductOrderStoreEvent`对象，就可以实现完美解耦
+
+在上面的示例中，举例了一个保存业务的操作。这里没有做解耦是因为他们是并存的关系。就像是`UML`中的`组合`和`聚合`的关系。举个更具体的例子，商品和商品属性，不应该把它拆分独立出来，他们是`组合关系`。我们讲的业务解耦是`聚合关系`。这一点需要区分开来
