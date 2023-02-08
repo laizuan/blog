@@ -127,3 +127,73 @@ public class StoreServiceImpl implements ApplicationListener<DeductOrderStoreEve
 通过改造后，以后想要拆分库存和订单模块就会变得简单的多。当然上面的示例中还是有偶尔，那个就Order对象。其实我们可以把`Order`对象转换成`DeductOrderStoreEvent`对象，就可以实现完美解耦
 
 在上面的示例中，举例了一个保存业务的操作。这里没有做解耦是因为他们是并存的关系。就像是`UML`中的`组合`和`聚合`的关系。举个更具体的例子，商品和商品属性，不应该把它拆分独立出来，他们是`组合关系`。我们讲的业务解耦是`聚合关系`。这一点需要区分开来
+
+## 对@Transactional保持敬畏
+
+很多时候我们写代码的时候设计到数据库操作直接在业务层方法上加上`@Transactional`然后一顿操作。很多时候这么做也没什么问题，但是如果这个方法比较耗时，这时候就危险了。
+
+反例：
+
+```java
+public class Order {
+    @Autowired
+    private RestTemplate restTemplate;
+    
+    @Transactional(rollbackFor = Exception.class)
+    public void createOrder(Order order) {
+       	// 1：检查订单是否合法有效
+        checkOrder(order);
+        
+        //:2：调用库存服务是否有剩余库存
+        restTemplate.getForObject(url, order);
+        
+        //3：保存订单
+        save(order);
+        
+        //4：记录日志
+        save(log)
+    }
+}
+```
+
+在上面的例子中，第一步有复杂的校验，第二步通过`Http`调用了外部系统。这两步可能会导致这个事务太大，一个大事务轻则浪费数据库连接资源，重则拖垮整个服务。我们在写代码的时候需要格外注意**在开启事务之后做这种复杂计算或者调用外部资源操作**。如果有耗时操作最好的办法是使用编程式事务`TransactionTemplate`
+
+正例：
+
+```java
+public class OrderService {
+    @Autowired
+    private RestTemplate restTemplate;
+    
+    @Autowired
+    private TransactionTemplate transactionTemplate;
+ 
+    public void createOrder(Order order) {
+       	// 1：检查订单是否合法有效
+        checkOrder(order);
+        
+        //:2：调用库存服务是否有剩余库存
+        restTemplate.getForObject(url, order);
+        
+        transactionTemplate.executeWithoutResult(t -> {
+             //3：保存订单
+            save(order);
+
+            //4：记录日志
+            save(log)
+                
+            // 如果需要手动回滚事务
+            t.setRollbackOnly();
+        });
+    }
+}
+```
+
+### 事务的其它注意事项
+
+- 如果我们只是单纯的查询一条数据，或者对`幻读`要求不高的查询完全可以不开启事务。如果要开启务必将事务设置成`只读`也就是`@Transactional(readOnly = true)`
+
+- 对于`增删改`操作必须开启事务，并且需要设置回滚异常类型为`Exception`也就是`@Transactional(rollbackFor = Exception.class)`
+- 不要去设置`@Transactional`中的`isolation`属性。把他交给数据库，除非你知道`RR`和`RC`这两种隔离级别的原理已经应用场景。
+- 谨慎使用`@Transactional`中的`propagation`属性。默认值已经能满足我们大部分需求，如果使用`NESTED`/`REQUIRES_NEW`这两种事务传播类型，请先理解他们的原理已经副作用
+
