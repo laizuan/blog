@@ -279,7 +279,7 @@ public class Test {
 }
 ```
 
-#### `@ToUser` 用户主键转用户枚举对象
+#### `@ToUserName` 用户主键转用户枚举对象
 
 当我们只有用户主键却想要获取用户的名称可以使用这个注解，它会返回你需要的用户名称。想用这个注解你必须要实现`BaseParseUserService`接口，否则你会得到一个`NullPointerException`，我们建议你在这个接口返回的时候加上缓存，提高运行效率。我们在内存中做了缓存击穿，保证了两分钟内不存在的用户不会调用接口，但是有可能会造成两分钟的用户信息空洞。针对这个情况请设置：`seedltd.json.cache.enabled=false`
 
@@ -291,10 +291,10 @@ public class Test {
 
 ```java
 public class Test {
-    @ToUser
+    @ToUserName
     private Long updateUserBy;
 
-    @ToUser("createBy")
+    @ToUserName("createBy")
     private Long createUserBy;
 }
 ```
@@ -310,18 +310,18 @@ public class Test {
 }
 ```
 
-#### `@JsonStrToFiled` json 字符串转用户字段
+#### `@JsonStrToField` json 字符串转用户字段
 
-将 json 指定的字段值转成 java 实体字段的值，例如：把`{value: 1, desc: '启用'}`中的 value 值赋值给`private Long field`，你可以在这个实体字段中加上`@JsonStrToFiled`。最终`filed`的值将变成`1`
+将 json 指定的字段值转成 java 实体字段的值，例如：把`{value: 1, desc: '启用'}`中的 value 值赋值给`private Long field`，你可以在这个实体字段中加上`@JsonStrToField`。最终`filed`的值将变成`1`
 
-| 类型       | 名称          | 说明                                                                                              | 版本  |
-| -------- | ----------- | ----------------------------------------------------------------------------------------------- | --- |
-| String   | sourceFiled | 指定 json 中转换字段名称，默认`value`                                                                       |     |
-| boolean  | valid       | 是否校验枚举是否有效。默认：true                                                                              |     |
-| String   | type        | 字典类型                                                                                            |     |
-| String   | localData   | 本地数据集合。value:desc 格式，多个使用英文逗号隔开。当{@link #type()}是空的时候，会使用该属性的值做解析，value 表示当前字段的值。例如：`1:启用,0:禁用` |     |
-| String[] | attached    | 附加值，原路返回的值。                                                                                     |     |
-| boolean  | thrError    | `valid`为`true`的时候校验失败是否抛出异常，true 抛出异常，false 置空                                                  |     |
+| 类型     | 名称        | 说明                                                         | 版本 |
+| -------- | ----------- | ------------------------------------------------------------ | ---- |
+| String   | sourceField | 指定 json 中转换字段名称，默认`value`                        |      |
+| boolean  | valid       | 是否校验枚举是否有效。默认：true                             |      |
+| String   | type        | 字典类型                                                     |      |
+| String   | localData   | 本地数据集合。value:desc 格式，多个使用英文逗号隔开。当{@link #type()}是空的时候，会使用该属性的值做解析，value 表示当前字段的值。例如：`1:启用,0:禁用` |      |
+| String[] | attached    | 附加值，原路返回的值。                                       |      |
+| boolean  | thrError    | `valid`为`true`的时候校验失败是否抛出异常，true 抛出异常，false 置空 |      |
 
 请求参数：
 
@@ -400,6 +400,55 @@ public enum EnableStatus implements BaseTagEnum<Integer> {
     }
 }
 ```
+
+## 参数校验
+
+入参校验全部通过注解来处理。伪代码如下：
+
+```java
+public class Order{
+    
+    @NotNull(message = "订单主键不能为空", group = {Save.class}) // group视情况而定
+    private Long id;
+}
+
+@Validated
+@RestController
+@AllArgsConstructor
+@RequestMapping
+public class OrderController {
+    
+    @PostMapping
+    public void createOrder(@RequestBody @Validated({Save.calss}) OrderSaveCmd cmd) {
+        
+    }
+    
+        
+    @GetMapping
+    public void getOrder(@RequestBody @Validated @NotNull( "订单主键不能为空") @Min(value = 100, message = "ID 不能小于100") Long id) {
+        
+    }
+}
+```
+
+### `@DictCheck` 校验参数值在字典中是否有效
+
+支持的数据类型为：`CharSequence`、`Short`、`Byte`、`Integer`。需要实现`DynamicEnumService`接口
+
+| 类型       | 名称    | 说明                         | 版本 |
+| ---------- | ------- | ---------------------------- | ---- |
+| String     | message | 错误消息                     |      |
+| String     | type    | 字典类型                     |      |
+| `String[]` | values  | 自定义值。和type只能必选其一 |      |
+
+### `@UserValid` 校验用户是否有效
+
+需要实现`UserValidService`接口
+
+| 类型   | 名称    | 说明                                                         | 版本 |
+| ------ | ------- | ------------------------------------------------------------ | ---- |
+| String | message | 错误消息                                                     |      |
+| String | type    | 用户状态。ENABLED:有效的，DISABLED:禁用，ALL:不限制。默认：ENABLED |      |
 
 ## Mybatis
 

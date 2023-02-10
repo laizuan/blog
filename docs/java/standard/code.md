@@ -14,7 +14,7 @@ upm
 │   ├── constants # 系统常量
 │   ├── model # 业务传输对象
 │   │   ├── command # 执行业务命令，比如新增数据、删除数据等。以Cmd结尾。如果有需要还可以进一步区分，比如XxxxAddCmd、XxxxUpdateCmd。
-│   │   │   ├── query # 查询业务数据对象，以Qry结尾。如果有需要还可以进一步区分，比如XxxxGetQry、XxxxListQry
+│   │   │   ├── query # 查询业务数据对象，以CmdQry结尾。如果有需要还可以进一步区分，比如XxxxGetCmdQry、XxxxListCmdQry
 │   │   └── dto # 网络传输对象，http请求、服务之间数据交互。已DTO结尾
 │   │   ├── enums # 枚举类型，以Enum结尾
 │   │   ├── messaging # 消息队列传输对象。以MQ结尾
@@ -126,7 +126,9 @@ public class StoreServiceImpl implements ApplicationListener<DeductOrderStoreEve
 
 通过改造后，以后想要拆分库存和订单模块就会变得简单的多。当然上面的示例中还是有偶尔，那个就Order对象。其实我们可以把`Order`对象转换成`DeductOrderStoreEvent`对象，就可以实现完美解耦
 
-在上面的示例中，举例了一个保存业务的操作。这里没有做解耦是因为他们是并存的关系。就像是`UML`中的`组合`和`聚合`的关系。举个更具体的例子，商品和商品属性，不应该把它拆分独立出来，他们是`组合关系`。我们讲的业务解耦是`聚合关系`。这一点需要区分开来
+在上面的示例中，举例了一个保存业务的操作。这里没有做解耦是因为他们是并存的关系（`这种关系只能是依赖日志的Mapper层，不能是日志的业务层`）。就像是`UML`中的`组合`和`聚合`的关系。举个更具体的例子，商品和商品属性，不应该把它拆分独立出来，他们是`组合关系`。我们讲的业务解耦是`聚合关系`。这一点需要区分开来
+
+✍️✍️✍️ **好的代码`Service`层只会依赖`Mapper`层。不同业务之间相互依赖都应该引入对方的`Mapper`，否则都应该使用上述方案。**
 
 ## 对@Transactional保持敬畏
 
@@ -196,4 +198,3 @@ public class OrderService {
 - 对于`增删改`操作必须开启事务，并且需要设置回滚异常类型为`Exception`也就是`@Transactional(rollbackFor = Exception.class)`
 - 不要去设置`@Transactional`中的`isolation`属性。把他交给数据库，除非你知道`RR`和`RC`这两种隔离级别的原理已经应用场景。
 - 谨慎使用`@Transactional`中的`propagation`属性。默认值已经能满足我们大部分需求，如果使用`NESTED`/`REQUIRES_NEW`这两种事务传播类型，请先理解他们的原理已经副作用
-
