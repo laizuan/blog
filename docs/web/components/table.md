@@ -372,6 +372,7 @@ meta:
 | pagination | pagination 的配置，同 el-pagination | object | - | 从全局配置中获取 |
 | show-overflow-tooltip | 当内容过长被隐藏时显示 tooltip | boolean | - | true |
 | highlight-current-row | 是否要高亮当前行 | boolean | - | true |
+| contextmenu | 是否通过右键菜单显示操作按钮 | boolean | - | false |
 
 **支持 `element-plus` [表格属性](https://element-plus.gitee.io/zh-CN/component/table.html#table-%E5%B1%9E%E6%80%A7)**
 
@@ -421,7 +422,7 @@ meta:
 | current-change | currentPage 改变时会触发 | 当前页 |
 | prev-click | 用户点击上一页按钮改变当前页后触发 | 当前页 |
 | next-click | 用户点击下一页按钮改变当前页后触发 | 当前页 |
-| save | 用户点击保存自定义列的时候触发，其中 `done` 函数可以关闭 `loading` 状态和弹窗，如果传入 `false` 只关闭 `loading`，不关闭弹窗。拿到 `columns` 属性之后你需要重置旧的属性值以达到改变列的状态 | `function(columns, done)` |
+| column-change | 用户点击保存自定义列的时候触发，其中 `done` 函数可以关闭 `loading` 状态和弹窗，如果传入 `false` 只关闭 `loading`，不关闭弹窗。拿到 `columns` 属性之后你需要重置旧的属性值以达到改变列的状态 | `function(columns, done)` |
 
 **[el-table 事件](https://element-plus.gitee.io/zh-CN/component/table.html#table-%E4%BA%8B%E4%BB%B6)**
 
