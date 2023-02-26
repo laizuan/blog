@@ -31,8 +31,7 @@ git commit -m 'feat(home): add home page'
 git commit -m 'feat: add home page'
 ```
 
-
-## Git 辅助工具
+## Git 代码提交辅助工具
 
 可以选择性安装，但项目提交**必须按照 Git 提交规范执行**
 
@@ -49,7 +48,43 @@ git czg -h
 ```
 
 - 使用
+
   以前提交代码的时候使用`git commit -m ""`安装了 Git 辅助工具之后换成`git czg`然后根据提示填写
+
+  前端可以使用命令提交
+
+```sh
+pnpm commit
+```
+
+后端提交命令
+
+```sh
+sh commit.sh
+```
+
+## 生成 Git 日志
+
+根据上述`Git`提交规范生成作为发布产品的变更日志
+
+- 全局安装`conventional-changelog-cli`
+  运行命令从 `git metadata` 生成变更日志
+
+```sh
+pnpm add -g conventional-changelog-cli
+```
+
+- 前端生成日志
+
+```sh
+pnpm changelog
+```
+
+- 后端生成日志
+
+```sh
+sh changelog.sh
+```
 
 ## 前端 Lint
 
