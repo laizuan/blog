@@ -1,11 +1,12 @@
 <script setup>
 import Preview from '../../components/Preview.vue'
 </script>
+
 ## 项目结构
 
 请遵循一下项目结构规划，并注意文件名明门要求。如果项目中有划分小模块则应该在`dto、service、vo、command、mapper、controller`中加多一个小模块名称规划区分
 
- 以`用户中心`为例：
+以`用户中心`为例：
 
 ```bash
 
@@ -21,15 +22,17 @@ upm
 │   │   └── vo # 试图对象，以VO结尾
 │   ├── service # 业务接口，请注意业务接口入参出参都不能包含数据库对象
 ├── upm-service # 具体业务实现层
-│   ├── consumer # 服务之间交互接口文件，比如：openfeign的接口文件、MQ消费者
-│   │   ├── dto # 接收数据对象定义，以DTO结尾。不要把系统交互结果对象定义在 facade 模块中
 │   ├── converter # 对象之间转换器
 │   ├── core # 核心文件
 │   │   ├── utils # 工具类
 │   ├── entity # 数据库实体对象
-│   ├── event # Spring 事件对象。以Event结尾。
 │   ├── mapper # Mybatis Mapper 接口。以Mapper结尾
 │   │   ├── xml # Mybatis xml 文件存放。文件名称必须是Mybatis Mapper 接口文件名
+│   ├── mq # 消息队列和SpringEvent相关
+│   │   ├── consumer # 服务之间交互接口文件，比如：openfeign的接口文件、MQ消费者
+│   │   |   ├── dto # 接收数据对象定义，以DTO结尾。不要把系统交互结果对象定义在 facade 模块中
+│   │   ├── event # Spring 事件对象。以Event结尾。
+│   │   ├── producer # MQ消息生产者，包括SpringEvent生产者
 │   ├── scheduler # 定时任务相关
 │   ├── service # 对 facade 模块定义的接口实现
 │   │   ├── impl # 业务实现
@@ -40,8 +43,6 @@ upm
 │   │   ├── conf # 项目配置
 ```
 
-
-
 ## 阿里巴巴 Java 开发手册
 
 遵循阿里巴巴 Java 开发手册标记为【强制】的代码风格。<Preview url="/images/java/java-alibaba-1.7.0.pdf" text="在线阅读"/>
@@ -51,6 +52,7 @@ upm
 ### 各层命名规约
 
 #### Service/DAO 层方法命名规约
+
 - 获取单个对象的方法用 get 做前缀。
 - 获取多个对象的方法用 list 做前缀，复数结尾，如：`listObjects`。
 - 获取统计值的方法用 count 做前缀。
@@ -59,14 +61,15 @@ upm
 - 修改的方法用 update 做前缀。
 
 #### 领域模型命名规约
+
 - 数据对象：xxxDO，xxx 即为数据表名。
-- 数据传输对象：xxxDTO，xxx 为业务领域相关的名称，一般作用于`RPC`调用或者是接口调用。 
+- 数据传输对象：xxxDTO，xxx 为业务领域相关的名称，一般作用于`RPC`调用或者是接口调用。
 - 展示对象：xxxVO，xxx 一般为网页名称，一般作用于返回调用端数据。
 - 前端表单数据提交对象：xxxForm，xxx 一般为业务领域相关的名称。用户前端用户表单提交数据接收
 - 前端列表查询条件对象：xxxSearchForm，一般用户列表查询用户填写的查询条件对象
 - POJO 是 DO/DTO/BO/VO 的统称，**禁止命名成 xxxPOJO**。
 
-## 使用Spring Event对 ***聚合*** 业务解耦
+## 使用 Spring Event 对 **_聚合_** 业务解耦
 
 在一个项目中进仓会有业务耦合的情况。拿常见的下单业务类解释，在下单业务逻辑中往往会包含`创建订单`、`扣减库存`等业务操作。通常在`OrderService`中会注入`StoreService`，然后调用库存方法来处理库存相关业务。这种情况就是业务耦合，我们在写代码的时候尽量避免这种情况的发送。可以通过`Spring Event`来对业务的解耦。
 
@@ -75,7 +78,7 @@ upm
 ```java
 // 订单对象
 public class Order {
-    
+
 }
 
 public class DeductOrderStoreEvent extends ApplicationEvent {
@@ -90,20 +93,20 @@ public class DeductOrderStoreEvent extends ApplicationEvent {
 public class OrderServiceImpl {
         @Autowired
         private OrderMapper orderMapper;
-    
+
         @Autowired
         private LogMapper logMapper;
-    
+
         @Autowired
         private ApplicationEventPublisher applicationEventPublisher;
-    
+
     public void createOrder(Order order) {
         // 创建订单
         orderMapper.save(order);
-        
+
         // 保存操作日志
         logMapper.save(...);
-        
+
         // 发布扣减库存事件
         applicationEventPublisher.publishEvent(new DeductOrderStoreEvent(this, order));
     }
@@ -111,12 +114,12 @@ public class OrderServiceImpl {
 
 // 库存业务层
 public class StoreServiceImpl implements ApplicationListener<DeductOrderStoreEvent> {
-    
+
     public void deduct(Order order) {
         // ...
     }
-    
-    
+
+
 	@Override
     public void onApplicationEvent(DeductOrderStoreEvent event) {
         this.deduct(event.getOrder());
@@ -124,13 +127,13 @@ public class StoreServiceImpl implements ApplicationListener<DeductOrderStoreEve
 }
 ```
 
-通过改造后，以后想要拆分库存和订单模块就会变得简单的多。当然上面的示例中还是有偶尔，那个就Order对象。其实我们可以把`Order`对象转换成`DeductOrderStoreEvent`对象，就可以实现完美解耦
+通过改造后，以后想要拆分库存和订单模块就会变得简单的多。当然上面的示例中还是有偶尔，那个就 Order 对象。其实我们可以把`Order`对象转换成`DeductOrderStoreEvent`对象，就可以实现完美解耦
 
 在上面的示例中，举例了一个保存业务的操作。这里没有做解耦是因为他们是并存的关系（`这种关系只能是依赖日志的Mapper层，不能是日志的业务层`）。就像是`UML`中的`组合`和`聚合`的关系。举个更具体的例子，商品和商品属性，不应该把它拆分独立出来，他们是`组合关系`。我们讲的业务解耦是`聚合关系`。这一点需要区分开来
 
 ✍️✍️✍️ **好的代码`Service`层只会依赖`Mapper`层。不同业务之间相互依赖都应该引入对方的`Mapper`，否则都应该使用上述方案。**
 
-## 对@Transactional保持敬畏
+## 对@Transactional 保持敬畏
 
 很多时候我们写代码的时候设计到数据库操作直接在业务层方法上加上`@Transactional`然后一顿操作。很多时候这么做也没什么问题，但是如果这个方法比较耗时，这时候就危险了。
 
@@ -140,18 +143,18 @@ public class StoreServiceImpl implements ApplicationListener<DeductOrderStoreEve
 public class Order {
     @Autowired
     private RestTemplate restTemplate;
-    
+
     @Transactional(rollbackFor = Exception.class)
     public void createOrder(Order order) {
        	// 1：检查订单是否合法有效
         checkOrder(order);
-        
+
         //:2：调用库存服务是否有剩余库存
         restTemplate.getForObject(url, order);
-        
+
         //3：保存订单
         save(order);
-        
+
         //4：记录日志
         save(log)
     }
@@ -166,24 +169,24 @@ public class Order {
 public class OrderService {
     @Autowired
     private RestTemplate restTemplate;
-    
+
     @Autowired
     private TransactionTemplate transactionTemplate;
- 
+
     public void createOrder(Order order) {
        	// 1：检查订单是否合法有效
         checkOrder(order);
-        
+
         //:2：调用库存服务是否有剩余库存
         restTemplate.getForObject(url, order);
-        
+
         transactionTemplate.executeWithoutResult(t -> {
              //3：保存订单
             save(order);
 
             //4：记录日志
             save(log)
-                
+
             // 如果需要手动回滚事务
             t.setRollbackOnly();
         });

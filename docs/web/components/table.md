@@ -352,6 +352,159 @@ meta:
 
 :::
 
+### 拓展示例
+
+详细配置可展开代码，示例功能包含如下：
+
+-  一个列显示多级数据，中间为空的时候会空行占位
+-  显示tag标签， tagType可以参考NTag
+- 自定义颜色和表头显示提示语
+- 显示复制按钮
+- 使用字符串函数渲染
+- 图片列
+
+::: demo
+
+```vue
+<template>
+  <n-table v-model:current-page="currentPage" :data="data3" :show-config="true" :contextmenu="true" :columns="columns"
+    :total="total" :actions="actions" :action-props="{ fixed: 'right', width: '290px' }" @column-change="doSaveColumn">
+    <template #pagination>
+      <el-button> 分页槽位 </el-button>
+    </template>
+  </n-table>
+</template>
+
+<script>
+import { ref, h } from 'vue'
+
+export default {
+  setup () {
+    const currentPage = ref(1)
+    const pageSize = ref(10)
+    const total = ref(50)
+    const columns = ref([])
+    const actions = [
+      {
+        label: '删除2s还是说',
+        type: 'warning',
+        click: (d) => {
+          console.log('d :>> ', d)
+          console.log('d :>> ', d.row.heigh)
+        },
+      },
+      {
+        label: '删除1',
+        show: false,
+      },
+
+      {
+        label: '删除3',
+        ifShow ({ row }) {
+          const b = new Date().getTime() % 2 === 0
+          console.log('b :>> ', b)
+          return b
+        },
+      },
+
+      {
+        label: '删除5',
+      },
+
+      {
+        label: '删除6',
+      },
+    ]
+    const columns3 = ref([
+      {
+        // 一个列显示多级数据，中间为空的时候会空行占位
+        label: ['日期', '身高', '年纪'],
+        prop: [
+          {
+            prop: 'date',
+            timeFormat: 'YYYY-MM-DD HH:mm:ss',
+          },
+          {
+            prop: 'heigh2',
+          },
+          {
+            prop: 'age',
+          },
+        ],
+      },
+      {
+        // 显示枚举， tagType可以参考NTag
+        label: '姓名',
+        prop: 'name',
+        enumType: true,
+      },
+      // 自定义颜色和表头显示提示语
+      {
+        label: '地址',
+        prop: 'address',
+        color: '#f90',
+        showHelper: true,
+        helperMessage: '这是一个提示',
+      },
+      // 显示复制按钮
+      {
+        label: '年纪',
+        prop: 'age',
+        showCopy: true,
+      },
+      {
+        label: '图片',
+        prop: 'image',
+        image: true,
+        imageStyle: { width: '32px' }
+      },
+      // 使用字符串函数渲染
+      {
+        label: '学校',
+        prop: 'school',
+        render:
+          "{const  heigh  = row.heigh; if (heigh >= 180) { return h('span', { class: 'el-tag' }, heigh); } else if (heigh >= 170) { return h('span', { class: 'el-tag el-tag--warning' }, heigh); } else if (heigh >= 160) { return h('el-tag', {  class: 'el-tag el-tag--success' }, heigh); } }",
+      },
+    ])
+    const data3 = [
+      {
+        date: 1677662712863,
+        address: 'No. 189, Grove St, Los Angeles',
+        age: '18 岁',
+        heigh: 150,
+        school: 'XX大学',
+        image: 'http://docs.seedltd.cn/logo.svg',
+        name: { value: 1, desc: '张三', tagType: 'success' }
+      },
+    ]
+
+    columns.value = columns3
+
+    const doSaveColumn = (columnList, done) => {
+      setTimeout(() => {
+        columns3.value = columnList
+        done()
+      }, 2000)
+    }
+
+    return {
+      actions,
+      doSaveColumn,
+      currentPage,
+      pageSize,
+      total,
+      data3,
+      columns: columns.value,
+    }
+  },
+}
+</script>
+```
+
+
+
+:::
+
 ## Props
 
 | Name | Description | Type | Options | Default |
@@ -380,7 +533,7 @@ meta:
 
 | Name | Description | Type | Options | Default |
 | --- | --- | --- | --- | --- |
-| prop | 对应 `data` 的字段名。支持获取`a.b`路径相应的值。支持多字段取值，通过换行形式显示 | `string | string[]` | - | - |
+| prop | 对应 `data` 的字段名。支持获取`a.b`路径相应的值。支持多字段取值，通过换行形式显示 | `string | TableColumn[]` | - | - |
 | label | 列头文本，传入数组换行显示 | `string | string[]` | - | - |
 | render | 自定义渲染内容。支持[字符串函数](../../web/faq/component.md#字符串函数)，参数：_row: 行数据，h：渲染函数需要返回这个对象，index：下标_ | Function(row,index):VNode | - | - |
 | `show-helper` | 是否显示提示图标，自定义头部插槽的时候无效 | boolean | - | false |
