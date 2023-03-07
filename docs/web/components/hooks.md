@@ -10,11 +10,11 @@
  * @param idKey 表单实体对象主键名称
  * @param options 可选项配置
  */
-export declare const userOpForm: <T>(idKey: string | undefined, options: {
+export declare const useOpForm: <T>(idKey: string | undefined, options: {
     formRef?: Ref<FormExpose> | undefined;
-    getUrl?: string | Ref<string> | undefined;
-    addUrl?: string | Ref<string> | undefined;
-    updateUrl?: string | Ref<string> | undefined;
+    getUrl?: string | undefined;
+    addUrl?: string | undefined;
+    updateUrl?: string | undefined;
     updateBeforCb?: ((isValid: boolean, invalidFields: Array<StringObject>) => boolean) | undefined;
     addBeforCb?: ((isValid: boolean, invalidFields: Array<StringObject>) => boolean) | undefined;
     updateAfterCb?: ((res: unknown, done: () => void) => void) | undefined;
@@ -22,9 +22,11 @@ export declare const userOpForm: <T>(idKey: string | undefined, options: {
     validateConfirmWarningCb?: ((errors: ValidateError[]) => void) | undefined;
 }) => {
     form: Ref<T>;
-    submit: (done: () => void, isValid: boolean, invalidFields: Array<StringObject>) => void;
-    loadForm: (parmas: HttpRequestConfig) => Promise<UnwrapRef<T>>;
-}
+    submit: (done: () => void, isValid: boolean, invalidFields: Array<StringObject>, urlProcess?: ((url: string) => string) | undefined) => void;
+    loadForm: (parmas?: (HttpRequestConfig & AxiosRequestConfig<any> & {
+        urlProcess?: ((url: string) => string) | undefined;
+    }) | undefined) => Promise<T>;
+};
 ```
 
 ### 参数
@@ -70,11 +72,11 @@ export declare const userOpForm: <T>(idKey: string | undefined, options: {
 
 ### 返回值
 
-| Name     | Description                                                  | Type                                                         | Options | Default |
-| :------- | :----------------------------------------------------------- | :----------------------------------------------------------- | :------ | :------ |
-| form     | 表单数据对象                                                 | Object                                                       | -       | -       |
-| submit   | 提交数据函数。`done：关闭loading函数，isValid:表单数据是否校验通过，invalidFields:表单校验失败的字段集合` | `(done: () => void, isValid: boolean, invalidFields: Array<StringObject>)` | -       | -       |
-| loadForm | 加载数据对象函数。`parmas：请求数据参数`                     | `(parmas: HttpRequestConfig) => Promise<UnwrapRef<T>>`       | -       | -       |
+| Name     | Description                                                  | Type                                                         | Options    | Default |
+| :------- | :----------------------------------------------------------- | :----------------------------------------------------------- | :--------- | :------ |
+| form     | 表单数据对象                                                 | Object                                                       | -          | -       |
+| submit   | 提交数据函数。`done：关闭loading函数，isValid:表单数据是否校验通过，invalidFields:表单校验失败的字段集合`，`urlProcess`请求后端路径处理 | `(done: () => void, isValid: boolean, invalidFields: Array<StringObject>, urlProcess?: ((url: string) => string) ` | undefined) |         |
+| loadForm | 加载数据对象函数。`parmas：请求数据参数`                     | `(parmas: HttpRequestConfig) => Promise<UnwrapRef<T>>`       | -          | -       |
 
 ## 列表查询 useOpQuery
 
@@ -89,9 +91,11 @@ export declare const useOpQuery: <T extends BaseSearchForm, R>(urls: {
     list: string;
     delete?: string;
 }, options?: {
-    pageSize?: number | undefined;
-    params?: StringObject | undefined;
-} | undefined) => {
+    pageSize?: number;
+    params?: StringObject;
+    listProp?: 'list';
+    totalProp?: 'totalCount';
+}) => {
     queryForm: Ref<T>;
     load: () => void;
     doReset: () => void;
@@ -100,14 +104,16 @@ export declare const useOpQuery: <T extends BaseSearchForm, R>(urls: {
     total: ShallowRef<number>;
     loading: Ref<boolean>;
     currentRow: Ref<R>;
-    currentRows: Ref<Array<R>>;
+    currentRows: Ref<R[]>;
     doSelectRow: (val: R) => void;
-    doSelectRows: (val: Array<R>) => void;
+    doSelectRows: (val: R[]) => void;
     data: Ref<R[]>;
-    doDelete: (requestConfig: HttpRequestConfig, options?: {
-        message?: string | undefined;
-        dialogOptions?: StringObject | undefined;
-    } | undefined) => Promise<any>;
+    doDelete: (requestConfig: HttpRequestConfig & {
+        urlProcess?: ((url: string) => string) | undefined;
+    }, options?: {
+        message?: string;
+        dialogOptions?: StringObject;
+    }) => Promise<any>;
 };
 ```
 
@@ -143,7 +149,7 @@ export declare const useOpQuery: <T extends BaseSearchForm, R>(urls: {
 | doSelectRow     | 选择行函数                                         | `(val: R) => void`                                           | -       | -       |
 | doSelectRows    | 多选行函数                                         | `(val: R[]) => void`                                         | -       | -       |
 | data            | 列表数据                                           | `R[]`                                                        | -       | -       |
-| doDelete        | 删除数据函数                                       | `(requestConfig: HttpRequestConfig, options?: { message?: string | undefined;dialogOptions?: StringObject | undefined;} | undefined) => Promise<any>` | -       | -       |
+| doDelete        | 删除数据函数                                       | `(requestConfig: HttpRequestConfig & {urlProcess?: ((url: string) => string) | undefined } ` | -       | -       |
 
 ## 自定义列操作 useOpColumns
 
