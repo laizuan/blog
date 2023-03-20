@@ -66,6 +66,18 @@ export const createJavaMenu = () => {
         {
           text: 'MessageQueue 消息队列',
           link: '/java/dependencys/mq'
+        },
+        {
+          text: 'Rpc',
+          link: '/java/dependencys/rpc'
+        },
+        {
+          text: '服务注册与发现 & 分布式配置文件',
+          link: '/java/dependencys/discover'
+        },
+        {
+          text: '短信',
+          link: '/java/dependencys/sms'
         }
       ]
     },

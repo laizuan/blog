@@ -27,12 +27,7 @@ meta:
 
 ```vue
 <template>
-  <n-form
-    v-model="form"
-    :fields="fields"
-    label-width="100px"
-    @submit="submit"
-  />
+  <n-form v-model="form" :fields="fields" label-width="100px" @submit="submit" />
 </template>
 
 <script>
@@ -59,9 +54,9 @@ export default {
           data: [
             { value: '1', label: '地址栏最多输入5个字符，最少2个' },
             { value: '2', label: '地址栏必填' },
-            { value: '3', label: '地址栏没有校验' },
-          ],
-        },
+            { value: '3', label: '地址栏没有校验' }
+          ]
+        }
       },
       {
         label: '地址',
@@ -72,7 +67,7 @@ export default {
         },
         props: {
           clearable: true,
-          placeholder: '地址不为空的时候禁用名字选择',
+          placeholder: '地址不为空的时候禁用名字选择'
         },
         ifRules: (val, rules) => {
           if (val.name.value == 1) {
@@ -81,21 +76,21 @@ export default {
                 max: 5,
                 min: 2,
                 message: '地址栏最多输入5个字符，最少2个',
-                trigger: 'blur',
-              },
+                trigger: 'blur'
+              }
             ]
           } else if (val.name.value == 2) {
             return [
               {
                 required: true,
                 message: '地址栏必填',
-                trigger: 'blur',
-              },
+                trigger: 'blur'
+              }
             ]
           }
           return []
-        },
-      },
+        }
+      }
     ]
     const submit = (done, isValid, invalidFields) => {
       console.log(JSON.stringify(form.value))
@@ -108,9 +103,9 @@ export default {
     return {
       form,
       fields,
-      submit,
+      submit
     }
-  },
+  }
 }
 </script>
 ```
@@ -129,12 +124,7 @@ export default {
 
 ```vue
 <template>
-  <n-form
-    ref="ruleForm"
-    v-model="form22"
-    :inner-label="true"
-    :fields="fields22"
-  />
+  <n-form ref="ruleForm" v-model="form22" :inner-label="true" :fields="fields22" />
 </template>
 <script>
 import { ref } from 'vue'
@@ -145,7 +135,7 @@ export default {
       {
         label: '姓名',
         prop: 'name',
-        component: 'n-input',
+        component: 'n-input'
       },
       {
         label: '地址',
@@ -155,27 +145,27 @@ export default {
           data: [
             { value: '1', desc: '地址栏最多输入5个字符，最少2个' },
             { value: '2', desc: '地址栏必填' },
-            { value: '3', desc: '地址栏没有校验' },
-          ],
-        },
+            { value: '3', desc: '地址栏没有校验' }
+          ]
+        }
       },
       {
         label: '生日',
         prop: 's2',
         component: 'n-date-picker',
         props: {
-          type: 'datetime',
-        },
+          type: 'datetime'
+        }
       },
       {
         label: '范围日期',
         prop: 's',
-        component: 'n-date-picker',
-      },
+        component: 'n-date-picker'
+      }
     ]
 
     const form22 = ref({ address: null, name: null })
-  },
+  }
 }
 </script>
 ```
@@ -196,12 +186,7 @@ export default {
 
 ```vue
 <template>
-  <n-form
-    v-model="form2"
-    :fields="fields2"
-    label-width="100px"
-    @submit="submit"
-  />
+  <n-form v-model="form2" :fields="fields2" label-width="100px" @submit="submit" />
 </template>
 
 <script>
@@ -220,14 +205,14 @@ export default {
           data: [
             { value: '1', desc: '测试' },
             { value: '2', desc: '测试二' },
-            { value: '3', desc: '测试三' },
-          ],
-        },
+            { value: '3', desc: '测试三' }
+          ]
+        }
       },
       {
         label: '地址',
         prop: 'address',
-        component: 'el-input',
+        component: 'el-input'
       },
       {
         group: {
@@ -236,15 +221,15 @@ export default {
             {
               label: '年龄',
               prop: 'age',
-              component: 'el-input',
+              component: 'el-input'
             },
             {
               label: '身高',
               prop: 'height',
-              component: 'el-input',
-            },
-          ],
-        },
+              component: 'el-input'
+            }
+          ]
+        }
       },
       {
         group: {
@@ -256,26 +241,26 @@ export default {
             {
               label: '学历',
               prop: 'education',
-              component: 'el-input',
+              component: 'el-input'
             },
             {
               label: '学校',
               prop: 'school',
-              component: 'el-input',
-            },
-          ],
-        },
+              component: 'el-input'
+            }
+          ]
+        }
       },
       {
         label: '学分',
         prop: 'credit',
-        component: 'el-input',
+        component: 'el-input'
       },
       {
         label: '特长',
         prop: 'credit',
-        component: 'el-input',
-      },
+        component: 'el-input'
+      }
     ]
     const submit = (done, isValid, invalidFields) => {
       console.log(JSON.stringify(form.value))
@@ -288,9 +273,9 @@ export default {
     return {
       form2,
       fields2,
-      submit,
+      submit
     }
-  },
+  }
 }
 </script>
 ```
@@ -305,12 +290,7 @@ export default {
 
 ```vue
 <template>
-  <n-form
-    v-model="form3"
-    :fields="fields3"
-    label-width="100px"
-    @submit="submit"
-  />
+  <n-form v-model="form3" :fields="fields3" label-width="100px" @submit="submit" />
 </template>
 
 <script>
@@ -331,56 +311,56 @@ export default {
           data: [
             { value: '1', desc: '测试' },
             { value: '2', desc: '测试二' },
-            { value: '3', desc: '测试三' },
-          ],
-        },
+            { value: '3', desc: '测试三' }
+          ]
+        }
       },
       {
         md: 8,
         xl: 12,
         label: '地址',
         prop: 'address',
-        component: 'el-input',
+        component: 'el-input'
       },
 
       {
         md: 12,
         label: '年龄',
         prop: 'age',
-        component: 'el-input',
+        component: 'el-input'
       },
       {
         md: 24,
         label: '身高',
         prop: 'height',
-        component: 'el-input',
+        component: 'el-input'
       },
 
       {
         label: '学历',
         prop: 'education',
         component: 'el-input',
-        md: 6,
+        md: 6
       },
       {
         md: 6,
         label: '学校',
         prop: 'school',
-        component: 'el-input',
+        component: 'el-input'
       },
 
       {
         md: 6,
         label: '学分',
         prop: 'credit',
-        component: 'el-input',
+        component: 'el-input'
       },
       {
         md: 6,
         label: '特长',
         prop: 'credit',
-        component: 'el-input',
-      },
+        component: 'el-input'
+      }
     ]
     const submit = (done, isValid, invalidFields) => {
       console.log(JSON.stringify(form.value))
@@ -393,9 +373,9 @@ export default {
     return {
       form3,
       fields3,
-      submit,
+      submit
     }
-  },
+  }
 }
 </script>
 ```
@@ -404,34 +384,34 @@ export default {
 
 ## Props
 
-| Name                | Description                                                  | Type                                             | Options                                             | Default |
-| :------------------ | :----------------------------------------------------------- | :----------------------------------------------- | :-------------------------------------------------- | :------ |
-| v-model             | 绑定值                                                       | object                                           | -                                                   | -       |
-| fields              | 表单项配置，参考下面 [fields](#fields-props) 属性            | array                                            | -                                                   | -       |
-| action              | 操作项按钮配置，参考下面 [action](#action-props)属性         | object                                           | -                                                   | -       |
-| inner-label         | 是否使用内置 label 模式，`element-plus` 组件无效             | boolean                                          | -                                                   | false   |
-| enter-on-submit     | 输入框回车触发提交按钮点击事件，如果开启则自定义的 `onKeyup`事件无效 | boolean                                          |                                                     | false   |
-| validate-on-submit  | 点击提交按钮的时候校验表单，拦截并提示校验不通过的内容       | boolean                                          |                                                     | true    |
-| first-auto-focus    | 进入页面第一个输入框是否获取焦点，只有第一个元素是 input 的时候有效 | boolean                                          |                                                     | true    |
-| show-more           | 是否显示更多，需要配合`limit`使用                            | boolean                                          |                                                     | false   |
-| limit               | 最多显示多少个`field`项，`showMore=true`的时候有效           | number                                           |                                                     | 4       |
-| highlight-error     | 表单验证不通过的时候输入框是否高亮                           | boolean                                          | -                                                   | true    |
-| highlight-required  | 表单必填项输入框是否高亮                                     | boolean                                          | -                                                   | true    |
-| gutter              | `el-row` 栅格间隔，如果定义了`group`属性默认一个`group`属性就是一个`el-row`标签 | number                                           | -                                                   | 0       |
-| justify             | `el-row` flex 布局下的水平排列方式，如果定义了`group`属性默认一个`group`属性就是一个`el-row`标签 | string                                           | start / end / center / space-around / space-between | start   |
-| align               | `el-row`flex 布局下的垂直排列方式，如果定义了`group`属性默认一个`group`属性就是一个`el-row`标签 | string                                           | top / middle / bottom                               | top     |
-| field-adaptive      | 表单项自适应栅格系统，开启后会自动添加`{ md: 8, xl: 6, sm: 12, xs: 24 }`属性 | boolean                                          | -                                                   | false   |
-| fixed-action        | 是否把表单的操作按钮固定在左边，查询表单的时候很有用         | boolean                                          | -                                                   | false   |
-| enter-next          | 回车是否跳转到下一个元素                                     | boolean                                          | -                                                   | true    |
-| scroll-to-error     | 校验不通过示范滚动当第一个错误项                             | boolean                                          | -                                                   | true    |
-| field-map-to-time   | 用于将表单内时间区域的应设成 2 个字段,见下方说明             | `[string, [string, string], string?,boolean?][]` | -                                                   | -       |
-| fiexd-error-message | 是否固定验证失败消息在右下角                                 | boolean                                          | -                                                   | -       |
+| Name                | Description                                                                                                            | Type                                             | Options                                             | Default |
+| :------------------ | :--------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------- | :-------------------------------------------------- | :------ |
+| v-model             | 绑定值                                                                                                                 | object                                           | -                                                   | -       |
+| fields              | 表单项配置，参考下面 [fields](#fields-props) 属性                                                                      | array                                            | -                                                   | -       |
+| action              | 操作项按钮配置，参考下面 [action](#action-props)属性                                                                   | object                                           | -                                                   | -       |
+| inner-label         | 是否使用内置 label 模式，`element-plus` 组件无效                                                                       | boolean                                          | -                                                   | false   |
+| enter-on-submit     | 输入框回车触发提交按钮点击事件，如果开启则自定义的 `onKeyup`事件无效                                                   | boolean                                          |                                                     | false   |
+| validate-on-submit  | 点击提交按钮的时候校验表单，拦截并提示校验不通过的内容                                                                 | boolean                                          |                                                     | true    |
+| first-auto-focus    | 进入页面第一个输入框是否获取焦点，只有第一个元素是 input 的时候有效                                                    | boolean                                          |                                                     | true    |
+| show-more           | 是否显示更多，需要配合`limit`使用，**如果需要记住状态需要配置 RouteName**，我们会把 RouteName 做为保存在浏览器中的 key | boolean                                          |                                                     | false   |
+| limit               | 最多显示多少个`field`项，`showMore=true`的时候有效                                                                     | number                                           |                                                     | 4       |
+| highlight-error     | 表单验证不通过的时候输入框是否高亮                                                                                     | boolean                                          | -                                                   | true    |
+| highlight-required  | 表单必填项输入框是否高亮                                                                                               | boolean                                          | -                                                   | true    |
+| gutter              | `el-row` 栅格间隔，如果定义了`group`属性默认一个`group`属性就是一个`el-row`标签                                        | number                                           | -                                                   | 0       |
+| justify             | `el-row` flex 布局下的水平排列方式，如果定义了`group`属性默认一个`group`属性就是一个`el-row`标签                       | string                                           | start / end / center / space-around / space-between | start   |
+| align               | `el-row`flex 布局下的垂直排列方式，如果定义了`group`属性默认一个`group`属性就是一个`el-row`标签                        | string                                           | top / middle / bottom                               | top     |
+| field-adaptive      | 表单项自适应栅格系统，开启后会自动添加`{ md: 8, xl: 6, sm: 12, xs: 24 }`属性                                           | boolean                                          | -                                                   | false   |
+| fixed-action        | 是否把表单的操作按钮固定在左边，查询表单的时候很有用                                                                   | boolean                                          | -                                                   | false   |
+| enter-next          | 回车是否跳转到下一个元素                                                                                               | boolean                                          | -                                                   | true    |
+| scroll-to-error     | 校验不通过示范滚动当第一个错误项                                                                                       | boolean                                          | -                                                   | true    |
+| field-map-to-time   | 用于将表单内时间区域的应设成 2 个字段,见下方说明                                                                       | `[string, [string, string], string?,boolean?][]` | -                                                   | -       |
+| fiexd-error-message | 是否固定验证失败消息在右下角                                                                                           | boolean                                          | -                                                   | -       |
 
 **支持 [el-form](https://element-plus.gitee.io/zh-CN/component/form.html#form-%E5%B1%9E%E6%80%A7) 的所有属性**
 
 ### fieldMapToTime
 
-[代码片段来源Vben Admin](https://vvbin.cn/doc-next/components/form.html#fieldmaptotime)
+[代码片段来源 Vben Admin](https://vvbin.cn/doc-next/components/form.html#fieldmaptotime)
 
 将表单内时间区域的值映射成 2 个字段
 
@@ -471,30 +451,30 @@ fieldMapToTime: [
 
 ### fields Props
 
-| Name           | Description                                                  | Type                                           | Options | Default |
-| :------------- | :----------------------------------------------------------- | :--------------------------------------------- | :------ | :------ |
-| prop           | 表单域 `model` 字段， 在使用 validate、resetFields 方法的情况下，该属性是必填的 | string                                         | -       | -       |
-| label          | 标签                                                         | string                                         | -       | -       |
-| component      | 当前项对应的组件，可以直接传入局部组件，支持`elment-plus` Form 表单组件 | string / Component                             | -       | -       |
-| props          | 传递的对应的组件的参数                                       | object                                         | -       | -       |
-| show           | 是否显示该`item`项                                           | boolean                                        |         | true    |
-| if-show        | 动态控制是否显示`item`项。返回 true 渲染，false 不渲染       | Function(modelValue):boolean                   | -       | -       |
-| if-disabled    | 动态控制禁用状态                                             | Function(modelValue):boolean                   | -       | -       |
-| if-rules       | 动态校验规则，返回最新的`rules`数组                          | Function(modelValue,rules):Array[FormItemRule] | -       | -       |
-| default-value  | 默认值                                                       | string / number / boolean / array / object     | -       | -       |
-| show-helper    | 是否显示提示图标，自定义头部插槽的时候无效                   | boolean                                        | -       | false   |
-| helper-message | 提示内容，`show-helper`为真的时候有效                        | `string|string[]`                              | -       | -       |
-| extra-message  | 给`Form item`添加额外信息和帮助信息                          | string                                         | -       | -       |
-| group          | 分组，请参考[group](#group-props)属性                        | object                                         | -       | -       |
-| span           | 栅格占据的列数。`el-col`的属性，每个 item 就是一个`el-col`   | number                                         | -       | 24      |
-| offset         | 栅格左侧的间隔格数。`el-col`的属性，每个 item 就是一个`el-col` | number                                         | -       | 0       |
-| push           | 栅格向右移动格数。`el-col`的属性，每个 item 就是一个`el-col` | number                                         | -       | 0       |
-| pull           | 栅格向左移动格数。`el-col`的属性，每个 item 就是一个`el-col` | number                                         | -       | 0       |
-| xs             | `<768px` 响应式栅格数或者栅格属性对象。`el-col`的属性，每个 item 就是一个`el-col` | number / object                                | -       | -       |
-| sm             | `≥768px` 响应式栅格数或者栅格属性对象。`el-col`的属性，每个 item 就是一个`el-col` | number / object                                | -       | -       |
-| md             | `≥992px` 响应式栅格数或者栅格属性对象。`el-col`的属性，每个 item 就是一个`el-col` | number / object                                | -       | -       |
-| lg             | `≥1200px` 响应式栅格数或者栅格属性对象。`el-col`的属性，每个 item 就是一个`el-col` | number / object                                | -       | -       |
-| xl             | `≥1920px` 响应式栅格数或者栅格属性对象。`el-col`的属性，每个 item 就是一个`el-col` | number / object                                | -       | -       |
+| Name           | Description                                                                        | Type                                           | Options   | Default |
+| :------------- | :--------------------------------------------------------------------------------- | :--------------------------------------------- | :-------- | :------ | --- |
+| prop           | 表单域 `model` 字段， 在使用 validate、resetFields 方法的情况下，该属性是必填的    | string                                         | -         | -       |
+| label          | 标签                                                                               | string                                         | -         | -       |
+| component      | 当前项对应的组件，可以直接传入局部组件，支持`elment-plus` Form 表单组件            | string / Component                             | -         | -       |
+| props          | 传递的对应的组件的参数                                                             | object                                         | -         | -       |
+| show           | 是否显示该`item`项                                                                 | boolean                                        |           | true    |
+| if-show        | 动态控制是否显示`item`项。返回 true 渲染，false 不渲染                             | Function(modelValue):boolean                   | -         | -       |
+| if-disabled    | 动态控制禁用状态                                                                   | Function(modelValue):boolean                   | -         | -       |
+| if-rules       | 动态校验规则，返回最新的`rules`数组                                                | Function(modelValue,rules):Array[FormItemRule] | -         | -       |
+| default-value  | 默认值                                                                             | string / number / boolean / array / object     | -         | -       |
+| show-helper    | 是否显示提示图标，自定义头部插槽的时候无效                                         | boolean                                        | -         | false   |
+| helper-message | 提示内容，`show-helper`为真的时候有效                                              | `string                                        | string[]` | -       | -   |
+| extra-message  | 给`Form item`添加额外信息和帮助信息                                                | string                                         | -         | -       |
+| group          | 分组，请参考[group](#group-props)属性                                              | object                                         | -         | -       |
+| span           | 栅格占据的列数。`el-col`的属性，每个 item 就是一个`el-col`                         | number                                         | -         | 24      |
+| offset         | 栅格左侧的间隔格数。`el-col`的属性，每个 item 就是一个`el-col`                     | number                                         | -         | 0       |
+| push           | 栅格向右移动格数。`el-col`的属性，每个 item 就是一个`el-col`                       | number                                         | -         | 0       |
+| pull           | 栅格向左移动格数。`el-col`的属性，每个 item 就是一个`el-col`                       | number                                         | -         | 0       |
+| xs             | `<768px` 响应式栅格数或者栅格属性对象。`el-col`的属性，每个 item 就是一个`el-col`  | number / object                                | -         | -       |
+| sm             | `≥768px` 响应式栅格数或者栅格属性对象。`el-col`的属性，每个 item 就是一个`el-col`  | number / object                                | -         | -       |
+| md             | `≥992px` 响应式栅格数或者栅格属性对象。`el-col`的属性，每个 item 就是一个`el-col`  | number / object                                | -         | -       |
+| lg             | `≥1200px` 响应式栅格数或者栅格属性对象。`el-col`的属性，每个 item 就是一个`el-col` | number / object                                | -         | -       |
+| xl             | `≥1920px` 响应式栅格数或者栅格属性对象。`el-col`的属性，每个 item 就是一个`el-col` | number / object                                | -         | -       |
 
 ::: tip 关于 Fields
 
@@ -569,13 +549,13 @@ props: {
 
 ## Methods
 
-| Name          | Description                                                  | Parameters                                                   |
-| ------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| validate      | 对整个表单进行校验的方法，参数为一个回调函数。该回调函数会在校验结束后被调用，并传入两个参数：是否校验成功和未通过校验的字段。若不传入回调函数，则会返回一个 promise | Function(callback: Function(boolean, object))                |
-| validateField | 对部分表单字段进行校验的方法                                 | Function(props: array \| string, callback: Function(errorMessage: string)) |
-| resetFields   | 对整个表单进行重置，将所有字段值重置为初始值并移除校验结果   | -                                                            |
-| clearValidate | 移除表单项的校验结果。传入待移除的表单项的 prop 属性或者 prop 组成的数组，如不传则移除整个表单的校验结果 | Function(props: array \| string)                             |
-| setErrors     | 设置表单错误信息                                             | Function(errors: ValidateError) => void                      |
+| Name          | Description                                                                                                                                                          | Parameters                                                                 |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| validate      | 对整个表单进行校验的方法，参数为一个回调函数。该回调函数会在校验结束后被调用，并传入两个参数：是否校验成功和未通过校验的字段。若不传入回调函数，则会返回一个 promise | Function(callback: Function(boolean, object))                              |
+| validateField | 对部分表单字段进行校验的方法                                                                                                                                         | Function(props: array \| string, callback: Function(errorMessage: string)) |
+| resetFields   | 对整个表单进行重置，将所有字段值重置为初始值并移除校验结果                                                                                                           | -                                                                          |
+| clearValidate | 移除表单项的校验结果。传入待移除的表单项的 prop 属性或者 prop 组成的数组，如不传则移除整个表单的校验结果                                                             | Function(props: array \| string)                                           |
+| setErrors     | 设置表单错误信息                                                                                                                                                     | Function(errors: ValidateError) => void                                    |
 
 ::: tip 提示
 
@@ -601,7 +581,7 @@ export default defineComponent({
     }
 
     return { ruleForm, clearValidate }
-  },
+  }
 })
 </script>
 ```
@@ -628,16 +608,15 @@ export default defineComponent({
 ## TypeScript 定义
 
 ```ts
-export declare function defineFormFields<T = any>(fileds: Array<FormField<T>>): Array<FormField<T>>;
-export declare function defineFormGropuFileds<T = ExternalParam>(fileds: FormGroup<T>[]): FormGroup<T>[];
-export declare function defineFormActions(action: FormAction): FormAction;
-export declare const defineFormMethod: () => Ref<FormExpose>;
-
+export declare function defineFormFields<T = any>(fileds: Array<FormField<T>>): Array<FormField<T>>
+export declare function defineFormGropuFileds<T = ExternalParam>(
+  fileds: FormGroup<T>[]
+): FormGroup<T>[]
+export declare function defineFormActions(action: FormAction): FormAction
+export declare const defineFormMethod: () => Ref<FormExpose>
 
 interface ValidateError {
   message: string
   field: string
 }
-
 ```
-

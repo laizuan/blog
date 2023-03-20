@@ -39,7 +39,7 @@ export default {
         xl: 6,
         label: '地址',
         prop: 'address',
-        component: 'el-input',
+        component: 'el-input'
       },
       {
         label: '名字',
@@ -51,47 +51,47 @@ export default {
           data: [
             { value: '1', desc: '测试' },
             { value: '2', desc: '测试二' },
-            { value: '3', desc: '测试三' },
-          ],
-        },
+            { value: '3', desc: '测试三' }
+          ]
+        }
       },
       {
         md: 8,
         xl: 6,
         label: '年龄',
         prop: 'age',
-        component: 'el-input',
+        component: 'el-input'
       },
       {
         md: 24,
         label: '身高',
         prop: 'height',
-        component: 'el-input',
+        component: 'el-input'
       },
       {
         label: '学历',
         prop: 'education',
         component: 'el-input',
-        md: 6,
+        md: 6
       },
       {
         md: 6,
         label: '学校',
         prop: 'school',
-        component: 'el-input',
+        component: 'el-input'
       },
       {
         md: 6,
         label: '学分',
         prop: 'credit',
-        component: 'el-input',
+        component: 'el-input'
       },
       {
         md: 6,
         label: '特长',
         prop: 'credit',
-        component: 'el-input',
-      },
+        component: 'el-input'
+      }
     ]
 
     const currentPage = ref(1)
@@ -100,38 +100,38 @@ export default {
     const columns3 = ref([
       {
         label: '日期',
-        prop: 'date',
+        prop: 'date'
       },
       {
         label: '姓名',
-        prop: 'name',
+        prop: 'name'
       },
       {
         label: '地址',
-        prop: 'address',
-      },
+        prop: 'address'
+      }
     ])
     const data = [
       {
         date: '2016-05-03',
         name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
+        address: 'No. 189, Grove St, Los Angeles'
       },
       {
         date: '2016-05-02',
         name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
+        address: 'No. 189, Grove St, Los Angeles'
       },
       {
         date: '2016-05-04',
         name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
+        address: 'No. 189, Grove St, Los Angeles'
       },
       {
         date: '2016-05-01',
         name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-      },
+        address: 'No. 189, Grove St, Los Angeles'
+      }
     ]
 
     const doSaveColumn = (list, done) => {
@@ -159,9 +159,9 @@ export default {
       pageSize,
       total,
       data,
-      columns3,
+      columns3
     }
-  },
+  }
 }
 </script>
 ```
@@ -235,6 +235,5 @@ export default {
 ## TypeScript 定义
 
 ```ts
-export declare const defineTableFormMethod: () => Ref<TableFormExpose>;
+export declare const defineTableFormMethod: () => Ref<TableFormExpose>
 ```
-

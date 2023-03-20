@@ -1,6 +1,55 @@
 # docker
 
-## 安装
+## Ubuntu
+
+- 卸载老旧版本 Docker
+
+```sh
+apt-get remove docker docker-engine docker.io
+```
+
+- 安装最新的版本
+
+```sh
+curl -sSL https://get.docker.com/ | sh
+```
+
+- 启动并添加开机自启动
+
+```sh
+systemctl start docker
+systemctl enable docker
+```
+
+- 检查是否安装成功
+
+```sh
+docker version
+```
+
+### Docker-compose
+
+[docker compose 官方仓库](https://github.com/docker/compose/releases)
+
+- 获取 Docker compose
+
+```sh
+curl -L https://get.daocloud.io/docker/compose/releases/download/v2.16.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+```
+
+- 授权
+
+```sh
+chmod +x /usr/local/bin/docker-compose
+```
+
+- 查看是否安装成功
+
+```sh
+docker-compose -v
+```
+
+## 安装 Centos
 
 - [docker](https://so.csdn.net/so/search?q=docker&spm=1001.2101.3001.7020)要求 Centos 系统的内核版本高于 3.10，查看内核版本
 
