@@ -1,14 +1,28 @@
 ## 代码格式化
 
-资源下载 [EclipseFormatter 下载](https://github.com/krasa/EclipseCodeFormatter/releases) [Alibaba 规范模板下载](https://github.com/alibaba/p3c/blob/master/p3c-formatter/eclipse-codestyle.xml) [教程参考](https://www.jianshu.com/p/9befe7710176)
+在对代码进行`mvn install`的时候如果你的代码不符合要求将会得到一个异常，这时候你可以使用`mvn spotless:apply`命令格式化代码让你的代码符合格式化要求。
 
-- 安装插件：`eclipse code formatter`
+当然我们使用`Idea`编码的时候可以安装插件，在保存代码的时候对代码自动的格式化它
 
-- 导入`eclipse-codestyle.xml`
+- 安装`google-java-format`插件
+- 打开`Idea`全局设置，找到`Other Settings` -> `google-java-format Settings`，然后启用`google-java-format`插件
 
-  `File->Settings->Other Setting -> eclipse code formatter`,选择`Use the eclipse code formatter-> eclipse java formatter config file` 选择下载的 xml 文件： `eclipse-codestyle.xml`
+如果你是高版本的`Idea`那么需要设置`Idea`的 `VM` 参数。[官方说明](https://github.com/google/google-java-format/blob/master/README.md#intellij-jre-config)
 
-- 点 ok 完成
+```text
+--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED
+--add-exports=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED
+--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED
+--add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED
+--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED
+--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED
+```
+
+经过上一步`Idea`格式化(`Ctrl + Alt + L`)将符合规范要求
+
+如果你在保存的时候格式化代码，那么可以使用`Save Actions`插件
+
+![Save Actions 配置](../../public/images/java/save-actions-settings.png)
 
 ## Idea 插件推荐
 
@@ -24,6 +38,7 @@
 8. `MybatisX`Mapper 和 xml 快速跳转插件
 9. `RestfulTool`通过接口地址快速定位接口所在的方法位置
 10. `Save Actions`在保存的时候做一些事情，比如优化导包等
+11. `google-java-format` Google 代码风格格式化
 
 ## 配置相关
 
@@ -86,7 +101,7 @@ public enum AbnormalStatus implements BaseTagEnum<Integer> {
   ```tex{10}
   #if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME};#end
   #parse("File Header.java")
-  
+
   /**
    *
    * @author laizuan
