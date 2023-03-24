@@ -78,6 +78,10 @@ export const createJavaMenu = () => {
         {
           text: '短信',
           link: '/java/dependencys/sms'
+        },
+        {
+          text: '分布式定时任务',
+          link: '/java/dependencys/job'
         }
       ]
     },

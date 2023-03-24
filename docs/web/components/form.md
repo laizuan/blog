@@ -451,30 +451,30 @@ fieldMapToTime: [
 
 ### fields Props
 
-| Name           | Description                                                                        | Type                                           | Options   | Default |
-| :------------- | :--------------------------------------------------------------------------------- | :--------------------------------------------- | :-------- | :------ | --- |
-| prop           | 表单域 `model` 字段， 在使用 validate、resetFields 方法的情况下，该属性是必填的    | string                                         | -         | -       |
-| label          | 标签                                                                               | string                                         | -         | -       |
-| component      | 当前项对应的组件，可以直接传入局部组件，支持`elment-plus` Form 表单组件            | string / Component                             | -         | -       |
-| props          | 传递的对应的组件的参数                                                             | object                                         | -         | -       |
-| show           | 是否显示该`item`项                                                                 | boolean                                        |           | true    |
-| if-show        | 动态控制是否显示`item`项。返回 true 渲染，false 不渲染                             | Function(modelValue):boolean                   | -         | -       |
-| if-disabled    | 动态控制禁用状态                                                                   | Function(modelValue):boolean                   | -         | -       |
-| if-rules       | 动态校验规则，返回最新的`rules`数组                                                | Function(modelValue,rules):Array[FormItemRule] | -         | -       |
-| default-value  | 默认值                                                                             | string / number / boolean / array / object     | -         | -       |
-| show-helper    | 是否显示提示图标，自定义头部插槽的时候无效                                         | boolean                                        | -         | false   |
-| helper-message | 提示内容，`show-helper`为真的时候有效                                              | `string                                        | string[]` | -       | -   |
-| extra-message  | 给`Form item`添加额外信息和帮助信息                                                | string                                         | -         | -       |
-| group          | 分组，请参考[group](#group-props)属性                                              | object                                         | -         | -       |
-| span           | 栅格占据的列数。`el-col`的属性，每个 item 就是一个`el-col`                         | number                                         | -         | 24      |
-| offset         | 栅格左侧的间隔格数。`el-col`的属性，每个 item 就是一个`el-col`                     | number                                         | -         | 0       |
-| push           | 栅格向右移动格数。`el-col`的属性，每个 item 就是一个`el-col`                       | number                                         | -         | 0       |
-| pull           | 栅格向左移动格数。`el-col`的属性，每个 item 就是一个`el-col`                       | number                                         | -         | 0       |
-| xs             | `<768px` 响应式栅格数或者栅格属性对象。`el-col`的属性，每个 item 就是一个`el-col`  | number / object                                | -         | -       |
-| sm             | `≥768px` 响应式栅格数或者栅格属性对象。`el-col`的属性，每个 item 就是一个`el-col`  | number / object                                | -         | -       |
-| md             | `≥992px` 响应式栅格数或者栅格属性对象。`el-col`的属性，每个 item 就是一个`el-col`  | number / object                                | -         | -       |
-| lg             | `≥1200px` 响应式栅格数或者栅格属性对象。`el-col`的属性，每个 item 就是一个`el-col` | number / object                                | -         | -       |
-| xl             | `≥1920px` 响应式栅格数或者栅格属性对象。`el-col`的属性，每个 item 就是一个`el-col` | number / object                                | -         | -       |
+| Name           | Description                                                                        | Type                                             | Options | Default |
+| -------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------ | ------- | ------- |
+| prop           | 表单域 `model` 字段， 在使用 validate、resetFields 方法的情况下，该属性是必填的    | string                                           | -       | -       |
+| label          | 标签                                                                               | string                                           | -       | -       |
+| component      | 当前项对应的组件，可以直接传入局部组件，支持`elment-plus` Form 表单组件            | `string / Component`                             | -       | -       |
+| props          | 传递的对应的组件的参数                                                             | object                                           | -       | -       |
+| show           | 是否显示该`item`项                                                                 | boolean                                          |         | TRUE    |
+| if-show        | 动态控制是否显示`item`项。返回 true 渲染，false 不渲染                             | `Function(modelValue):boolean`                   | -       | -       |
+| if-disabled    | 动态控制禁用状态                                                                   | `Function(modelValue):boolean`                   | -       | -       |
+| if-rules       | 动态校验规则，返回最新的`rules`数组                                                | `Function(modelValue,rules):Array[FormItemRule]` | -       | -       |
+| default-value  | 默认值                                                                             | `string / number / boolean / array / object`     | -       | -       |
+| show-helper    | 是否显示提示图标，自定义头部插槽的时候无效                                         | boolean                                          | -       | FALSE   |
+| helper-message | 提示内容，`show-helper`为真的时候有效                                              | `string / string[]`                              | -       | -       |
+| extra-message  | 给`Form item`添加额外信息和帮助信息                                                | string                                           | -       | -       |
+| group          | 分组，请参考[group](#group-props)属性                                              | object                                           | -       | -       |
+| span           | 栅格占据的列数。`el-col`的属性，每个 item 就是一个`el-col`                         | number                                           | -       | 24      |
+| offset         | 栅格左侧的间隔格数。`el-col`的属性，每个 item 就是一个`el-col`                     | number                                           | -       | 0       |
+| push           | 栅格向右移动格数。`el-col`的属性，每个 item 就是一个`el-col`                       | number                                           | -       | 0       |
+| pull           | 栅格向左移动格数。`el-col`的属性，每个 item 就是一个`el-col`                       | number                                           | -       | 0       |
+| xs             | `<768px` 响应式栅格数或者栅格属性对象。`el-col`的属性，每个 item 就是一个`el-col`  | `number / object`                                | -       | -       |
+| sm             | `≥768px` 响应式栅格数或者栅格属性对象。`el-col`的属性，每个 item 就是一个`el-col`  | `number / object`                                | -       | -       |
+| md             | `≥992px` 响应式栅格数或者栅格属性对象。`el-col`的属性，每个 item 就是一个`el-col`  | `number / object`                                | -       | -       |
+| lg             | `≥1200px` 响应式栅格数或者栅格属性对象。`el-col`的属性，每个 item 就是一个`el-col` | `number / object`                                | -       | -       |
+| xl             | `≥1920px` 响应式栅格数或者栅格属性对象。`el-col`的属性，每个 item 就是一个`el-col` | `number / object`                                | -       | -       |
 
 ::: tip 关于 Fields
 
