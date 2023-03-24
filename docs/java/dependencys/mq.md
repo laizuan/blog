@@ -21,7 +21,7 @@
 
   以用户中心为例
 
-  ```yam
+  ```yaml
   spring:
     application:
       name: upm
@@ -41,25 +41,24 @@
 
 - 使用示例
 
-    `sendDefaultTopic`方法可以发送到默认的主题，即：`系统代码-out-0`。如果要发送其它主题可以使用`send`方法
-    
-    - 顺序消息
+  `sendDefaultTopic`方法可以发送到默认的主题，即：`系统代码-out-0`。如果要发送其它主题可以使用`send`方法
 
-      消息有序，指的是一类消息消费时，能按照发送的顺序来消费。例如：一个订单产生了三条消息分别是订单创建、订单付款、订单完成。消费时要按照这个顺序消费才能有意义。否则有可能会先消费订单完成在消费订单付款
-    
-      如果要发送顺序消息，需要传`id`参数
-    
-      **一般情况下设计到状态流转的数据都需要顺序消费**
-    
-    ```java
-    @Autowired
-    private MessageQueueTemplate messageQueueTemplate;
-    
-    messageQueueTemplate.sendDefaultTopic("rule", "om"); // 发送tags为rule的消息，消息内容为om
-    ```
+  - 顺序消息
 
-​		参数含义：
+    消息有序，指的是一类消息消费时，能按照发送的顺序来消费。例如：一个订单产生了三条消息分别是订单创建、订单付款、订单完成。消费时要按照这个顺序消费才能有意义。否则有可能会先消费订单完成在消费订单付款
 
+    如果要发送顺序消息，需要传`id`参数
+
+    **一般情况下设计到状态流转的数据都需要顺序消费**
+
+  ```java
+  @Autowired
+  private MessageQueueTemplate messageQueueTemplate;
+
+  messageQueueTemplate.sendDefaultTopic("rule", "om"); // 发送tags为rule的消息，消息内容为om
+  ```
+
+​ 参数含义：
 
     ```
       /**
@@ -119,7 +118,7 @@
         log.info("apiRule -> {}", systemCode);
       };
     }
-  
+
     @Bean
     public Consumer<Message<String>> userAuth() {
       return msg -> {
