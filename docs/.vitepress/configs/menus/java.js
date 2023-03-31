@@ -82,6 +82,19 @@ export const createJavaMenu = () => {
         {
           text: '分布式定时任务',
           link: '/java/dependencys/job'
+        },
+        {
+          text: '权限',
+          link: '/java/dependencys/auth'
+        }
+      ]
+    },
+    {
+      text: '业务组件',
+      items: [
+        {
+          text: '用户和企业相关接口',
+          link: '/java/business/upmapi'
         }
       ]
     },

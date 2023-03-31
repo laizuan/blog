@@ -111,10 +111,10 @@ export default {
 
 ### Confirm & Cancel Props
 
-| 参数 | 说明     | 类型    | 可选值 | 默认值    |
-| :--- | :------- | :------ | :----- | :-------- |
-| text | 按钮文案 | string  | -      | 确定/取消 |
-| show | 是否显示 | boolean | -      | true      |
+| 参数  | 说明     | 类型    | 可选值 | 默认值    |
+| :---- | :------- | :------ | :----- | :-------- |
+| label | 按钮文案 | string  | -      | 确定/取消 |
+| show  | 是否显示 | boolean | -      | true      |
 
 **支持 [ElButton](https://element-plus.gitee.io/zh-CN/component/button.html#button-%E5%B1%9E%E6%80%A7) 属性**
 
