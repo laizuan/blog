@@ -114,9 +114,22 @@ public interface EnterpriseApiService {
 }
 ```
 
-## MQ事件
+## MQ 事件
 
 需要注意的是不管是用户或企业`新增、删除、修改`都只有一个事件，你可以收到事件后调用相关接口来获取，没有获取到则表示删除。在用户中心的设计中，不提供删除用户和企业功能，只有`启用、禁用`来标识
+
+**如果你有使用到带缓存的接口一定必须要配置以下 MQ 事件，它会帮你管理你的缓存**
+
+在`spring.profiles.group`中添加`bizupm`代码。如下：
+
+```yaml
+spring:
+  profiles:
+    group:
+      dev: base,rpc,bizupm
+      test: base,rpc,bizupm
+      prod: base,rpc,bizupm
+```
 
 - 用户信息相关事件
 
@@ -128,26 +141,9 @@ public interface EnterpriseApiService {
       stream:
         function:
           definition: user;deptClearUserCache
-        rocketmq:
-          bindings:
-            user-in-0:
-              consumer:
-                enabled: ${leaderrun.bizupm.user-enabled:true}
-                subscription: user
-            deptClearUserCache-in-0:
-              consumer:
-                enabled: ${leaderrun.bizupm.user-enabled:true}
-                subscription: deptClearUserCache
-        bindings:
-          user-in-0:
-            destination: upm
-            group: ${spring.application.name}-user
-          deptClearUserCache-in-0:
-            destination: upm
-            group: ${spring.application.name}-dcuc
   ```
 
-  你可以使用`leaderrun.bizupm.user-enabled=false`来禁用来自`MQ`的消息
+  你可以使用`leaderrun.bizupm.user-enabled=false`来禁用来自`MQ`的消息。**禁用后不会管理你的接口缓存**
 
 - 企业信息相关事件
 
@@ -159,18 +155,8 @@ public interface EnterpriseApiService {
       stream:
         function:
           definition: ent
-        rocketmq:
-          bindings:
-            ent-in-0:
-              consumer:
-                enabled: ${leaderrun.bizupm.ent-enabled:true}
-                subscription: ent
-        bindings:
-          ent-in-0:
-            destination: upm
-            group: ${spring.application.name}-ent
   ```
 
-  你可以使用`leaderrun.bizupm.ent-enabled=false`禁用`MQ`消息
+  你可以使用`leaderrun.bizupm.ent-enabled=false`禁用`MQ`消息。**禁用后不会管理你的接口缓存**
 
-​	
+​
