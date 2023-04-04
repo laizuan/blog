@@ -109,6 +109,15 @@ public interface EnterpriseApiService {
   @Cacheable(key = "#p0")
   EnterpriseDTO get(@PathVariable("entId") Long entId);
 
+  /**
+   * 通过企业代码获取企业数据
+   *
+   * @param entCode 企业代码
+   * @return 企业数据
+   */
+  @GetMapping("/getByCode/{entCode}")
+  EnterpriseDTO getByCode(@PathVariable("entCode") String entCode);
+
   @CacheEvict(key = "#p0")
   default void clearEntCache(Long entId) {}
 }
