@@ -565,6 +565,8 @@ public boolean update(SysDictTypeForm form) {
 
 ### 自动注入
 
+**创建人和修改人字段必须是 Long 类型，创建时间和修改时间必须是 LocalDateTime 类型否则注入失败**
+
 - 通过继承`BaseEntity`方式
 
   在修改或者新增的时候自动注入`创建人`、`创建时间`、`修改人`、`修改时间`
