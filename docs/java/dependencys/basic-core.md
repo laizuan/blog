@@ -563,6 +563,24 @@ public boolean update(SysDictTypeForm form) {
 }
 ```
 
+### 自动注入
+
+- 通过继承`BaseEntity`方式
+
+  在修改或者新增的时候自动注入`创建人`、`创建时间`、`修改人`、`修改时间`
+
+- 使用注解方式
+
+  在需要注入的字段添加注解，需要设置 `@TableField`的`fill`自动填充策略。如果没有获取到登入人信息`(SecurityUserUtils.getLoginUser() == null)`则不会注入当前登入人主键
+
+  `@CreatedBy`：注入当前登录人主键
+
+  `@CreatedDate`：注入当前时间
+
+  `@LastModifiedBy`：注入当前登录人主键
+
+  `@LastModifiedDate`：注入当前时间
+
 ### 查询增强器`ProQuery`
 
 简化数据库查询操作。如果业务层继承了`BaseServiceImpl`可以直接使用`q()`方法操作。或者使用`SqlUtils.q()`也可以使用原始类型`ProQuery.Builder`
@@ -692,3 +710,61 @@ IdGenerator.nextId();
 IdGenerator.nextUuid();
 IdGenerator.nextNanoId();
 ```
+
+## 工具类
+
+所有的工具类都已将源码上传到 maven 仓库。使用工具类的时候可以点开方法查看详细的注释信息
+
+### Pdf
+
+pdf 工具类
+
+- `Pdf.builderMergerPdf()`：多个 pdf 合并成一个 pdf
+- `Pdf.builderImageToPdf()`：多图转 pdf
+- `Pdf.builderHtmlToPdf()`：html 生成 pdf
+
+### SecurityUserUtils
+
+获取当前登入信息，如果没有登入会抛出 401 错误码
+
+### Assert
+
+断言工具类，继承了`org.apache.commons.lang3.Validate`的所有断言方法。
+
+### JsonUtils
+
+Json 序列化和反序列化工具
+
+### TreeUtil
+
+树形数据结构工具类，会将 list 数据转成数据结构数据
+
+### WebUtils
+
+继承了`org.springframework.web.util.WebUtils`所有方法。主要封装了请求和响应操作的方法。比如输出流，设置下载或者预览请求头，请求参数拼接等。
+
+### ImageUtils
+
+图片工具类，主要有压缩、裁剪、水印等功能
+
+### BeanUtils
+
+Bean 对象拷贝工具类。继承了`org.springframework.beans.BeanUtils`所有方法。
+
+**涉及到对象拷贝请统一使用该工具类**
+
+### DateUtils
+
+日期相关工具类
+
+### EnumUtils
+
+枚举相关工具类，继承了`org.apache.commons.lang3.EnumUtils`所有方法。主要有通过`value`值获取到枚举常量
+
+### ResourceUtils
+
+资源工具类，基础了`org.springframework.util.ResourceUtils`所有方法。主要用户获取项目下的文件等操作
+
+### SpringContextUtils
+
+Spring 容器工具类，主要提供了获取容器中 bean 对象方法

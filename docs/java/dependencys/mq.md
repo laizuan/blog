@@ -54,11 +54,11 @@
   ```java
   @Autowired
   private MessageQueueTemplate messageQueueTemplate;
-
+  
   messageQueueTemplate.sendDefaultTopic("rule", "om"); // 发送tags为rule的消息，消息内容为om
   ```
 
-​ 参数含义：
+ 参数含义：
 
     ```java
       /**
@@ -93,6 +93,7 @@
                 subscription: rule #定义tags名称，如果要消费多个消费者用 || 隔开
                 push:
                   orderly: true #消费者顺序消费，不需要顺序消费的切记去调，提高消费速度
+                  delayLevelWhenNextConsume: -1 # 处理消息抛出异常重试策略。默认会重试16次后进入死信队列。可以设置成-1，异常不重试直接进入死信
             userAuth-in-0:
               consumer:
                 subscription: userAuth
@@ -118,7 +119,7 @@
         log.info("apiRule -> {}", systemCode);
       };
     }
-
+  
     @Bean
     public Consumer<Message<String>> userAuth() {
       return msg -> {
@@ -127,6 +128,35 @@
       };
     }
   ```
+
+- 幂等消费处理
+
+  RocketMq并不能保证消息幂等，可以使用`BaseConsumer#idempotentConsumer()`来处理。必须要在配置文件中配置`delayLevelWhenNextConsume=-1`否则没有什么意义。具体可以查看`idempotentConsumer`方法描述
+
+  `idempotentConsumer`它已经处理了顺序消费问题，通过分布式锁来实现。**前提是你使用了`MessageQueueTemplate`来发送顺序消息**。
+
+  ```java
+  @Component
+  public class CustomsConsumer extends BaseConsumer {
+    private final LogWrapper log = LogWrapper.getLogger(this.getClass());
+  
+  
+    public CustomsConsumer(RedisService redisService) {
+      super(redisService);
+    }
+      
+    @Bean
+    public Consumer<Message<CustomsCmd>> factorySubmitOrder() {
+      return idempotentConsumer(
+          message -> {
+           .....
+          },
+          "处理工厂提交的报关数据消息");
+    }  
+  }
+  ```
+
+  
 
 ## Bus 消息总线
 
