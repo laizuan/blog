@@ -583,6 +583,8 @@ public boolean update(SysDictTypeForm form) {
 
   `@LastModifiedDate`：注入当前时间
 
+  `@ColumnDefault`: 在插入的时候自动注入值，字段类型是`Integer\Double\Float\Byte\Short\String\Boolean\Long\BigDecimal`的时候才能注入成功
+
 ### 查询增强器`ProQuery`
 
 简化数据库查询操作。如果业务层继承了`BaseServiceImpl`可以直接使用`q()`方法操作。或者使用`SqlUtils.q()`也可以使用原始类型`ProQuery.Builder`
@@ -724,6 +726,7 @@ pdf 工具类
 - `Pdf.builderMergerPdf()`：多个 pdf 合并成一个 pdf
 - `Pdf.builderImageToPdf()`：多图转 pdf
 - `Pdf.builderHtmlToPdf()`：html 生成 pdf
+- `Pdf.builderMarkerPdf()`：给 PDF 添加水印
 
 ### SecurityUserUtils
 
