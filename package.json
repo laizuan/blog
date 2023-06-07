@@ -10,8 +10,9 @@
     "docs:serve": "vitepress serve docs --port 3634"
   },
   "dependencies": {
-    "element-next": "^1.24.1",
-    "element-plus": "^2.2.13"
+    "dayjs": "^1.11.8",
+    "element-next": "^1.29.1",
+    "element-plus": "npm:@lhrdc/element-plus@2.3.6-stable.4"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
@@ -19,8 +20,8 @@
     "prettier": "^2.5.1",
     "rollup-plugin-external-globals": "^0.6.1",
     "sass": "^1.45.0",
-    "vitepress": "1.0.0-alpha.10",
-    "vitepress-theme-demoblock": "^1.4.2"
+    "vitepress": "1.0.0-alpha.30",
+    "vitepress-theme-demoblock": "^2.0.2"
   },
   "engines": {
     "node": ">=16.0.0"

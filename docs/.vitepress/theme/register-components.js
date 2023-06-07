@@ -1,7 +1,7 @@
 import ElementPlus from 'element-plus'
-import ElementNext from 'element-next/lib/element-next.umd.js'
-import Demo from 'vitepress-theme-demoblock/components/Demo.vue'
-import DemoBlock from 'vitepress-theme-demoblock/components/DemoBlock.vue'
+import ElementNext from 'element-next'
+import Demo from 'vitepress-theme-demoblock/dist/client/components/Demo.vue'
+import DemoBlock from 'vitepress-theme-demoblock/dist/client/components/DemoBlock.vue'
 export function registerComponents(app) {
   app.component('Demo', Demo)
   app.component('DemoBlock', DemoBlock)

@@ -19,13 +19,7 @@ meta:
 
 ```vue
 <template>
-  <n-select
-    v-model="select"
-    :data="data"
-    :config="config"
-    :only-label="true"
-    @change="doChange"
-  />
+  <n-select v-model="select" :data="data" :config="config" :only-label="true" @change="doChange" />
 </template>
 
 <script>
@@ -40,7 +34,7 @@ export default {
       { value: 'JavaScript', label: 'javascript' },
       { value: 'Python', label: 'python' },
       { value: 'Dart', label: 'dart' },
-      { value: 'V', label: 'v' },
+      { value: 'V', label: 'v' }
     ])
     const doChange = (v) => {
       console.log('doChange ====> ', v)
@@ -49,9 +43,9 @@ export default {
       select,
       doChange,
       data,
-      config,
+      config
     }
-  },
+  }
 }
 </script>
 ```
@@ -80,14 +74,14 @@ export default {
       { value: 'JavaScript', desc: 'javascript' },
       { value: 'Python', desc: 'python' },
       { value: 'Dart', desc: 'dart' },
-      { value: 'V', desc: 'v' },
+      { value: 'V', desc: 'v' }
     ])
 
     return {
       select1,
-      list,
+      list
     }
-  },
+  }
 }
 </script>
 ```
@@ -108,12 +102,7 @@ export default {
 
 ```vue
 <template>
-  <n-select
-    v-model="select2"
-    :data="data"
-    :config="config"
-    :displayKey="['value', 'label']"
-  />
+  <n-select v-model="select2" :data="data" :config="config" :displayKey="['value', 'label']" />
 </template>
 
 <script>
@@ -128,15 +117,15 @@ export default {
       { value: 'JavaScript', label: 'javascript' },
       { value: 'Python', label: 'python' },
       { value: 'Dart', label: 'dart' },
-      { value: 'V', label: 'v' },
+      { value: 'V', label: 'v' }
     ])
 
     return {
       select2,
       config,
-      data,
+      data
     }
-  },
+  }
 }
 </script>
 ```
@@ -171,15 +160,15 @@ export default {
       { value: 'JavaScript', label: 'javascript' },
       { value: 'Python', label: 'python' },
       { value: 'Dart', label: 'dart' },
-      { value: 'V', label: 'v' },
+      { value: 'V', label: 'v' }
     ])
 
     return {
       select5,
       config,
-      data,
+      data
     }
-  },
+  }
 }
 </script>
 ```
@@ -206,14 +195,14 @@ export default {
       { value: 'JavaScript', desc: 'javascript' },
       { value: 'Python', desc: 'python' },
       { value: 'Dart', desc: 'dart' },
-      { value: 'V', desc: 'v' },
+      { value: 'V', desc: 'v' }
     ])
 
     return {
       select3,
-      data20,
+      data20
     }
-  },
+  }
 }
 </script>
 ```
@@ -243,42 +232,42 @@ export default {
         children: [
           {
             value: 'Shanghai',
-            desc: '上海',
+            desc: '上海'
           },
           {
             value: 'Beijing',
-            desc: '北京',
-          },
-        ],
+            desc: '北京'
+          }
+        ]
       },
       {
         desc: '城市名',
         children: [
           {
             value: 'Chengdu',
-            desc: '成都',
+            desc: '成都'
           },
           {
             value: 'Shenzhen',
-            desc: '深圳',
+            desc: '深圳'
           },
           {
             value: 'Guangzhou',
-            desc: '广州',
+            desc: '广州'
           },
           {
             value: 'Dalian',
-            desc: '大连',
-          },
-        ],
-      },
+            desc: '大连'
+          }
+        ]
+      }
     ])
 
     return {
       select4,
-      data1,
+      data1
     }
-  },
+  }
 }
 </script>
 ```
@@ -287,46 +276,46 @@ export default {
 
 ## Props
 
-| Name         | Description                                                  | Type                           | Options | Default                                                      |
-| :----------- | :----------------------------------------------------------- | :----------------------------- | :------ | :----------------------------------------------------------- |
-| v-model      | 绑定值                                                       | array\|number\|string\|boolean | -       | -                                                            |
-| data         | 绑定数据                                                     | array                          | -       | -                                                            |
+| Name         | Description                                                     | Type                           | Options | Default                                                                        |
+| :----------- | :-------------------------------------------------------------- | :----------------------------- | :------ | :----------------------------------------------------------------------------- |
+| v-model      | 绑定值                                                          | array\|number\|string\|boolean | -       | -                                                                              |
+| data         | 绑定数据                                                        | array                          | -       | -                                                                              |
 | config       | 配置绑定数据键值，如果是自定义`config`需要正确配置`display-key` | object                         | -       | `{ value: 'value', desc: 'desc', disabled: 'disabled', children: 'children' }` |
-| only-label   | 是否只显示 label                                             | boolean                        | -       | false                                                        |
-| display-key  | 下拉选项需要显示的 key                                       | array                          | -       | `['value','desc']`                                           |
-| search-key   | 可搜索字段                                                   | array                          | -       | `['value','desc']`                                           |
-| clearable    | 是否可以清空选项                                             | boolean                        | -       | true                                                         |
-| placeholder  | 占位符                                                       | string                         | -       | 请选择                                                       |
-| to-str       | 是否将值转为 string 类型                                     | boolean                        | -       | false                                                        |
-| virtual      | 是否启用虚拟列表，下拉项超过100项的时候建议启用              | boolean                        | -       | false                                                        |
-| remoteConfig | 远程加载配置，请参考下面`RemoteConfig`                       | object                         | -       | -                                                            |
+| only-label   | 是否只显示 label                                                | boolean                        | -       | false                                                                          |
+| display-key  | 下拉选项需要显示的 key                                          | array                          | -       | `['value','desc']`                                                             |
+| search-key   | 可搜索字段                                                      | array                          | -       | `['value','desc']`                                                             |
+| clearable    | 是否可以清空选项                                                | boolean                        | -       | true                                                                           |
+| placeholder  | 占位符                                                          | string                         | -       | 请选择                                                                         |
+| to-str       | 是否将值转为 string 类型                                        | boolean                        | -       | false                                                                          |
+| virtual      | 是否启用虚拟列表，下拉项超过 100 项的时候建议启用               | boolean                        | -       | false                                                                          |
+| remoteConfig | 远程加载配置，请参考下面`RemoteConfig`                          | object                         | -       | -                                                                              |
 
 **支持 [el-select](https://element-plus.gitee.io/zh-CN/component/select.html#select-%E5%B1%9E%E6%80%A7) 全部属性**
 
 ### RemoteConfig
 
-| Name         | Description                                   | Type                  | Options                        | Default        |
-| :----------- | :-------------------------------------------- | :-------------------- | :----------------------------- | :------------- |
-| method       | 请求方法                                      | string                | `GET/POST`                     | `GET`          |
-| params       | 请求参数                                      | `Record<string, any>` | -                              | -              |
-| cache        | 是否缓存结果                                  | boolean               | -                              | `true`         |
-| cache-key    | 本地缓存表名                                  | string                | -                              | `_dict_`       |
-| storage-type | 缓存类型                                      | StorageType           | `sessionStorage/localStorage ` | `localStorage` |
-| expires      | 缓存过期时间，单位：天                        | number                | -                              | `7`            |
-| url          | 请求路径                                      | string                | -                              | -              |
-| key          | 缓存本地数据表中的key值。默认使用参数的值拼接 | string                | -                              | -              |
+| Name         | Description                                     | Type                  | Options                        | Default        |
+| :----------- | :---------------------------------------------- | :-------------------- | :----------------------------- | :------------- |
+| method       | 请求方法                                        | string                | `GET/POST`                     | `GET`          |
+| params       | 请求参数                                        | `Record<string, any>` | -                              | -              |
+| cache        | 是否缓存结果                                    | boolean               | -                              | `true`         |
+| cache-key    | 本地缓存表名                                    | string                | -                              | `_dict_`       |
+| storage-type | 缓存类型                                        | StorageType           | `sessionStorage/localStorage ` | `localStorage` |
+| expires      | 缓存过期时间，单位：天                          | number                | -                              | `7`            |
+| url          | 请求路径                                        | string                | -                              | -              |
+| key          | 缓存本地数据表中的 key 值。默认使用参数的值拼接 | string                | -                              | -              |
 
 ## Events
 
-| Name           | Description                                                     | Parameters                                                            |
-| -------------- | --------------------------------------------------------------- | --------------------------------------------------------------------- |
-| change         | 选中值发生变化时触发                                            | 目前的选中值                                                          |
-| visible-change | 下拉框出现/隐藏时触发                                           | 出现则为 true，隐藏则为 false                                         |
-| remove-tag     | 多选模式下移除 tag 时触发                                       | 移除的 tag 值                                                         |
-| clear          | 可清空的单选模式下用户点击清空按钮时触发                        | —                                                                     |
-| blur           | 当 input 失去焦点时触发                                         | (event: Event)                                                        |
-| focus          | 当 input 获得焦点时触发                                         | (event: Event)                                                        |
-| enter          | 当 input 按下回车键时触发，**注意：使用 ↑↓ 选择 item 回车无效** | select: select 下拉选择器的 ref 对象，element：select 内部 input 元素 |
+| Name           | Description                                                         | Parameters                                                                           |
+| -------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| change         | 选中值发生变化时触发                                                | 有两个参数。一个参数为目前的选中值，第二个为一个函数，调用函数则可以获取选中值的对象 |
+| visible-change | 下拉框出现/隐藏时触发                                               | 出现则为 true，隐藏则为 false                                                        |
+| remove-tag     | 多选模式下移除 tag 时触发                                           | 移除的 tag 值                                                                        |
+| clear          | 可清空的单选模式下用户点击清空按钮时触发                            | —                                                                                    |
+| blur           | 当 input 失去焦点时触发                                             | (event: Event)                                                                       |
+| focus          | 当 input 获得焦点时触发                                             | (event: Event)                                                                       |
+| enter          | 当 input 按下回车键时触发，**注意：使用 ↑↓ 选择 item 回车不会触发** | select: select 下拉选择器的 ref 对象，element：select 内部 input 元素                |
 
 ## Slots
 
