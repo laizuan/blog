@@ -10,8 +10,9 @@
     "docs:serve": "vitepress serve docs --port 3634"
   },
   "dependencies": {
-    "element-next": "^1.24.1",
-    "element-plus": "^2.2.13"
+    "axios": "^1.4.0",
+    "element-next": "^1.29.2",
+    "element-plus": "npm:@lhrdc/element-plus@2.3.6-stable.4"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
