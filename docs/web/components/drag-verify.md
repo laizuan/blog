@@ -5,6 +5,10 @@ meta:
     content: 滑动验证
 ---
 
+::: tip 警告
+**1.29.0 版本以后不在提供该组件**
+:::
+
 # DragVerify
 
 滑动验证。[来源](https://vvbin.cn/doc-next/components/verify.html)
