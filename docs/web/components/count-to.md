@@ -5,7 +5,7 @@ meta:
     content: 数字动画组件
 ---
 
-::: tip 警告
+::: warning 警告
 1.29.0 版本不在提供该组件，请使用[useTransition](https://vueuse.org/core/useTransition/)组件
 :::
 

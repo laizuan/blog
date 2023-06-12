@@ -4,7 +4,7 @@ const nav = require('./configs/nav')
 const sidebar = require('./configs/sidebar')
 const externalGlobals = require('rollup-plugin-external-globals')
 import plantuml from 'markdown-it-plantuml'
-
+// import { demoBlockPlugin } from 'vitepress-theme-demoblock'
 function MdCustomAttrPugin(md, type, mdOptions = null) {
   var defaultRenderer = md.renderer.rules[type]
 
@@ -69,10 +69,31 @@ export default defineConfig({
     // options for markdown-it-toc
     toc: { includeLevel: [1, 2] },
     config: (md) => {
-      const { demoBlockPlugin } = require('vitepress-theme-demoblock')
-      md.use(demoBlockPlugin, {
-        cssPreprocessor: 'scss'
-      })
+      // md.use(demoBlockPlugin, {
+      //   cssPreprocessor: 'scss',
+      //   scriptImports: [
+      //     "import * as ElementPlus from 'element-plus'",
+      //     "import * as ElementPlus from 'element-next'"
+      //   ],
+      //   scriptReplaces: [
+      //     {
+      //       searchValue: /const ({ defineComponent as _defineComponent }) = Vue/g,
+      //       replaceValue: 'const { defineComponent: _defineComponent } = Vue'
+      //     },
+      //     {
+      //       searchValue: /import ({.*}) from 'element-plus'/g,
+      //       replaceValue: (s, s1) => `const ${s1} = ElementPlus`
+      //     },
+      //     {
+      //       searchValue: /const ({ defineComponent as _defineComponent }) = Vue/g,
+      //       replaceValue: 'const { defineComponent: _defineComponent } = Vue'
+      //     },
+      //     {
+      //       searchValue: /import ({.*}) from 'element-next'/g,
+      //       replaceValue: (s, s1) => `const ${s1} = ElementNext`
+      //     }
+      //   ]
+      // })
       md.use(MdCustomAttrPugin, 'image', {
         'data-fancybox': 'gallery'
       })

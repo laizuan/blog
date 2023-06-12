@@ -9,7 +9,7 @@
 
 如果你是高版本的`Idea`那么需要设置`Idea`的 `VM` 参数。[官方说明](https://github.com/google/google-java-format/blob/master/README.md#intellij-jre-config)
 
-```text
+```txt
 --add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED
 --add-exports=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED
 --add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED

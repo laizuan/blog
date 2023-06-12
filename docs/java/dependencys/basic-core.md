@@ -239,7 +239,7 @@ public class Test {
 
 结果：
 
-```text
+```txt
 sout -> Test(productName=手机,电脑)
 ```
 

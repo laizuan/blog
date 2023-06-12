@@ -26,11 +26,10 @@ import { ref } from 'vue'
 
 export default {
   setup() {
+    const count = ref(0)
     const doClick = () => {
       count.value = count.value + 1
     }
-
-    const count = ref(0)
 
     return {
       doClick,
