@@ -57,17 +57,16 @@ spring:
 
 ## 日志
 
-系统内置 log4j2.xml 配置， classpath:log/base-log4j2.xml，可以通过`seedltd.logging.config-file-patch`来指定你的日志配置文件。日志文件地址会根据`seedltd.logging.path`参数加上你的项目名称（`spring.application.name`:默认`app`）。即：`${user.dir}/logs/seedltd/app/error.log`
+系统内置 `logback-spring.xml` 配置， 可以通过`seedltd.log.config-file-path`来指定你的日志配置文件。
 
 ### 属性说明
 
-| 类型    | 名称                              | 说明                                                             | 默认值                                | 版本 |
-| ------- | --------------------------------- | ---------------------------------------------------------------- | ------------------------------------- | ---- |
-| String  | seedltd.logging.config-file-patch | 指定日志配置文件，如果不想使用内置的配置文件可以通过这个值来重置 | classpath:log/base-logback-spring.xml |      |
-| String  | seedltd.logging.path              | 日志文件存放地址                                                 | `${user.dir}/logs`/seedltd            |      |
-| String  | seedltd.logging.max-size          | 日志文件最大字节数，超过备份当前日志文件，再重启一个新的日志文件 | 50MB                                  |      |
-| Integer | seedltd.logging.max-history       | 日志最大保留多少天                                               | 15                                    |      |
-| String  | seedltd.logging.total-size-cap    | 所有归档日志文件的总大小                                         | 30GB                                  |      |
+| 类型    | 名称                         | 说明                                                             | 默认值                                | 版本 |
+| ------- | ---------------------------- | ---------------------------------------------------------------- | ------------------------------------- | ---- |
+| String  | seedltd.log.config-file-path | 指定日志配置文件，如果不想使用内置的配置文件可以通过这个值来重置 | classpath:log/base-logback-spring.xml |      |
+| String  | seedltd.log.base-path        | 日志文件存放地址基础路径                                         | `./logs`                              |      |
+| String  | seedltd.log.max-size         | 日志文件最大字节数，超过备份当前日志文件，再重启一个新的日志文件 | 100MB                                 |      |
+| Integer | seedltd.log.max-history      | 日志最大保留多少天                                               | 15                                    |      |
 
 ### Sql 日志
 
