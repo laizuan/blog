@@ -161,6 +161,33 @@ System.out.println("得到Sign：" + sign);
 
 从`2.1.0`版本之后所有数据库主键都需要包含该注解，其它Long类型需要混淆也使用。内部会自动的系列化成混淆的字符串返回和自动反序列化前端传值成`Long`值。
 
+注解可以填加载字段和方法或者参数中。
+
+- 注意事项
+
+  - 数值不能超过`9007199254740992L`
+
+  - 暂时不支持接收`application/json`(`JSON数组`)参数反序列化。如下代码，你将得到字符串转Long的异常。
+
+    ```java
+      @PostMapping("/t/1")
+      public void t(@RequestBody @HashId List<Long> ids) {
+        ids.forEach(s -> logger.info("-------{}", s));
+      }
+    ```
+
+    推荐做法，使用` application/x-www-form-urlencoded`form表单的形式来提交数据
+
+      ```java
+        @PostMapping("/t/2")
+        public void t2(@RequestParam("ids") @HashId List<Long> ids) {
+          ids.forEach(s -> logger.info("-------{}", s));
+        }
+      ```
+
+
+
+
 #### `@DynamicEnum` 动态枚举注解
 
 动态数据转换成枚举 json 字符串，需要转换的值类型尽量避免使用基本数据类型，防止 null 的时候序列化异常。注意：需要实现`DynamicEnumService`接口，该接口接收 3 个参数：
