@@ -275,7 +275,6 @@ export declare const ruleRequired: (
   message?: string,
   trigger?: ValidateTrigger
 ) => FormItemRule
-
 /**
  * 长度显示，min：最小长度，max：最大长度，trigger：触发校验的事件，blur 或者 change，默认为blur
  */
@@ -284,7 +283,6 @@ export declare const ruleLimit: (
   max?: number,
   trigger?: ValidateTrigger
 ) => FormItemRule
-
 /**
  * 最大长度输入限制.max：最大长度
  */
@@ -293,12 +291,17 @@ export declare const ruleMaxLength: (
   message?: string,
   trigger?: ValidateTrigger
 ) => FormItemRule
+/**
+ * 字符串最小长度校验
+ * @param min 字符串最小多少个字符
+ * @param message
+ * @param trigger
+ */
 export declare const ruleMinLength: (
   min: number,
   message?: string,
   trigger?: ValidateTrigger
 ) => FormItemRule
-
 /**
  * 数字范围校验
  */
@@ -307,7 +310,6 @@ export declare const ruleRange: (
   max: number,
   trigger?: ValidateTrigger
 ) => FormItemRule
-
 /**
  * 数字最大值
  */
@@ -316,7 +318,6 @@ export declare const ruleMax: (
   message?: string,
   trigger?: ValidateTrigger
 ) => FormItemRule
-
 /**
  * 数字最大值
  */
@@ -325,48 +326,52 @@ export declare const ruleMin: (
   message?: string,
   trigger?: ValidateTrigger
 ) => FormItemRule
-
 /**
  *邮箱效验规则
  */
 export declare const ruleEmail: (message?: string, trigger?: ValidateTrigger) => FormItemRule
 export declare const ruleEmailAll: (message?: string, trigger?: ValidateTrigger) => FormItemRule
-
 /**
  *正整数效验规则
  */
 export declare const ruleInteger: (message?: string, trigger?: ValidateTrigger) => FormItemRule
-
 /**
  *正整数或者负整数效验规则 InternalRuleItem
  */
 export declare const ruleNumber: (message?: string, trigger?: ValidateTrigger) => FormItemRule
+/**
+ * 浮点型校验
+ * @param precision 对多保留几位小数
+ * @param message 错误消息
+ * @param trigger 触发事件
+ */
 export declare const ruleFloat: (
   precision: number,
   message?: string,
   trigger?: ValidateTrigger
 ) => FormItemRule
-
 /**
  *移动电话效验规则
  */
 export declare const ruleMobile: (message?: string, trigger?: ValidateTrigger) => FormItemRule
-
 /**
  * 手机号或座机号效验规则
  */
 export declare const rulePhone: (message?: string, trigger?: ValidateTrigger) => FormItemRule
-
 /**
  *只允许输入中文
  */
 export declare const ruleChinese: (message?: string, trigger?: ValidateTrigger) => FormItemRule
-
+/**
+ * 不允许输入中文字符
+ * @param message
+ * @param trigger
+ */
+export declare const ruleNonChinese: (message?: string, trigger?: ValidateTrigger) => FormItemRule
 /**
  *只能输入英文
  */
 export declare const ruleEnglish: (message?: string, trigger?: ValidateTrigger) => FormItemRule
-
 /**
  *只能输入英文和数字，并且英文开头
  */
@@ -374,14 +379,15 @@ export declare const ruleEnglishAndNumber: (
   message?: string,
   trigger?: ValidateTrigger
 ) => FormItemRule
-
 /**
  * url 匹配
  */
 export declare const ruleUrl: (message?: string, trigger?: ValidateTrigger) => FormItemRule
-
 /**
- * 正则
+ * 正则校验
+ * @param pattern 正则表达式
+ * @param message 错误消息
+ * @param trigger 触发事件
  */
 export declare const rulePattern: (
   pattern: RegExp | string,
@@ -576,4 +582,11 @@ export declare const defineTableMethod: () => Ref<TableExpose>
  * @param routerName 需要清空缓存的路由名称
  */
 export declare const clearKeepAlive: (routerName: string) => void
+
+/**
+ * 全角半角校验
+ * @param str 字符串
+ * @returns 如果包含全角字符返回true
+ */
+export function isSBCCase(str: string): boolean
 ```
