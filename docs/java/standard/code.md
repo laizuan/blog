@@ -201,3 +201,59 @@ public class OrderService {
 - 对于`增删改`操作必须开启事务，并且需要设置回滚异常类型为`Exception`也就是`@Transactional(rollbackFor = Exception.class)`
 - 不要去设置`@Transactional`中的`isolation`属性。把他交给数据库，除非你知道`RR`和`RC`这两种隔离级别的原理已经应用场景。
 - 谨慎使用`@Transactional`中的`propagation`属性。默认值已经能满足我们大部分需求，如果使用`NESTED`/`REQUIRES_NEW`这两种事务传播类型，请先理解他们的原理已经副作用
+
+## 数据一致性要警惕
+
+在微服务中常常绕不开数据一致性，当然解决分布式事务的方法有很多，比如使用分布式事务中间件。引入分布式事务造成系统的复杂性大幅提高和可以用性和性能下降。
+
+比如新增订单场景，在订单服务新增完成后调用库存服务，通常情况我们会在一个事务中去调用接口，把调用接口放在最后面，当接口发生异常可以回滚订单服务的数据。伪代码如下：
+
+```java
+public class Order {
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @Transactional(rollbackFor = Exception.class)
+    public void createOrder(Order order) {
+        //保存订单
+        save(order);
+
+        // 调用库存服务扣减库存
+        restTemplate.getForObject(url, order);
+    }
+}
+```
+
+这段代码看似没问题，其实可能会造成数据不一致。因为`createOrder`方法执行完成之后才会执行`save order`提交事务方法，如果你在插入的时候SQL在数据库执行过程中发生异常，那么调库存服务的数据是不会回滚的。
+
+其实这样的场景有很多。比如发送MQ，保存数据失败但是MQ发送出去了。再比如用户注册发短信，没有注册成功短信发送出去了等等都会造成数据不一致。
+
+**我们在开发过程中，如果有涉及多个系统之前数据交互的都需要注意数据一致性问题**
+
+对于这个问题我们可以使用以下方法来**最大限度**的降低数据一致性问题，注意并不能完全解决。
+
+```java
+public class Order {
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @Transactional(rollbackFor = Exception.class)
+    public void createOrder(Order order) {
+        //保存订单
+        save(order);
+
+        TransactionSynchronizationManager.registerSynchronization(
+              new TransactionSynchronization() {
+                @Override
+                public void afterCommit() {
+                   // 调用库存服务扣减库存
+        			restTemplate.getForObject(url, order);
+                }
+        });
+    }
+}
+```
+
+我们可以通过监听事务提交完成后来做一些事情，需要注意的时候，如果调用库存服务失败是**不会回滚事务**的。这是你需要记录下日志人工排查，重新发送。
+
+如果你使用了`ApplicationEvent`来解耦业务，也可以使用`@TransactionalEventListener`替代`@EventListener`，他支持`@EventListener`的所有功能以及`TransactionSynchronizationManager`的功能。不过你需要注意`fallbackExecution`的使用，默认是`false`即没有事务的时候该事件不执行
