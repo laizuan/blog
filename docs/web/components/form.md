@@ -384,29 +384,29 @@ export default {
 
 ## Props
 
-| Name                | Description                                                  | Type                                             | Options                                             | Default |
-| :------------------ | :----------------------------------------------------------- | :----------------------------------------------- | :-------------------------------------------------- | :------ |
-| v-model             | 绑定值                                                       | object                                           | -                                                   | -       |
-| fields              | 表单项配置，参考下面 [fields](#fields-props) 属性            | array                                            | -                                                   | -       |
-| action              | 操作项按钮配置，参考下面 [action](#action-props)属性         | object                                           | -                                                   | -       |
-| inner-label         | 是否使用内置 label 模式，`element-plus` 组件无效             | boolean                                          | -                                                   | false   |
-| enter-on-submit     | 输入框回车触发提交按钮点击事件，如果开启则自定义的 `onKeyup`事件无效 | boolean                                          |                                                     | false   |
-| validate-on-submit  | 点击提交按钮的时候校验表单，拦截并提示校验不通过的内容       | boolean                                          |                                                     | true    |
-| first-auto-focus    | 进入页面第一个输入框是否获取焦点，只有第一个元素是 input 的时候有效 | boolean                                          |                                                     | true    |
+| Name                | Description                                                                                                            | Type                                             | Options                                             | Default |
+| :------------------ | :--------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------- | :-------------------------------------------------- | :------ |
+| v-model             | 绑定值                                                                                                                 | object                                           | -                                                   | -       |
+| fields              | 表单项配置，参考下面 [fields](#fields-props) 属性                                                                      | array                                            | -                                                   | -       |
+| action              | 操作项按钮配置，参考下面 [action](#action-props)属性                                                                   | object                                           | -                                                   | -       |
+| inner-label         | 是否使用内置 label 模式，`element-plus` 组件无效                                                                       | boolean                                          | -                                                   | false   |
+| enter-on-submit     | 输入框回车触发提交按钮点击事件，如果开启则自定义的 `onKeyup`事件无效                                                   | boolean                                          |                                                     | false   |
+| validate-on-submit  | 点击提交按钮的时候校验表单，拦截并提示校验不通过的内容                                                                 | boolean                                          |                                                     | true    |
+| first-auto-focus    | 进入页面第一个输入框是否获取焦点，只有第一个元素是 input 的时候有效                                                    | boolean                                          |                                                     | true    |
 | show-more           | 是否显示更多，需要配合`limit`使用，**如果需要记住状态需要配置 RouteName**，我们会把 RouteName 做为保存在浏览器中的 key | boolean                                          |                                                     | false   |
-| limit               | 最多显示多少个`field`项，`showMore=true`的时候有效           | number                                           |                                                     | 4       |
-| highlight-error     | 表单验证不通过的时候输入框是否高亮                           | boolean                                          | -                                                   | true    |
-| highlight-required  | 表单必填项输入框是否高亮                                     | boolean                                          | -                                                   | true    |
-| gutter              | `el-row` 栅格间隔，如果定义了`group`属性默认一个`group`属性就是一个`el-row`标签 | number                                           | -                                                   | 0       |
-| justify             | `el-row` flex 布局下的水平排列方式，如果定义了`group`属性默认一个`group`属性就是一个`el-row`标签 | string                                           | start / end / center / space-around / space-between | start   |
-| align               | `el-row`flex 布局下的垂直排列方式，如果定义了`group`属性默认一个`group`属性就是一个`el-row`标签 | string                                           | top / middle / bottom                               | top     |
-| field-adaptive      | 表单项自适应栅格系统，开启后会自动添加`{ md: 8, xl: 6, sm: 12, xs: 24 }`属性 | boolean                                          | -                                                   | false   |
-| fixed-action        | 是否把表单的操作按钮固定在左边，查询表单的时候很有用         | boolean                                          | -                                                   | false   |
-| enter-next          | 回车是否跳转到下一个元素                                     | boolean                                          | -                                                   | true    |
-| scroll-to-error     | 校验不通过示范滚动当第一个错误项                             | boolean                                          | -                                                   | true    |
-| field-map-to-time   | 用于将表单内时间区域的应设成 2 个字段,见下方说明             | `[string, [string, string], string?,boolean?][]` | -                                                   | -       |
-| fiexd-error-message | 是否固定验证失败消息在右下角                                 | boolean                                          | -                                                   | false   |
-| remote-field        | 是否远程加载field，如果远程加载field需要设置为true           | boolean                                          | -                                                   | false   |
+| limit               | 最多显示多少个`field`项，`showMore=true`的时候有效                                                                     | number                                           |                                                     | 4       |
+| highlight-error     | 表单验证不通过的时候输入框是否高亮                                                                                     | boolean                                          | -                                                   | true    |
+| highlight-required  | 表单必填项输入框是否高亮                                                                                               | boolean                                          | -                                                   | true    |
+| gutter              | `el-row` 栅格间隔，如果定义了`group`属性默认一个`group`属性就是一个`el-row`标签                                        | number                                           | -                                                   | 0       |
+| justify             | `el-row` flex 布局下的水平排列方式，如果定义了`group`属性默认一个`group`属性就是一个`el-row`标签                       | string                                           | start / end / center / space-around / space-between | start   |
+| align               | `el-row`flex 布局下的垂直排列方式，如果定义了`group`属性默认一个`group`属性就是一个`el-row`标签                        | string                                           | top / middle / bottom                               | top     |
+| field-adaptive      | 表单项自适应栅格系统，开启后会自动添加`{ md: 8, xl: 6, sm: 12, xs: 24 }`属性                                           | boolean                                          | -                                                   | false   |
+| fixed-action        | 是否把表单的操作按钮固定在左边，查询表单的时候很有用                                                                   | boolean                                          | -                                                   | false   |
+| enter-next          | 回车是否跳转到下一个元素                                                                                               | boolean                                          | -                                                   | true    |
+| scroll-to-error     | 校验不通过示范滚动当第一个错误项                                                                                       | boolean                                          | -                                                   | true    |
+| field-map-to-time   | 用于将表单内时间区域的应设成 2 个字段,见下方说明                                                                       | `[string, [string, string], string?,boolean?][]` | -                                                   | -       |
+| fiexd-error-message | 是否固定验证失败消息在右下角                                                                                           | boolean                                          | -                                                   | false   |
+| remote-field        | 是否远程加载 field，如果远程加载 field 需要设置为 true                                                                 | boolean                                          | -                                                   | false   |
 
 **支持 [el-form](https://element-plus.gitee.io/zh-CN/component/form.html#form-%E5%B1%9E%E6%80%A7) 的所有属性**
 
@@ -506,14 +506,15 @@ props: {
 
 ### group Props
 
-| Name      | Description                      | Type    | Options | Default |
-| :-------- | :------------------------------- | :------ | :------ | :------ |
-| card      | 是否卡片模式，`false` 块状模式   | boolean | -       | false   |
-| title     | 标题                             | string  | -       | -       |
-| border    | 是否显示边框，只在卡片模式下生效 | boolean | -       | false   |
-| shawod    | 是否显示阴影，只在卡片模式下生效 | boolean | -       | false   |
-| className | 样式类名                         | string  | -       | -       |
-| children  | 分组下的`fields`属性             | array   | -       | []      |
+| Name      | Description                                      | Type                         | Options | Default |
+| :-------- | :----------------------------------------------- | :--------------------------- | :------ | :------ |
+| card      | 是否卡片模式，`false` 块状模式                   | boolean                      | -       | false   |
+| title     | 标题                                             | string                       | -       | -       |
+| border    | 是否显示边框，只在卡片模式下生效                 | boolean                      | -       | false   |
+| shawod    | 是否显示阴影，只在卡片模式下生效                 | boolean                      | -       | false   |
+| className | 样式类名                                         | string                       | -       | -       |
+| ifShow    | 动态显示组，不配置或者函数返回`true`的时候才显示 | `(modelValue: T) => boolean` | -       | -       |
+| children  | 分组下的`fields`属性                             | array                        | -       | []      |
 
 **分组不支持嵌套，可查看[分组示例](#分组使用)**
 
