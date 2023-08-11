@@ -17,16 +17,14 @@
 
 ### 属性配置
 
-| 字段名称                                        | 说明                                                         | 默认值                                                       |
-| ----------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| `leaderrun.mq.auto-registry`                    | 是否开启扫描注解自动注册。关闭之后`@MessageQueueListener`无效 | true                                                         |
-| `leaderrun.mq.auto-create-producer`             | 是否自动创建默认的发送者。                                   | xxxxxxxxxx DROP TABLE IF EXISTS QRTZ_FIRED_TRIGGERS;DROP TABLE IF EXISTS QRTZ_PAUSED_TRIGGER_GRPS;DROP TABLE IF EXISTS QRTZ_SCHEDULER_STATE;DROP TABLE IF EXISTS QRTZ_LOCKS;DROP TABLE IF EXISTS QRTZ_SIMPLE_TRIGGERS;DROP TABLE IF EXISTS QRTZ_SIMPROP_TRIGGERS;DROP TABLE IF EXISTS QRTZ_CRON_TRIGGERS;DROP TABLE IF EXISTS QRTZ_BLOB_TRIGGERS;DROP TABLE IF EXISTS QRTZ_TRIGGERS;DROP TABLE IF EXISTS QRTZ_JOB_DETAILS;DROP TABLE IF EXISTS QRTZ_CALENDARS;​-- ------------------------------ 1、存储每一个已配置的 jobDetail 的详细信息-- ----------------------------create table QRTZ_JOB_DETAILS(    sched_name        varchar(120) not null comment '调度名称',    job_name          varchar(200) not null comment '任务名称',    job_group         varchar(200) not null comment '任务组名',    description       varchar(250) null comment '相关介绍',    job_class_name    varchar(250) not null comment '执行任务类名称',    is_durable        varchar(1)   not null comment '是否持久化',    is_nonconcurrent  varchar(1)   not null comment '是否并发',    is_update_data    varchar(1)   not null comment '是否更新数据',    requests_recovery varchar(1)   not null comment '是否接受恢复执行',    job_data          blob null comment '存放持久化job对象',    primary key (sched_name, job_name, job_group)) engine = innodb comment = '任务详细信息表';​-- ------------------------------ 2、 存储已配置的 Trigger 的信息-- ----------------------------create table QRTZ_TRIGGERS(    sched_name     varchar(120) not null comment '调度名称',    trigger_name   varchar(200) not null comment '触发器的名字',    trigger_group  varchar(200) not null comment '触发器所属组的名字',    job_name       varchar(200) not null comment 'qrtz_job_details表job_name的外键',    job_group      varchar(200) not null comment 'qrtz_job_details表job_group的外键',    description    varchar(250) null comment '相关介绍',    next_fire_time bigint(13) null comment '上一次触发时间（毫秒）',    prev_fire_time bigint(13) null comment '下一次触发时间（默认为-1表示不触发）',    priority       integer null comment '优先级',    trigger_state  varchar(16)  not null comment '触发器状态',    trigger_type   varchar(8)   not null comment '触发器的类型',    start_time     bigint(13) not null comment '开始时间',    end_time       bigint(13) null comment '结束时间',    calendar_name  varchar(200) null comment '日程表名称',    misfire_instr  smallint(2) null comment '补偿执行的策略',    job_data       blob null comment '存放持久化job对象',    primary key (sched_name, trigger_name, trigger_group),    foreign key (sched_name, job_name, job_group) references QRTZ_JOB_DETAILS (sched_name, job_name, job_group)) engine = innodb comment = '触发器详细信息表';​-- ------------------------------ 3、 存储简单的 Trigger，包括重复次数，间隔，以及已触发的次数-- ----------------------------create table QRTZ_SIMPLE_TRIGGERS(    sched_name      varchar(120) not null comment '调度名称',    trigger_name    varchar(200) not null comment 'qrtz_triggers表trigger_name的外键',    trigger_group   varchar(200) not null comment 'qrtz_triggers表trigger_group的外键',    repeat_count    bigint(7) not null comment '重复的次数统计',    repeat_interval bigint(12) not null comment '重复的间隔时间',    times_triggered bigint(10) not null comment '已经触发的次数',    primary key (sched_name, trigger_name, trigger_group),    foreign key (sched_name, trigger_name, trigger_group) references QRTZ_TRIGGERS (sched_name, trigger_name, trigger_group)) engine = innodb comment = '简单触发器的信息表';​-- ------------------------------ 4、 存储 Cron Trigger，包括 Cron 表达式和时区信息-- ----------------------------create table QRTZ_CRON_TRIGGERS(    sched_name      varchar(120) not null comment '调度名称',    trigger_name    varchar(200) not null comment 'qrtz_triggers表trigger_name的外键',    trigger_group   varchar(200) not null comment 'qrtz_triggers表trigger_group的外键',    cron_expression varchar(200) not null comment 'cron表达式',    time_zone_id    varchar(80) comment '时区',    primary key (sched_name, trigger_name, trigger_group),    foreign key (sched_name, trigger_name, trigger_group) references QRTZ_TRIGGERS (sched_name, trigger_name, trigger_group)) engine = innodb comment = 'Cron类型的触发器表';​-- ------------------------------ 5、 Trigger 作为 Blob 类型存储(用于 Quartz 用户用 JDBC 创建他们自己定制的 Trigger 类型，JobStore 并不知道如何存储实例的时候)-- ----------------------------create table QRTZ_BLOB_TRIGGERS(    sched_name    varchar(120) not null comment '调度名称',    trigger_name  varchar(200) not null comment 'qrtz_triggers表trigger_name的外键',    trigger_group varchar(200) not null comment 'qrtz_triggers表trigger_group的外键',    blob_data     blob null comment '存放持久化Trigger对象',    primary key (sched_name, trigger_name, trigger_group),    foreign key (sched_name, trigger_name, trigger_group) references QRTZ_TRIGGERS (sched_name, trigger_name, trigger_group)) engine = innodb comment = 'Blob类型的触发器表';​-- ------------------------------ 6、 以 Blob 类型存储存放日历信息， quartz可配置一个日历来指定一个时间范围-- ----------------------------create table QRTZ_CALENDARS(    sched_name    varchar(120) not null comment '调度名称',    calendar_name varchar(200) not null comment '日历名称',    calendar      blob         not null comment '存放持久化calendar对象',    primary key (sched_name, calendar_name)) engine = innodb comment = '日历信息表';​-- ------------------------------ 7、 存储已暂停的 Trigger 组的信息-- ----------------------------create table QRTZ_PAUSED_TRIGGER_GRPS(    sched_name    varchar(120) not null comment '调度名称',    trigger_group varchar(200) not null comment 'qrtz_triggers表trigger_group的外键',    primary key (sched_name, trigger_group)) engine = innodb comment = '暂停的触发器表';​-- ------------------------------ 8、 存储与已触发的 Trigger 相关的状态信息，以及相联 Job 的执行信息-- ----------------------------create table QRTZ_FIRED_TRIGGERS(    sched_name        varchar(120) not null comment '调度名称',    entry_id          varchar(95)  not null comment '调度器实例id',    trigger_name      varchar(200) not null comment 'qrtz_triggers表trigger_name的外键',    trigger_group     varchar(200) not null comment 'qrtz_triggers表trigger_group的外键',    instance_name     varchar(200) not null comment '调度器实例名',    fired_time        bigint(13) not null comment '触发的时间',    sched_time        bigint(13) not null comment '定时器制定的时间',    priority          integer      not null comment '优先级',    state             varchar(16)  not null comment '状态',    job_name          varchar(200) null comment '任务名称',    job_group         varchar(200) null comment '任务组名',    is_nonconcurrent  varchar(1) null comment '是否并发',    requests_recovery varchar(1) null comment '是否接受恢复执行',    primary key (sched_name, entry_id)) engine = innodb comment = '已触发的触发器表';​-- ------------------------------ 9、 存储少量的有关 Scheduler 的状态信息，假如是用于集群中，可以看到其他的 Scheduler 实例-- ----------------------------create table QRTZ_SCHEDULER_STATE(    sched_name        varchar(120) not null comment '调度名称',    instance_name     varchar(200) not null comment '实例名称',    last_checkin_time bigint(13) not null comment '上次检查时间',    checkin_interval  bigint(13) not null comment '检查间隔时间',    primary key (sched_name, instance_name)) engine = innodb comment = '调度器状态表';​-- ------------------------------ 10、 存储程序的悲观锁的信息(假如使用了悲观锁)-- ----------------------------create table QRTZ_LOCKS(    sched_name varchar(120) not null comment '调度名称',    lock_name  varchar(40)  not null comment '悲观锁名称',    primary key (sched_name, lock_name)) engine = innodb comment = '存储的悲观锁信息表';​-- ------------------------------ 11、 Quartz集群实现同步机制的行锁表-- ----------------------------create table QRTZ_SIMPROP_TRIGGERS(    sched_name    varchar(120) not null comment '调度名称',    trigger_name  varchar(200) not null comment 'qrtz_triggers表trigger_name的外键',    trigger_group varchar(200) not null comment 'qrtz_triggers表trigger_group的外键',    str_prop_1    varchar(512) null comment 'String类型的trigger的第一个参数',    str_prop_2    varchar(512) null comment 'String类型的trigger的第二个参数',    str_prop_3    varchar(512) null comment 'String类型的trigger的第三个参数',    int_prop_1    int null comment 'int类型的trigger的第一个参数',    int_prop_2    int null comment 'int类型的trigger的第二个参数',    long_prop_1   bigint null comment 'long类型的trigger的第一个参数',    long_prop_2   bigint null comment 'long类型的trigger的第二个参数',    dec_prop_1    numeric(13, 4) null comment 'decimal类型的trigger的第一个参数',    dec_prop_2    numeric(13, 4) null comment 'decimal类型的trigger的第二个参数',    bool_prop_1   varchar(1) null comment 'Boolean类型的trigger的第一个参数',    bool_prop_2   varchar(1) null comment 'Boolean类型的trigger的第二个参数',    primary key (sched_name, trigger_name, trigger_group),    foreign key (sched_name, trigger_name, trigger_group) references QRTZ_TRIGGERS (sched_name, trigger_name, trigger_group)) engine = innodb comment = '同步机制的行锁表';​commit;sql |
-| `leaderrun.mq.open-send-completion-interceptor` | 是否开启发送消息失败拦截                                     | true                                                         |
-| `leaderrun.mq.producer.name`                    | 默认发送的主题名称                                           | `${spring.application.name}`                                 |
-| `leaderrun.mq.producer.group`                   | 默认发送主题的生产者组别名称                                 | `${spring.application.name} + "-" + "group"}`                |
-| `leaderrun.mq.producer.messageQueueSelector`    | 发送到那个队列算法bean名称                                   | `orderlyMessageQueueSelector`                                |
-
-
+| 字段名称                                        | 说明                                                          | 默认值                                        |
+| ----------------------------------------------- | ------------------------------------------------------------- | --------------------------------------------- |
+| `leaderrun.mq.auto-registry`                    | 是否开启扫描注解自动注册。关闭之后`@MessageQueueListener`无效 | true                                          |
+| `leaderrun.mq.auto-create-producer`             | 是否自动创建默认的发送者。                                    | true                                          |
+| `leaderrun.mq.open-send-completion-interceptor` | 是否开启发送消息失败拦截                                      | true                                          |
+| `leaderrun.mq.producer.name`                    | 默认发送的主题名称                                            | `${spring.application.name}`                  |
+| `leaderrun.mq.producer.group`                   | 默认发送主题的生产者组别名称                                  | `${spring.application.name} + "-" + "group"}` |
+| `leaderrun.mq.producer.messageQueueSelector`    | 发送到那个队列算法 bean 名称                                  | `orderlyMessageQueueSelector`                 |
 
 ### 注解配置 <Badge type="tip" text="^2.2.3" />
 
@@ -40,16 +38,16 @@
 
 `@MessageQueueListener`可以用在类上或者是方法上面
 
-| 字段名称                         | 说明                                                         | 默认值       |
-| -------------------------------- | ------------------------------------------------------------ | ------------ |
-| consumerGroup                    | 相同角色的消费者需要具有完全相同的订阅和consumerGroup 才能正确实现负载平衡。并且需要是唯一的。如果不配置默认：`${spring.application.name} + "-" + beanName + "-group"` |              |
-| topic                            | 订阅的主题                                                   |              |
-| subscription                     | 订阅的消息多个TAG可以使用`\|\|`隔开。支持Tag和SQL混搭。例如：`  sql:(clientId = 'leaderrun' and (TAGS is not null and TAGS = 'recpt'))` |              |
-| messageModel                     | 消费模式                                                     | `CLUSTERING` |
-| errorHandlerBeanName             | 当该消息消费时出现异常的回调方法bean的名称，如果不配置使用全局的拦截器 |              |
-| `push.orderly`                   | 控制消费模式，您可以选择并发或有序接收消息。<br/>如果你的消息需要控制消费顺序，请设置成true，否则设置成false提高消费速度 | false        |
-| `push.maxReconsumeTimes`         | 一个消息如果消费失败的话，最多重新消费多少次才投递到死信队列. 默认1次 | 1            |
-| `push.delayLevelWhenNextConsume` | 消息消费重试策略。<br />-1，不重试，直接放入DLQ<br/>0 ，由broker 控制频率<br/>>0，客户端控制重试频率 | -1           |
+| 字段名称                         | 说明                                                                                                                                                                    | 默认值       |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ |
+| consumerGroup                    | 相同角色的消费者需要具有完全相同的订阅和 consumerGroup 才能正确实现负载平衡。并且需要是唯一的。如果不配置默认：`${spring.application.name} + "-" + beanName + "-group"` |              |
+| topic                            | 订阅的主题                                                                                                                                                              |              |
+| subscription                     | 订阅的消息多个 TAG 可以使用`\|\|`隔开。支持 Tag 和 SQL 混搭。例如：`  sql:(clientId = 'leaderrun' and (TAGS is not null and TAGS = 'recpt'))`                           |              |
+| messageModel                     | 消费模式                                                                                                                                                                | `CLUSTERING` |
+| errorHandlerBeanName             | 当该消息消费时出现异常的回调方法 bean 的名称，如果不配置使用全局的拦截器                                                                                                |              |
+| `push.orderly`                   | 控制消费模式，您可以选择并发或有序接收消息。<br/>如果你的消息需要控制消费顺序，请设置成 true，否则设置成 false 提高消费速度                                             | false        |
+| `push.maxReconsumeTimes`         | 一个消息如果消费失败的话，最多重新消费多少次才投递到死信队列. 默认 1 次                                                                                                 | 1            |
+| `push.delayLevelWhenNextConsume` | 消息消费重试策略。<br />-1，不重试，直接放入 DLQ<br/>0 ，由 broker 控制频率<br/>>0，客户端控制重试频率                                                                  | -1           |
 
 如果是用在类上需要继承`MessageEventListener`并实现`onMessage`接口。**注意：如果使用在类上整个类只能有一个方法，除了类构造器**
 
@@ -67,8 +65,6 @@
         "");
   }
 ```
-
-
 
 ### 生产者
 
@@ -109,11 +105,11 @@
   ```java
   @Autowired
   private MessageQueueTemplate messageQueueTemplate;
-  
+
   messageQueueTemplate.sendDefaultTopic("rule", "om"); // 发送tags为rule的消息，消息内容为om
   ```
 
- 参数含义：
+参数含义：
 
     ```java
       /**
@@ -176,7 +172,7 @@
         log.info("apiRule -> {}", systemCode);
       };
     }
-  
+
     @Bean
     public Consumer<Message<String>> userAuth() {
       return msg -> {
@@ -188,7 +184,7 @@
 
 - **幂等消费处理**
 
-  RocketMq并不能保证消息幂等，可以使用`BaseConsumer#idempotentConsumer()`来处理。必须要在配置文件中配置`delayLevelWhenNextConsume=-1`否则没有什么意义。具体可以查看`idempotentConsumer`方法描述
+  RocketMq 并不能保证消息幂等，可以使用`BaseConsumer#idempotentConsumer()`来处理。必须要在配置文件中配置`delayLevelWhenNextConsume=-1`否则没有什么意义。具体可以查看`idempotentConsumer`方法描述
 
   `idempotentConsumer`它已经处理了顺序消费问题，通过分布式锁来实现。**前提是你使用了`MessageQueueTemplate`来发送顺序消息**。
 
@@ -196,12 +192,12 @@
   @Component
   public class CustomsConsumer extends BaseConsumer {
     private final LogWrapper log = LogWrapper.getLogger(this.getClass());
-  
-  
+
+
     public CustomsConsumer(RedisService redisService) {
       super(redisService);
     }
-      
+
     @Bean
     public Consumer<Message<CustomsCmd>> factorySubmitOrder() {
       return idempotentConsumer(
@@ -209,11 +205,9 @@
            .....
           },
           "处理工厂提交的报关数据消息");
-    }  
+    }
   }
   ```
-
-  
 
 ## Bus 消息总线
 
