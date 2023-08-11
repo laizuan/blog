@@ -25,6 +25,12 @@
 
 ### 打印日志
 
+::: warning 警告 <Badge type="warning" text="^2.2.3" />
+
+框架版本从2.2.3开始不在支持自定义是否入库，只要打印的日志都会入库。
+
+:::
+
 ```java
 private final LogWrapper logger = LogWrapper.getLogger(getClass());
 

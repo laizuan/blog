@@ -72,7 +72,7 @@ export const createJavaMenu = () => {
           link: '/java/dependencys/rpc'
         },
         {
-          text: '服务注册与发现 & 分布式配置文件',
+          text: '服务注册与发现 & 分布式配置中心',
           link: '/java/dependencys/discover'
         },
         {
@@ -95,6 +95,14 @@ export const createJavaMenu = () => {
         {
           text: '用户和企业相关接口',
           link: '/java/business/upmapi'
+        },
+        {
+          text: '动态脚本',
+          link: '/java/business/script'
+        },
+        {
+          text: '字典数据',
+          link: '/java/business/dict'
         }
       ]
     },

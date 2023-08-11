@@ -21,6 +21,7 @@ yarn-error.log*
 *.sln
 *.sw?
 
-cache/
+deps
+cache
 dist/
 .temp

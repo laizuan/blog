@@ -93,13 +93,14 @@ seedltd:
      *
      *     <p>enabled：设置 false，仅作存储不支持搜索和聚合分析（数据保存在_source中 用于type为object）</p>
      *     <p>index：是否倒排索引；设置 false，无法被搜索，但依然支持aggs，sort，并出现在_source中</p>
-     *     <p>norms：用于算分，若字段用来filter过滤和aggs聚合分析，可关闭节约存储</p>
+     *     <p>norms：用于算分，是否存储归一化相关参数，如果字段仅用于过滤和聚合分析，可关闭</p>
      *     <p>doc_values：是否启用 doc_values，用于排序和聚合分析。不需要排序和聚合的统一设置成FALSE</p>
      *     <p>field_data：若要对text类型启用排序和聚合分析，field data需要设置成true</p>
      *     <p>store：默认false不存储，数据默认存储在_source，若true，额外空间再存储该字段</p>
-     *     <p>coerce：默认 true 开启，是否开启数据类型的自动转换，如字符串转数字</p>
+     *     <p>coerce：默认 true 开启，是否开启自动数据类型转换功能，比如 字符串转数字、浮点转整型。true 代表可以转换，false 代表不可以转换。  </p>
      *     <p>multifields：多字段特性</p>
      *     <p>dynamic：true/false/strict 控制mapping的自动更新 字段的自动新增</p>
+     *     <p>date_detection：默认true，是否自动识别日期类型</p>
      */
     @Test
     void createIndex() {

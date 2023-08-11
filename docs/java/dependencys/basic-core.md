@@ -1,6 +1,6 @@
 # seedltd-common-core
 
-[TOC]
+[[TOC]]
 
 ## Maven 依赖
 
@@ -155,11 +155,11 @@ System.out.println("得到Sign：" + sign);
 
 基于自身业务定义了一些通用的注解来简化开发
 
-#### `@HashId` Long类型值混淆
+#### `@HashId` Long 类型值混淆
 
-可以将Long类型的值混淆成字符串，从而加固值的安全性。一般用于防止暴力攻击或者随机猜测风险。比如数据库主键，返回前端是明文容易猜测到下一个ID值。
+可以将 Long 类型的值混淆成字符串，从而加固值的安全性。一般用于防止暴力攻击或者随机猜测风险。比如数据库主键，返回前端是明文容易猜测到下一个 ID 值。
 
-从`2.1.0`版本之后所有数据库主键都需要包含该注解，其它Long类型需要混淆也使用。内部会自动的系列化成混淆的字符串返回和自动反序列化前端传值成`Long`值。
+从`2.1.0`版本之后所有数据库主键都需要包含该注解，其它 Long 类型需要混淆也使用。内部会自动的系列化成混淆的字符串返回和自动反序列化前端传值成`Long`值。
 
 注解可以填加载字段和方法或者参数中。
 
@@ -167,7 +167,7 @@ System.out.println("得到Sign：" + sign);
 
   - 数值不能超过`9007199254740992L`
 
-  - 暂时不支持接收`application/json`(`JSON数组`)参数反序列化。如下代码，你将得到字符串转Long的异常。
+  - 暂时不支持接收`application/json`(`JSON数组`)参数反序列化。如下代码，你将得到字符串转 Long 的异常。
 
     ```java
       @PostMapping("/t/1")
@@ -176,17 +176,14 @@ System.out.println("得到Sign：" + sign);
       }
     ```
 
-    推荐做法，使用` application/x-www-form-urlencoded`form表单的形式来提交数据
+    推荐做法，使用` application/x-www-form-urlencoded`form 表单的形式来提交数据
 
-      ```java
-        @PostMapping("/t/2")
-        public void t2(@RequestParam("ids") @HashId List<Long> ids) {
-          ids.forEach(s -> logger.info("-------{}", s));
-        }
-      ```
-
-
-
+    ```java
+      @PostMapping("/t/2")
+      public void t2(@RequestParam("ids") @HashId List<Long> ids) {
+        ids.forEach(s -> logger.info("-------{}", s));
+      }
+    ```
 
 #### `@DynamicEnum` 动态枚举注解
 
