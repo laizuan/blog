@@ -109,6 +109,8 @@ export declare const useOpQuery: <T extends BaseSearchForm, R>(
     params?: StringObject
     listProp?: 'list'
     totalProp?: 'totalCount'
+    activatedQuery?: boolean
+    activatedOnCall?: () => void
   }
 ) => {
   tableFormRef: ShallowRef<TableFormExpose<R>>
@@ -148,28 +150,34 @@ export declare const useOpQuery: <T extends BaseSearchForm, R>(
 
 #### Options
 
-| Name     | Description                                                   | Type         | Options | Default |
-| :------- | :------------------------------------------------------------ | :----------- | :------ | :------ |
-| pageSize | 每页显示的条数                                                | number       | -       | 20      |
-| params   | 请求后端接口数据的额外参数，会和表单数据对象(`queryForm`)合并 | StringObject | -       | -       |
+| Name            | Description                                                   | Type         | Options | Default           |
+| :-------------- | :------------------------------------------------------------ | :----------- | :------ | :---------------- |
+| pageSize        | 每页显示的条数                                                | number       | -       | 20                |
+| params          | 请求后端接口数据的额外参数，会和表单数据对象(`queryForm`)合并 | StringObject | -       | -                 |
+| listProp        | 请求列表数据字段名称                                          | string       | -       | `list`            |
+| totalProp       | 总条数字段名称                                                | string       | -       | `totalCount`      |
+| activatedQuery  | 当路由缓存时是否监听被激活事件                                | boolean      | -       | false             |
+| activatedOnCall | 当开启路由缓存被激活监听事件时回调函数                        | `() => void` | -       | 调用`doQuery`事件 |
 
 ### 返回值
 
-| Name            | Description                                      | Type                                                                                          | Options | Default |
-| :-------------- | :----------------------------------------------- | :-------------------------------------------------------------------------------------------- | :------ | :------ |
-| queryForm       | 列表查询条件表单数据对象                         | Object                                                                                        | -       | -       |
-| load            | 加载数据函数                                     | `() => void`                                                                                  | -       | -       |
-| doReset         | 重置表单数据函数                                 | `() => void`                                                                                  | -       | -       |
-| doSizeChange    | 改变每页显示条数函数。参数：改变后的每页显示条数 | `(size: number) => void`                                                                      | -       | -       |
-| doCurrentChange | 改变页数函数。参数：页码                         | `(start: number) => void`                                                                     | -       | -       |
-| total           | 总条数                                           | number                                                                                        | -       | -       |
-| loading         | 是否显示加载中                                   | boolean                                                                                       | -       | -       |
-| currentRow      | 选择行的数据                                     | R                                                                                             | -       | -       |
-| currentRows     | 多行选中数据                                     | `R[]`                                                                                         | -       | -       |
-| doSelectRow     | 选择行函数                                       | `(val: R) => void`                                                                            | -       | -       |
-| doSelectRows    | 多选行函数                                       | `(val: R[]) =>void`                                                                           | -       | -       |
-| data            | 列表数据                                         | `R[]`                                                                                         | -       | -       |
-| doDelete        | 删除数据函数                                     | `(requestConfig: HttpRequestConfig & {urlProcess?: ((url: string) => string) \| undefined } ` | -       | -       |
+| Name            | Description                                                                                                                         | Type                                                                                          | Options | Default |
+| :-------------- | :---------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------- | :------ | :------ |
+| queryForm       | 列表查询条件表单数据对象                                                                                                            | Object                                                                                        | -       | -       |
+| load            | 加载数据函数，注意：该方法是内部方法，如果是要调用列表查询使用`doQuery`方法，这个方法查询条件有默认值的时候会出现查询条件失效的问题 | `() => void`                                                                                  | -       | -       |
+| doReset         | 重置表单数据函数                                                                                                                    | `() => void`                                                                                  | -       | -       |
+| doSizeChange    | 改变每页显示条数函数。参数：改变后的每页显示条数                                                                                    | `(size: number) => void`                                                                      | -       | -       |
+| doCurrentChange | 改变页数函数。参数：页码                                                                                                            | `(start: number) => void`                                                                     | -       | -       |
+| total           | 总条数                                                                                                                              | number                                                                                        | -       | -       |
+| loading         | 是否显示加载中                                                                                                                      | boolean                                                                                       | -       | -       |
+| currentRow      | 选择行的数据                                                                                                                        | R                                                                                             | -       | -       |
+| currentRows     | 多行选中数据                                                                                                                        | `R[]`                                                                                         | -       | -       |
+| doSelectRow     | 选择行函数                                                                                                                          | `(val: R) => void`                                                                            | -       | -       |
+| doSelectRows    | 多选行函数                                                                                                                          | `(val: R[]) =>void`                                                                           | -       | -       |
+| data            | 列表数据                                                                                                                            | `R[]`                                                                                         | -       | -       |
+| doDelete        | 删除数据函数                                                                                                                        | `(requestConfig: HttpRequestConfig & {urlProcess?: ((url: string) => string) \| undefined } ` | -       | -       |
+| tableFormRef    | NtableForm 的 ref 对象                                                                                                              | `ShallowRef<TableFormExpose<R>> `                                                             | -       | -       |
+| doQuery         | 加载表格数据                                                                                                                        | `() => void `                                                                                 | -       | -       |
 
 ## 自定义列操作 useOpColumns
 
