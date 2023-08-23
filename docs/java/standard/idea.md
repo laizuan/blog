@@ -1,22 +1,11 @@
 ## 代码格式化
 
-在对代码进行`mvn install`的时候如果你的代码不符合要求将会得到一个异常，这时候你可以使用`mvn spotless:apply`命令格式化代码让你的代码符合格式化要求。
+在对代码进行`mvn install`的时候如果你的代码样式不符合要求将会得到一个异常，这时候你可以使用`mvn spotless:apply`命令格式化代码让你的代码符合格式化要求。
 
 当然我们使用`Idea`编码的时候可以安装插件，在保存代码的时候对代码自动的格式化它
 
-- 安装`google-java-format`插件
-- 打开`Idea`全局设置，找到`Other Settings` -> `google-java-format Settings`，然后启用`google-java-format`插件
-
-如果你是高版本的`Idea`那么需要设置`Idea`的 `VM` 参数。[官方说明](https://github.com/google/google-java-format/blob/master/README.md#intellij-jre-config)
-
-```txt
---add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED
---add-exports=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED
---add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED
---add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED
---add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED
---add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED
-```
+- 安装`palantir-java-format`插件
+- 打开`Idea`全局设置，找到`Other Settings` -> `palantir-java-format`，然后启用`palantir-java-format`插件
 
 经过上一步`Idea`格式化(`Ctrl + Alt + L`)将符合规范要求
 
