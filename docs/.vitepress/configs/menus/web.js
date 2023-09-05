@@ -164,6 +164,23 @@ export const createWebMenu = () => {
       ]
     },
     {
+      text: 'ElementPlus',
+      items: [
+        {
+          text: '指南',
+          link: '/web/element-plus/index'
+        },
+        {
+          text: 'Select V2 虚拟列表选择器',
+          link: '/web/element-plus/select-v2'
+        },
+        {
+          text: 'MessageBox 消息弹框',
+          link: '/web/element-plus/message-box'
+        }
+      ]
+    },
+    {
       text: 'FAQ',
       items: [
         {
