@@ -120,6 +120,25 @@ spring:
 在数据库中执行以下 SQL 语句
 
 ```sql
+DROP TABLE IF EXISTS sys_job;
+CREATE TABLE `sys_job`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `create_by` bigint NULL DEFAULT NULL COMMENT '创建人',
+  `create_time` datetime(6) NOT NULL COMMENT '创建时间',
+  `cron_expression` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'cron表达式',
+  `job_class_name` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务类名',
+  `job_status` bit(1) NOT NULL COMMENT '任务状态，true运行，false停止',
+  `parameter` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '运行时参数',
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `update_by` bigint NULL DEFAULT NULL COMMENT '最后一次修改时间',
+  `update_time` datetime(6) NULL DEFAULT NULL COMMENT '最后一次修改时间',
+  `policy` tinyint NOT NULL COMMENT '执行策略，默认:0，立即触发执行:1，触发一次执行:2',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `uk_jobClassName`(`job_class_name` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+```
+
+```sql
 DROP TABLE IF EXISTS QRTZ_FIRED_TRIGGERS;
 DROP TABLE IF EXISTS QRTZ_PAUSED_TRIGGER_GRPS;
 DROP TABLE IF EXISTS QRTZ_SCHEDULER_STATE;
