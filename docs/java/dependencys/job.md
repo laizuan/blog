@@ -1,6 +1,6 @@
 # 动态管理 Quartz 定时任务
 
-对`Quartz`封装，支持动态添加、删除、修改、停止、重启定时任务。所有添加的任务都是在当前任务结束之后开始计算下一次的运行时间策略
+对`Quartz`封装，支持动态添加、删除、修改、停止、重启定时任务。支持创建 `Cron` 任务或者是一次性定时任务
 
 ## 依赖
 
@@ -15,9 +15,13 @@
 
 继承`BaseJob`定时任务抽象类并实现`run`方法，它帮我们做了运行任务异常时日志输出。需要注意的是`AuditAssignJob`需要被`Spring`托管，否则创建`Job`的时候会得到一个错误。
 
+你还可以继承`ConcurrentBaseJob`或者`PersistBaseJob`
+
+- `ConcurrentBaseJob`: 禁止并发执行定时任务
+- `PersistBaseJob`: 禁止并发执行定时任务并且可以修改 JobData，并且每次修改之后下一次任务都会获取到最新的 JobData
+
 ```java
 @Component
-@DisallowConcurrentExecution // 禁止并运行任务
 public class AuditAssignJob extends BaseJob {
 
     @Override
@@ -28,6 +32,8 @@ public class AuditAssignJob extends BaseJob {
     }
 }
 ```
+
+如果你继承的是`BaseJob`在集群部署的时候会造成重复执行的问题，需要加上注解 `@DisallowConcurrentExecution`，或者改用继承`ConcurrentBaseJob`类
 
 ## 测试类
 
@@ -94,6 +100,8 @@ spring:
           scheduler:
             instanceName: CM-Scheduler
             instanceId: AUTO
+            instanceIdGenerator:
+              class: com.leaderrun.schedule.core.UuidInstanceIdGenerator
             batchTriggerAcquisitionMaxCount: 2
             threadsInheritContextClassLoaderOfInitializer: true
           jobStore:
@@ -132,7 +140,11 @@ CREATE TABLE `sys_job`  (
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   `update_by` bigint NULL DEFAULT NULL COMMENT '最后一次修改时间',
   `update_time` datetime(6) NULL DEFAULT NULL COMMENT '最后一次修改时间',
-  `policy` tinyint NOT NULL COMMENT '执行策略，默认:0，立即触发执行:1，触发一次执行:2',
+  `policy` tinyint NULL DEFAULT NULL COMMENT '执行策略，0:框架默认执行策略、3:不触发立即执行、2：立即执行，然后按照Cron频率依次执行',
+  `simple_schedule` bit(1) NOT NULL COMMENT '是否简单调度',
+  `start_time` datetime NULL DEFAULT NULL COMMENT '简单调度开始执行时间。会在当前时间上加多5秒',
+  `repeat_count` smallint NULL DEFAULT NULL COMMENT '简单调度执行次数',
+  `interval_second` int NULL DEFAULT NULL COMMENT '简单调度间隔执行时间。单位秒',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_jobClassName`(`job_class_name` ASC) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
