@@ -62,6 +62,12 @@ meta:
 
 :::
 
+## Props
+
+| Name    | Description  | Type    | Options | Default |
+| ------- | ------------ | ------- | ------- | ------- |
+| loading | 添加加载动画 | boolean | —       | false   |
+
 ## Slot
 
 | Name   | Description  |
