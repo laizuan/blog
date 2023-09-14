@@ -1,7 +1,6 @@
 export const createJavaNav = () => {
   return {
     text: 'JAVA',
-    link: '/java/dependencys/basic-core',
     items: [
       {
         text: '规范',

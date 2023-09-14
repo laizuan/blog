@@ -6,5 +6,6 @@ import { createArticleMenu } from './menus/aritcle'
 module.exports = {
   '/web/': createWebMenu(),
   '/java/': createJavaMenu(),
-  '/aritcle/': createArticleMenu()
+  '/aritcle/': createArticleMenu(),
+  '/git/': createGitMenu()
 }

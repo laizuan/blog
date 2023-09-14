@@ -1,7 +1,6 @@
 export const createWebNav = () => {
   return {
     text: '前端',
-    link: '/web/components/started',
     items: [
       {
         text: '规范',
@@ -10,6 +9,10 @@ export const createWebNav = () => {
       {
         text: '组件',
         link: '/web/components/started'
+      },
+      {
+        text: 'ElementPlus 增强',
+        link: '/web/element-plus/'
       },
       {
         text: '常见问题',

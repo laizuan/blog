@@ -10,7 +10,6 @@
     "docs:serve": "vitepress serve docs --port 3634"
   },
   "dependencies": {
-    "axios": "^1.4.0",
     "element-next": "^1.29.2",
     "element-plus": "npm:@lhrdc/element-plus@2.3.6-stable.4"
   },
@@ -21,8 +20,8 @@
     "prettier": "^2.5.1",
     "rollup-plugin-external-globals": "^0.6.1",
     "sass": "^1.45.0",
-    "vitepress": "1.0.0-beta.2",
-    "vitepress-plugin-mermaid": "^2.0.13"
+    "vitepress": "1.0.0-beta.7",
+    "vitepress-plugin-mermaid": "^2.0.14"
   },
   "engines": {
     "node": ">=16.0.0"
