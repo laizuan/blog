@@ -64,9 +64,10 @@ meta:
 
 ## Props
 
-| Name    | Description  | Type    | Options | Default |
-| ------- | ------------ | ------- | ------- | ------- |
-| loading | 添加加载动画 | boolean | —       | false   |
+| Name         | Description    | Type                | Options | Default  |
+| ------------ | -------------- | ------------------- | ------- | -------- |
+| loading      | 是否显示骨架屏 | boolean             | —       | false    |
+| loadingStyle | 骨架屏样式     | `form\table\detail` | —       | `detail` |
 
 ## Slot
 
