@@ -85,6 +85,10 @@ export const createJavaMenu = () => {
         {
           text: '权限',
           link: '/java/dependencys/auth'
+        },
+        {
+          text: 'SFTP & FTP',
+          link: '/java/dependencys/ssh'
         }
       ]
     },
