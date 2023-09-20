@@ -63,4 +63,12 @@ private final SftpTemplate sftpTemplate;
 
 // 操作 FTP
 private final FtpTemplate ftpTemplate;
+
+// 切换到某一个客户端
+sftpTemplate.switchoverTo('xx').upload(...)
+ftpTemplate.switchoverTo('xx').upload(...)
+
+// 切换到唯一配置服务。如果配置了多个服务不能使用该方法
+sftpTemplate.switchoverRequired().upload(...)
+ftpTemplate.switchoverRequired().upload(...)
 ```
