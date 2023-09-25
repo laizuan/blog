@@ -476,6 +476,7 @@ fieldMapToTime: [
 | md             | `≥992px` 响应式栅格数或者栅格属性对象。`el-col`的属性，每个 item 就是一个`el-col`  | `number / object`                                | -       | -       |
 | lg             | `≥1200px` 响应式栅格数或者栅格属性对象。`el-col`的属性，每个 item 就是一个`el-col` | `number / object`                                | -       | -       |
 | xl             | `≥1920px` 响应式栅格数或者栅格属性对象。`el-col`的属性，每个 item 就是一个`el-col` | `number / object`                                | -       | -       |
+| customClass             | 自定义`ELFormItem`样式| `string`                                | -       | -       |
 
 ::: tip 关于 Fields
 
