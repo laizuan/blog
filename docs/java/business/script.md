@@ -3,7 +3,7 @@
 ```xml
     <dependency>
       <groupId>com.leaderrun</groupId>
-      <artifactId>bussiness-script</artifactId>
+      <artifactId>business-script</artifactId>
     </dependency>
 ```
 
