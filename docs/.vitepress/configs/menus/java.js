@@ -106,6 +106,10 @@ export const createJavaMenu = () => {
         {
           text: '字典数据',
           link: '/java/business/dict'
+        },
+        {
+          text: '订单中心常用接口',
+          link: '/java/business/omapi'
         }
       ]
     },
