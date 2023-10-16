@@ -19,12 +19,7 @@ ElInput 增强
     <el-button @click="trimType = 'end'">结尾不能输入空格</el-button>
     <el-button @click="trimType = 'both'">两端不能有空格</el-button>
     <el-button @click="trimType = 'all'">不能输入空格</el-button>
-    <n-input
-      v-model="inputValue"
-      class="mt-20"
-      :trim-type="trimType"
-      @input="onInput"
-    />
+    <n-input v-model="inputValue" class="mt-20" :trim-type="trimType" @input="onInput" />
   </n-card>
 
   {{ inputValue }}
@@ -42,9 +37,9 @@ export default {
     }
     return {
       inputValue,
-      onInput,
+      onInput
     }
-  },
+  }
 }
 </script>
 ```
@@ -53,10 +48,10 @@ export default {
 
 ## Props
 
-| Name     | Description    | Type   | Options                            | Default |
-| -------- | -------------- | ------ | ---------------------------------- | ------- |
-| format   | 字符串格式化   | string | uppercase / lowercase / capitalize | -       |
-| trimType | 清空输入的空格 | string | 'start', 'end', 'both', 'all'      | both    |
+| Name     | Description    | Type   | Options                               | Default |
+| -------- | -------------- | ------ | ------------------------------------- | ------- |
+| format   | 字符串格式化   | string | uppercase / lowercase / capitalize    | -       |
+| trimType | 清空输入的空格 | string | 'start', 'end', 'both', 'all', 'none' | both    |
 
 ## Events
 
