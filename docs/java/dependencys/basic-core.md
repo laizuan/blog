@@ -208,7 +208,7 @@ public class Test {
 
 ```java
 public class Test {
-    @StrToArray
+    @ArrayStrTransfer
     private String productName;
 }
 ```
@@ -230,7 +230,7 @@ public class Test {
 ```java
 @ToString
 public class Test {
-    @ArrayToStr
+    @ArrayStrTransfer
     private String productName;
 }
 
