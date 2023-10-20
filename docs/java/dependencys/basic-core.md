@@ -31,12 +31,11 @@ spring:
 
 ## 内置模块
 
-| 名称                          | 说明                                       | 默认值 | 版本 |
-| ----------------------------- | ------------------------------------------ | ------ | ---- |
-| [seedltd.xss](#XSS)           | xss 过滤配置                               |        |      |
-| [seedltd.sign](#接口验签)     | 接口签名配置，详细配置请看**接口验签**部分 |        |      |
-| [seedltd.logging](#日志)      | 日志配置                                   |        |      |
-| [seedltd.datasource](#数据源) | 数据源配置                                 |        |      |
+| 名称                          | 说明         | 默认值 | 版本 |
+| ----------------------------- | ------------ | ------ | ---- |
+| [seedltd.xss](#XSS)           | xss 过滤配置 |        |      |
+| [seedltd.logging](#日志)      | 日志配置     |        |      |
+| [seedltd.datasource](#数据源) | 数据源配置   |        |      |
 
 ## 数据源
 
@@ -102,60 +101,35 @@ seedltd.datasource.driver-class-name=com.p6spy.engine.spy.P6SpyDriver
 | `List<String>` | seedltd.xss.whiteUrl    | 白名单地址，如果有项目名需要加上                                                      |                   |      |
 | Integer        | seedltd.xss.order       | 过滤执行优先级                                                                        | Integer.MAX_VALUE |      |
 
-## 接口验签
-
-### 说明
-
-开启（`seedltd.sign.enabled=true`）后请求的接口会经过系统的延签，延签不通过将不会到达控制层。验证通过后控制层会接收到`jsonParams`和`thirdId`两个参数。**注意：该功能需要 Redis 支持，并且需要实现`SignConfigService`接口，返回第三方接口验签配置。如果你不想实现这个接口，那么你需要配置`thirdPartyConfigs`这个属性**
-
-### 属性
-
-| 类型                     | 名称                           | 说明                              | 默认值            | 版本 |
-| ------------------------ | ------------------------------ | --------------------------------- | ----------------- | ---- |
-| boolean                  | seedltd.sign.enabled           | 是否开启接口延签过滤              | false             |      |
-| Integer                  | seedltd.sign.order             | 过滤执行优先级                    | Integer.MAX_VALUE |      |
-| `List<String>`           | seedltd.sign.urlPatterns       | 需要拦截的接口地址，支持`*`号匹配 |                   |      |
-| `List<String>`           | seedltd.sign.whiteUrl          | 白名单地址，如果有项目名需要加上  |                   |      |
-| `List<String>`           | seedltd.sign.whiteThirdId      | 对接第三方标识白名单              |                   |      |
-| `List<ThirdPartyConfig>` | seedltd.sign.thirdPartyConfigs | 第三方配置                        |                   |      |
-
-#### ThirdPartyConfig
-
-| 类型   | 名称     | 说明                                                  | 默认值 | 版本 |
-| ------ | -------- | ----------------------------------------------------- | ------ | ---- |
-| String | thirdId  | 第三方唯一标识 ID                                     |        |      |
-| String | apiKey   | 签名私钥                                              |        |      |
-| String | url      | 分配的接口地址                                        |        |      |
-| String | timeout  | 请求过期时间，单位：分钟，-1 标识无限制。默认 10 分钟 |        |      |
-| String | signType | 验证类型，默认 MD5                                    |        |      |
-
-### 签名流程
-
-```java
-String apiKey = "TEST";
-String paramStr = "{\"test\": \"HELLO WORLD\"}";
-// 1、对params 字段进行编码
-String params = Base64.encodeBase64String(paramStr.getBytes(StandardCharsets.UTF_8));
-
-// 2、得到当前服务器的时间戳（注意服务器时间是否准确）
-long currentTimeMillis = System.currentTimeMillis();
-System.out.println("时间戳：" + currentTimeMillis);
-
-// 3、得到待加密的明文
-String encryptStr = params.concat(apiKey) + currentTimeMillis;
-
-// 4、将名称进行MD5处理
-String sign = DigestUtils.md5Hex(encryptStr);
-System.out.println("得到Sign：" + sign);
-```
-
-## Jackson
-
-### 注解
+## 系列化和反序列化
 
 基于自身业务定义了一些通用的注解来简化开发
 
-#### `@HashId` Long 类型值混淆
+### 时间
+
+系统所有时间类型都会转成时间戳，可以使用`@JsonFormat`来格式化你的时间
+
+`LocalDateTime` 反序列化支持字符串格式：
+
+```txt
+秒和毫秒时间戳
+yyyy-MM-dd
+yyyy-MM-dd HH
+yyyy-MM-dd HH:mm
+yyyy-MM-dd HH:mm:ss
+yyyy-MM-dd HH:mm:ss.SSS
+yyyy-MM-dd HH:mm:ss.SSSSSS
+yyyyMMdd
+yyyyMMddHHmmss
+yyyyMMddHHmmssSSS
+yyyy-MM-dd'T'HH:mm:ss'Z'
+yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
+yyyy-MM-dd'T'HH:mm:ss+0800
+yyyy-MM-dd'T'HH:mm:ss+08:00
+yyyy-MM-dd'T'HH:mm:ss.SSS+08:00
+```
+
+### `@HashId` Long 类型值混淆
 
 可以将 Long 类型的值混淆成字符串，从而加固值的安全性。一般用于防止暴力攻击或者随机猜测风险。比如数据库主键，返回前端是明文容易猜测到下一个 ID 值。
 
@@ -185,7 +159,7 @@ System.out.println("得到Sign：" + sign);
       }
     ```
 
-#### `@DynamicEnum` 动态枚举注解
+### `@DynamicEnum` 动态枚举注解
 
 动态数据转换成枚举 json 字符串，需要转换的值类型尽量避免使用基本数据类型，防止 null 的时候序列化异常。注意：需要实现`DynamicEnumService`接口，该接口接收 3 个参数：
 
@@ -217,15 +191,18 @@ public class Test {
 }
 ```
 
-#### `@ArrayStrTransfer`字符串和数组互转
+### `@ArrayStrTransfer`字符串和数组互转
 
 字符串序列化成数组，数组反序列换成字符串
 
 - 属性
 
-| 类型   | 名称      | 说明              | 版本 |
-| ------ | --------- | ----------------- | ---- |
-| String | separator | 分隔符，默认：`,` |      |
+| 类型    | 名称       | 说明                         | 版本 |
+| ------- | ---------- | ---------------------------- | ---- |
+| String  | separator  | 分隔符，默认：`,`            |      |
+| String  | prefix     | 前缀内容，默认：`""`         |      |
+| String  | suffix     | 后缀内容，默认：`""`         |      |
+| Boolean | ignoreNull | 是否忽略空元素，默认：`true` |      |
 
 示例：
 
@@ -272,11 +249,11 @@ public class Test {
 sout -> Test(productName=手机,电脑)
 ```
 
-#### `@IntBooleanTransfer` int 和 Boolean 互转
+### `@IntBooleanTransfer` int 和 Boolean 互转
 
 int 0 或者 1 序列化成 false 和 true，boolean true 或者 false 反序列化成 1 和 0。int 不是 0 或者 1 的时候序列化成 false。反序列化的时候如果值是空对象或者不是 Int 类型，或者不是 1 或 0，反序列化为空 Boolean 对象
 
-#### `@Sensitive` 值脱敏
+### `@Sensitive` 值脱敏
 
 对敏感数据脱敏
 
@@ -308,7 +285,7 @@ public class Test {
 }
 ```
 
-#### `@ToUserName` 用户主键转用户枚举对象
+### `@ToUserName` 用户主键转用户枚举对象
 
 当我们只有用户主键却想要获取用户的名称可以使用这个注解，它会返回你需要的用户名称。想用这个注解你必须要实现`BaseParseUserService`接口，否则你会得到一个`NullPointerException`，我们建议你在这个接口返回的时候加上缓存，提高运行效率。我们在内存中做了缓存击穿，保证了两分钟内不存在的用户不会调用接口，但是有可能会造成两分钟的用户信息空洞。针对这个情况请设置：`seedltd.json.cache.enabled=false`
 
@@ -339,7 +316,7 @@ public class Test {
 }
 ```
 
-#### `@JsonStrToField` json 字符串转用户字段
+### `@JsonStrToField` json 字符串转用户字段
 
 将 json 指定的字段值转成 java 实体字段的值，例如：把`{value: 1, desc: '启用'}`中的 value 值赋值给`private Long field`，你可以在这个实体字段中加上`@JsonStrToField`。最终`filed`的值将变成`1`
 
@@ -380,7 +357,7 @@ public class Test {
 Test{enabled=1}
 ```
 
-#### 静态枚举
+### 静态枚举
 
 只要枚举实现`BaseEnum`接口，我们将会自动把枚举类型转换成枚举字符串。如果需要实现前端`tag`样式需要实现`BaseTagEnum#getTagType()`方法，返回前端的`tag`样式，例如`success，danger,warning ...`。示例：
 
@@ -441,7 +418,6 @@ public class Order{
     private Long id;
 }
 
-@Validated
 @RestController
 @AllArgsConstructor
 @RequestMapping
@@ -498,7 +474,7 @@ public class OrderController {
 - 设置`scopeName`限制范围的字段名称，默认是`create_by`
 - 设置别名`alias`，例如：`t`。单表可以不设置
 
-### 拓展方法
+### Mapper 拓展方法
 
 - updateAllById
 
@@ -507,6 +483,42 @@ public class OrderController {
 - checkExists
 
   检查数据是否存在
+
+- insertBatch
+  批量插入数据
+
+- updateByIdAndVersion
+  乐观锁更新数据
+
+```java
+updateByIdAndVersion(
+                    CustomsOrder.builder()
+                        .customsId(customsId)
+                        .declareBy(employee.getId())
+                        .version(version) // 必须设置当前版本
+                        .declareAssignStatus(true)
+                        .declareAssignTime(LocalDateTime.now())
+                        .orderStatus(null) // 这种方式设置空值无效。需要使用updateByVersion方法
+                        .build())
+```
+
+- updateByVersion
+  乐观锁更新数据
+
+```java
+ updateByVersion(CustomsOrder.builder()
+              .declareAssignStatus(false) //这是可以的
+              .declareBy(null) //无效，不能设置字段为null
+              .version(customsOrder.getVersion()) //必须要包含这个字段，否则会变成普通更新
+              .build(),
+          Wrappers. lambdaUpdate()
+               // 如果要置空字段值可以这种方式设置，在实体对象设置null无效
+              .set(CustomsOrder::getDeclareBy, null)
+              .set(CustomsOrder::getDeclareAssignTime, null)
+              .set(CustomsOrder::getDeclareBy, null)
+              .set(CustomsOrder::getVersion, customsOrder.getVersion()) //这种方式设置乐观锁版本号也是无效的，会被当做普通更新
+              .eq(CustomsOrder::getCustomsId, customsId))
+```
 
 ### 类型处理器
 
