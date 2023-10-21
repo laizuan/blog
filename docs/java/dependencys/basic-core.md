@@ -814,3 +814,114 @@ Bean 对象拷贝工具类。继承了`org.springframework.beans.BeanUtils`所�
 ### SpringContextUtils
 
 Spring 容器工具类，主要提供了获取容器中 bean 对象方法
+
+## 日志审计
+
+实现`AuditDiff`类并重写`diff`方法，比较两个对象的值，将更改的值记录并输出字符串。建议对象重写 `ToString` 方法，或者使用`@ToString`注解
+
+- 支持嵌套对象，如果嵌套对象没有实现`AuditDiff`那么会使用`equals`来判断是否相等，如果不相等，那么会输出两个对象的所有数据
+- 集合只支持集合长度是否相等，如果相等那么会判断他们之间相同下标的值是否相同，有一个不相同都会输出整个集合数据。所以建议自己循环比较拿到结果后在做处理，灵活性会比较高
+
+- **代码生成器已经支持生成审计代码段**
+
+示例如下：
+
+```java
+@Getter
+@Setter
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
+public class OutbdCustomsOrder implements BaseEntityVersion, AuditDiff<OutbdCustomsOrder>
+
+    /**
+     * 出库单号
+     */
+    private String outbdNo;
+
+    /**
+     * 集装箱号
+     */
+    private String containerNo;
+
+    /**
+     * 运输方式
+     */
+    private Byte transportCode;
+
+
+    /** 创建时间 */
+    private LocalDateTime createTime;
+
+
+    private Test t;
+    private List<Test> ts;
+
+    @Getter
+    @Setter
+    @ToString
+    private static class Test implements AuditDiff<Test> {
+        public Test(String field1, String field2, LocalDateTime localDateTime) {
+            this.field1 = field1;
+            this.field2 = field2;
+            this.localDateTime = localDateTime;
+        }
+
+        private String field1;
+        private String field2;
+        private LocalDateTime localDateTime;
+
+        @Override
+        public AuditDiffResult<Test> diff(Test obj) {
+            return new AuditDiffBuilder<>(this, obj, ToStringStyle.DEFAULT_STYLE)
+                    .append("字段1", this.field1, obj.field1)
+                    .append("字段2", this.field2, obj.field2)
+                    .append("时间", this.localDateTime, obj.localDateTime)
+                    .build();
+        }
+    }
+
+
+    @Override
+    public AuditDiffResult<OutbdCustomsOrder> diff(OutbdCustomsOrder obj) {
+        return new AuditDiffBuilder<>(this, obj, ToStringStyle.DEFAULT_STYLE)
+                .append("出库单号", this.outbdNo, obj.outbdNo)
+                .append("运输方式", this.transportCode, obj.transportCode)
+                .append("集装箱号", this.containerNo, obj.containerNo)
+                .append("创建时间", this.createTime, obj.createTime)
+                .append("测试", this.ts, obj.ts)
+                .build();
+    }
+
+  public static void main(String[] args) {
+        OutbdCustomsOrder v1 = new OutbdCustomsOrder();
+        v1.setOrderNo("null");
+        v1.setOutbdNo("OUT00001");
+        v1.setContainerNo("C00000");
+        v1.setCreateTime(LocalDateTime.now().minusMonths(1));
+        v1.setT(new Test("A", "B", LocalDateTime.now()));
+        v1.setTs(List.of(v1.getT()));
+
+        OutbdCustomsOrder v2 = new OutbdCustomsOrder();
+        v2.setOrderNo("AAA1");
+        v2.setOutbdNo("OUT00001");
+        v2.setTransportCode("2");
+        v2.setCreateTime(LocalDateTime.now());
+        v2.setT(new Test("A", "c", LocalDateTime.now().minusMonths(1)));
+        v2.setTs(List.of(v2.getT()));
+        AuditDiffResult<OutbdCustomsOrder> diff = v1.diff(v2);
+        System.out.println(diff.toString());
+    }
+}
+```
+
+运行 `Main` 方法输出：
+
+```txt
+运输方式[] -> [2]，
+集装箱号[C00000] -> []，
+创建时间[2023-09-21T16:55:26.737133900] -> [2023-10-21T16:55:26.738134100]，
+测试集合[[OutbdCustomsOrder.Test(field1=A, field2=B, localDateTime=2023-10-21T16:55:26.738134100)]] -> [[OutbdCustomsOrder.Test(field1=A, field2=c, localDateTime=2023-09-21T16:55:26.738134100)]]，
+测试对象.字段2[B] -> [c]，
+测试对象.时间[2023-10-21T16:55:26.738134100] -> [2023-09-21T16:55:26.738134100]，
+```
