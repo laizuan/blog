@@ -4,4 +4,10 @@ import { createArticleNav } from './menus/aritcle'
 import { createGitNav } from './menus/git'
 import { createLinkNav } from './menus/link'
 
-module.exports = [createJavaNav(), createWebNav(), createArticleNav(), createGitNav(), ...createLinkNav()]
+module.exports = [
+  createJavaNav(),
+  createWebNav(),
+  createArticleNav(),
+  createGitNav(),
+  ...createLinkNav()
+]
