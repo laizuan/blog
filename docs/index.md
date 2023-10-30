@@ -20,6 +20,9 @@ hero:
     - theme: alt
       text: Java组件 →
       link: /java/dependencys/basic-core
+    - theme: alt
+      text: 在线工具 →
+      link: //tools.seedltd.cn/
 
 features:
   - title: 💡 VUE 组件
