@@ -56,3 +56,26 @@ public class Test {
 
 }
 ```
+
+## 乐观锁更新数据失败
+
+我们在使用乐观锁更新数据的时候框架会自动将 `version + 1` 作为更新语句条件，如果一个事务中多次更新数据，`version` 不变的情况下就会导致乐观锁更新失败问题。
+
+示例：一次事务中有两次更新 `order` 表数据，都带上了 `version` 字段更新
+
+```sql
+// 第一次更新前查询了最新的版本号出来。版本号是8
+select t.version from order t where t.id = 479639668122501
+
+// 第一次更新，version变成了9
+UPDATE order SET ..., version=9 WHERE id=479639668122501 AND version=8
+
+// 忽略很多其它无关SQL
+......
+
+
+// 这里又做了一次更新，因为version还是旧的数据，也就是version=8。执行下面语句的时候就会导致更新失败，其实最新version应该是9不是8
+UPDATE order SET ..., version=9 WHERE id=479639668122501 AND version=8
+```
+
+如果一次事务中多次更新数据，需要注意 `version` 是否最新的。如果有多次更新最好是更新前做一次查询获取最新的 `version`。当然你也可以自行 `version + 1`

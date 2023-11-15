@@ -538,24 +538,24 @@ export default {
 
 ### Columns Props
 
-| Name                  | Description                                                  | Type                            | Options | Default           |
-| --------------------- | ------------------------------------------------------------ | ------------------------------- | ------- | ----------------- |
-| prop                  | 对应 `data` 的字段名。支持获取`a.b`路径相应的值。支持多字段取值，通过换行形式显示 | `string/TableColumn[]`          | -       | -                 |
-| label                 | 列头文本，传入数组换行显示                                   | `string/string[]`               | -       | -                 |
-| render                | 自定义渲染内容。支持[字符串函数](../../web/faq/component.md#字符串函数)，参数：_row: 行数据，h：渲染函数需要返回这个对象，index：下标_ | Function(row,index):VNode       | -       | -                 |
-| `show-helper`         | 是否显示提示图标，自定义头部插槽的时候无效                   | boolean                         | -       | false             |
-| `helper-message`      | 提示内容，`show-helper`为真的时候有效                        | `string/string[]`               | -       | -                 |
-| `show-copy`           | 是否显示拷贝图标                                             | boolean                         | -       | false             |
+| Name                  | Description                                                                                                                                                                                      | Type                            | Options | Default           |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------- | ------- | ----------------- |
+| prop                  | 对应 `data` 的字段名。支持获取`a.b`路径相应的值。支持多字段取值，通过换行形式显示                                                                                                                | `string/TableColumn[]`          | -       | -                 |
+| label                 | 列头文本，传入数组换行显示                                                                                                                                                                       | `string/string[]`               | -       | -                 |
+| render                | 自定义渲染内容。支持[字符串函数](../../web/faq/component.md#字符串函数)，参数：_row: 行数据，h：渲染函数需要返回这个对象，index：下标_                                                           | Function(row,index):VNode       | -       | -                 |
+| `show-helper`         | 是否显示提示图标，自定义头部插槽的时候无效                                                                                                                                                       | boolean                         | -       | false             |
+| `helper-message`      | 提示内容，`show-helper`为真的时候有效                                                                                                                                                            | `string/string[]`               | -       | -                 |
+| `show-copy`           | 是否显示拷贝图标                                                                                                                                                                                 | boolean                         | -       | false             |
 | `time-format`         | 日期格式化，如果为 true 按`YYYY-MM-DD HH:mm:ss`格式化时间。不为空的时候则根据其值格式化时间。参考：[dayjs 格式化](https://dayjs.fenxianglu.cn/category/display.html#%E6%A0%BC%E5%BC%8F%E5%8C%96) | `string/boolean`                | -       | -                 |
-| `enum-type`           | 是否枚举类型。如果为`true`格式必须是`json`对象，并且必须包含`[enumDescName]`字段 | boolean                         | -       | false             |
-| `enum-desc-name`      | 枚举 label 字段名称                                          | string                          | -       | desc              |
-| `tag-type-name`       | 枚举状态类型字段名称。值内容参考`Tag`组件。如果`enumType=true`并且该字段不是空的时候显示`Ntag`组件，类型就是`tagTypeName`的值。适用于数据状态 | string                          | -       | tagType           |
-| image                 | 是否显示图片组件                                             | boolean                         | -       | true              |
-| `image-style`         | 图片样式                                                     | `Record<string, string>/string` | -       | `'width: "60px"'` |
-| `image-src-list-prop` | 预览图片路径集合的属性                                       | string                          | -       | -                 |
-| show                  | 是否显示列                                                   | boolean                         | -       | true              |
-| color                 | 16 进制文本颜色                                              | string                          | -       | -                 |
-| ifColor               | 动态返回16 进制文本颜色                                      | `(row, index) => string`        | -       | -                 |
+| `enum-type`           | 是否枚举类型。如果为`true`格式必须是`json`对象，并且必须包含`[enumDescName]`字段                                                                                                                 | boolean                         | -       | false             |
+| `enum-desc-name`      | 枚举 label 字段名称                                                                                                                                                                              | string                          | -       | desc              |
+| `tag-type-name`       | 枚举状态类型字段名称。值内容参考`Tag`组件。如果`enumType=true`并且该字段不是空的时候显示`Ntag`组件，类型就是`tagTypeName`的值。适用于数据状态                                                    | string                          | -       | tagType           |
+| image                 | 是否显示图片组件                                                                                                                                                                                 | boolean                         | -       | true              |
+| `image-style`         | 图片样式                                                                                                                                                                                         | `Record<string, string>/string` | -       | `'width: "60px"'` |
+| `image-src-list-prop` | 预览图片路径集合的属性                                                                                                                                                                           | string                          | -       | -                 |
+| show                  | 是否显示列                                                                                                                                                                                       | boolean                         | -       | true              |
+| color                 | 16 进制文本颜色                                                                                                                                                                                  | string                          | -       | -                 |
+| ifColor               | 动态返回 16 进制文本颜色                                                                                                                                                                         | `(row, index) => string`        | -       | -                 |
 
 **除 `formatter` 属性不支持之外，支持全部 `element-plus` [表格列属性](https://element-plus.gitee.io/zh-CN/component/table.html#table-column-%E5%B1%9E%E6%80%A7)**
 

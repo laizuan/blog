@@ -45,7 +45,7 @@ export default {
         xl: 6,
         label: '地址',
         prop: 'address',
-        component: 'n-input',
+        component: 'n-input'
       },
       {
         label: '名字',
@@ -57,62 +57,62 @@ export default {
           data: [
             { value: '1', desc: '测试' },
             { value: '2', desc: '测试二' },
-            { value: '3', desc: '测试三' },
-          ],
-        },
+            { value: '3', desc: '测试三' }
+          ]
+        }
       },
       {
         md: 8,
         xl: 6,
         label: '年龄',
         prop: 'age',
-        component: 'n-input',
+        component: 'n-input'
       },
       {
         md: 8,
         xl: 6,
         label: '身高',
         prop: 'height',
-        component: 'n-input',
-      },
+        component: 'n-input'
+      }
     ])
 
     const columns = ref([
       {
         label: '日期',
-        prop: 'date',
+        prop: 'date'
       },
       {
         label: '姓名',
-        prop: 'name',
+        prop: 'name'
       },
       {
         label: '地址',
-        prop: 'address',
-      },
+        prop: 'address'
+      }
     ])
 
     const data = [
       {
         date: '2016-05-03',
         name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
+        address: 'No. 189, Grove St, Los Angeles'
       },
       {
         date: '2016-05-02',
         name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
+        address: 'No. 189, Grove St, Los Angeles'
       },
       {
         date: '2016-05-04',
         name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
+        address: 'No. 189, Grove St, Los Angeles'
       },
       {
         date: '2016-05-01',
         name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-      },
+        address: 'No. 189, Grove St, Los Angeles'
+      }
     ]
     return {
       data,
@@ -120,9 +120,9 @@ export default {
       fields,
       doQuery,
       queryForm,
-      inputVal,
+      inputVal
     }
-  },
+  }
 }
 </script>
 ```
@@ -145,8 +145,12 @@ export default {
 
 ## Events
 
-| Name   | Description                                               | Parameters |
-| ------ | --------------------------------------------------------- | ---------- |
-| query  | 查询按钮被点击后触发，使用`done()`函数来关闭`loading`状态 | done       |
-| reset  | 重置按钮被点击后触发                                      | -          |
-| select | 双击行选中数据或者点确定按钮时候的回调                    | row        |
+| Name           | Description                                               | Parameters |
+| -------------- | --------------------------------------------------------- | ---------- |
+| query          | 查询按钮被点击后触发，使用`done()`函数来关闭`loading`状态 | done       |
+| reset          | 重置按钮被点击后触发                                      | -          |
+| select         | 双击行选中数据或者点确定按钮时候的回调                    | row        |
+| size-change    | 页数改变                                                  | size       |
+| current-change | 页码改变                                                  | size       |
+| open           | 打开弹窗                                                  | -          |
+| close          | 关闭弹窗                                                  | -          |
