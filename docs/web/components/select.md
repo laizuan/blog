@@ -307,15 +307,15 @@ export default {
 
 ## Events
 
-| Name           | Description                                                     | Parameters                                                             |
-| -------------- | --------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| change         | 选中值发生变化时触发                                            | 第一个参数当前的选中值，第二个参数回调函数，调用函数后返回选择值的对象 |
-| visible-change | 下拉框出现/隐藏时触发                                           | 出现则为 true，隐藏则为 false                                          |
-| remove-tag     | 多选模式下移除 tag 时触发                                       | 移除的 tag 值                                                          |
-| clear          | 可清空的单选模式下用户点击清空按钮时触发                        | —                                                                      |
-| blur           | 当 input 失去焦点时触发                                         | (event: Event)                                                         |
-| focus          | 当 input 获得焦点时触发                                         | (event: Event)                                                         |
-| enter          | 当 input 按下回车键时触发，**注意：使用 ↑↓ 选择 item 回车无效** | select: select 下拉选择器的 ref 对象，element：select 内部 input 元素  |
+| Name           | Description                                                     | Parameters                                                                                             |
+| -------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| change         | 选中值发生变化时触发                                            | 第一个参数当前的选中值，第二个参数回调函数，调用函数后返回选择值的对象，第三个参数为选中前的值（旧值） |
+| visible-change | 下拉框出现/隐藏时触发                                           | 出现则为 true，隐藏则为 false                                                                          |
+| remove-tag     | 多选模式下移除 tag 时触发                                       | 移除的 tag 值                                                                                          |
+| clear          | 可清空的单选模式下用户点击清空按钮时触发                        | —                                                                                                      |
+| blur           | 当 input 失去焦点时触发                                         | (event: Event)                                                                                         |
+| focus          | 当 input 获得焦点时触发                                         | (event: Event)                                                                                         |
+| enter          | 当 input 按下回车键时触发，**注意：使用 ↑↓ 选择 item 回车无效** | select: select 下拉选择器的 ref 对象，element：select 内部 input 元素                                  |
 
 ## Slots
 
