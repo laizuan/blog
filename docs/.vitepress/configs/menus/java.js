@@ -89,6 +89,10 @@ export const createJavaMenu = () => {
         {
           text: 'SFTP & FTP',
           link: '/java/dependencys/ssh'
+        },
+        {
+          text: '多数据源',
+          link: '/java/dependencys/dynamic-datasource'
         }
       ]
     },
