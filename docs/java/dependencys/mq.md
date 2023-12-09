@@ -55,8 +55,7 @@
   @Bean
   @MessageQueueListener(
       topic = Constant.SYSTEM_CODE_OM,
-      subscription = "cust-in-sub",
-      push = @Push(orderly = true))
+      subscription = "cust-in-sub")
   public Consumer<Message<CustomsDTO>> factorySubmitOrder() {
     return idempotentConsumer(
         message -> {
@@ -203,8 +202,8 @@
       return idempotentConsumer(
           message -> {
            .....
-          },
-          "处理工厂提交的报关数据消息");
+          }
+        );
     }
   }
   ```

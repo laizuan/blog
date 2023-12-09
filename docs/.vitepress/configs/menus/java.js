@@ -93,6 +93,10 @@ export const createJavaMenu = () => {
         {
           text: '多数据源',
           link: '/java/dependencys/dynamic-datasource'
+        },
+        {
+          text: 'MessageQueue 监控',
+          link: '/java/dependencys/message-queue-monit'
         }
       ]
     },
