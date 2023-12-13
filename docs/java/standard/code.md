@@ -39,7 +39,7 @@ upm
 │   │   └── dto # 网络传输对象，http请求、服务之间数据交互。已DTO结尾
 │   │   ├── enums # 枚举类型，以Enum结尾
 │   │   ├── messaging # 消息队列传输对象。以MQ结尾
-│   │   └── vo # 试图对象，以VO结尾
+│   │   └── vo # 视图对象，以VO结尾
 │   ├── service # 业务接口，请注意业务接口入参出参都不能包含数据库对象
 ├── upm-service # 具体业务实现层
 │   ├── converter # 对象之间转换器
@@ -48,7 +48,7 @@ upm
 │   ├── entity # 数据库实体对象
 │   ├── mapper # Mybatis Mapper 接口。以Mapper结尾
 │   │   ├── xml # Mybatis xml 文件存放。文件名称必须是Mybatis Mapper 接口文件名
-│   ├── mq # 消息队列和SpringEvent相关
+│   ├── messageing # 消息队列和SpringEvent相关
 │   │   ├── consumer # 服务之间交互接口文件，比如：openfeign的接口文件、MQ消费者
 │   │   |   ├── dto # 接收数据对象定义，以DTO结尾。不要把系统交互结果对象定义在 facade 模块中
 │   │   ├── event # Spring 事件对象。以Event结尾。
