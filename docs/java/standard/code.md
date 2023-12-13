@@ -10,7 +10,7 @@ xxx 需要替换成真实的值。添加完环境变量之后记得重启电脑�
 
 - 添加环境变量
 
-  1.  变量名称：NACOS_ADDR，变量值：http://discovery.leaderrun.com
+  1.  变量名称：NACOS_ADDR，变量值：http://discovery.leaderrun.com:8848
   2.  变量名称：NACOS_PASSWORD，变量值：xxx
   3.  变量名称：NACOS_USERNAME，变量值：xxx
 
