@@ -69,6 +69,12 @@ upm
 
 ## 领域模型
 
+### Service 和 Mapper 说明
+
+- Service 只能用于处理业务逻辑，所有的业务逻辑都应该写在这里
+- Service 只能调用 Mapper 接口来操作数据。如果数据操作逻辑或步骤比较多可以在 Mapper 层使用 default 方法来处理，或者在抽象一层 XxxxxRepository，它依赖 Mapper，Service 依赖 XxxxxRepository
+- Controller **不能编写任何的业务逻辑**，只能做一些简单的参数校验或者参数转换
+
 ### 各层命名规约
 
 #### Service/DAO 层方法命名规约
