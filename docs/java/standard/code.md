@@ -2,6 +2,26 @@
 import Preview from '../../components/Preview.vue'
 </script>
 
+## 环境准备
+
+xxx 需要替换成真实的值。添加完环境变量之后记得重启电脑才能生效
+
+- 固定自己的 IP 地址
+
+- 添加环境变量
+
+  1.  变量名称：NACOS_ADDR，变量值：http://discovery.leaderrun.com
+  2.  变量名称：NACOS_PASSWORD，变量值：xxx
+  3.  变量名称：NACOS_USERNAME，变量值：xxx
+
+- 添加 hosts
+
+```txt
+xxx discovery.leaderrun.com
+192.168.33.10 dev.leaderrun.org
+自己主机固定IP地址 local.leaderrun.org
+```
+
 ## 项目结构
 
 请遵循一下项目结构规划，并注意文件名明门要求。如果项目中有划分小模块则应该在`dto、service、vo、command、mapper、controller`中加多一个小模块名称规划区分
@@ -224,9 +244,9 @@ public class Order {
 }
 ```
 
-这段代码看似没问题，其实可能会造成数据不一致。因为`createOrder`方法执行完成之后才会执行`save order`提交事务方法，如果你在插入的时候SQL在数据库执行过程中发生异常，那么调库存服务的数据是不会回滚的。
+这段代码看似没问题，其实可能会造成数据不一致。因为`createOrder`方法执行完成之后才会执行`save order`提交事务方法，如果你在插入的时候 SQL 在数据库执行过程中发生异常，那么调库存服务的数据是不会回滚的。
 
-其实这样的场景有很多。比如发送MQ，保存数据失败但是MQ发送出去了。再比如用户注册发短信，没有注册成功短信发送出去了等等都会造成数据不一致。
+其实这样的场景有很多。比如发送 MQ，保存数据失败但是 MQ 发送出去了。再比如用户注册发短信，没有注册成功短信发送出去了等等都会造成数据不一致。
 
 **我们在开发过程中，如果有涉及多个系统之前数据交互的都需要注意数据一致性问题**
 
