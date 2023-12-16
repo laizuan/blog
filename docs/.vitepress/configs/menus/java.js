@@ -97,6 +97,10 @@ export const createJavaMenu = () => {
         {
           text: 'MessageQueue 监控',
           link: '/java/dependencys/message-queue-monit'
+        },
+        {
+          text: '间隔重试',
+          link: '/java/dependencys/retry'
         }
       ]
     },

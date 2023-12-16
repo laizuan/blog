@@ -11,22 +11,23 @@
   </dependency>
 ```
 
-### MessageQueue 消息队列
+### 消息队列
 
 每个系统统一使用一个`Topic`来发送，如果需要区分消息类型使用`Tags`来区分。默认的系统`Topic`为`系统代码-out-0`
 
-### 属性配置
+#### 属性配置
 
-| 字段名称                                        | 说明                                                          | 默认值                                        |
-| ----------------------------------------------- | ------------------------------------------------------------- | --------------------------------------------- |
+| 字段名称                                        | 说明                                                         | 默认值                                        |
+| ----------------------------------------------- | ------------------------------------------------------------ | --------------------------------------------- |
 | `leaderrun.mq.auto-registry`                    | 是否开启扫描注解自动注册。关闭之后`@MessageQueueListener`无效 | true                                          |
-| `leaderrun.mq.auto-create-producer`             | 是否自动创建默认的发送者。                                    | true                                          |
-| `leaderrun.mq.open-send-completion-interceptor` | 是否开启发送消息失败拦截                                      | true                                          |
-| `leaderrun.mq.producer.name`                    | 默认发送的主题名称                                            | `${spring.application.name}`                  |
-| `leaderrun.mq.producer.group`                   | 默认发送主题的生产者组别名称                                  | `${spring.application.name} + "-" + "group"}` |
-| `leaderrun.mq.producer.messageQueueSelector`    | 发送到那个队列算法 bean 名称                                  | `orderlyMessageQueueSelector`                 |
+| `leaderrun.mq.auto-create-producer`             | 是否自动创建默认的发送者。                                   | true                                          |
+| `leaderrun.mq.open-send-completion-interceptor` | 是否开启发送消息失败拦截                                     | true                                          |
+| `leaderrun.mq.producer.name`                    | 默认发送的主题名称                                           | `${spring.application.name}`                  |
+| `leaderrun.mq.producer.group`                   | 默认发送主题的生产者组别名称                                 | `${spring.application.name} + "-" + "group"}` |
+| `leaderrun.mq.producer.messageQueueSelector`    | 发送到哪个队列算法 `bean` 名称                               | `orderlyMessageQueueSelector`                 |
+| `leaderrun.mq.binders`                          | 监听多个`RocketMQ`消息配置                                   | -                                             |
 
-### 注解配置 <Badge type="tip" text="^2.2.3" />
+#### 注解配置 <Badge type="tip" text="^2.2.3" />
 
 框架版本从`2.2.3`开始，可以使用注解的方式类配置消息队列。
 
@@ -38,16 +39,17 @@
 
 `@MessageQueueListener`可以用在类上或者是方法上面
 
-| 字段名称                         | 说明                                                                                                                                                                    | 默认值       |
-| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ |
-| consumerGroup                    | 相同角色的消费者需要具有完全相同的订阅和 consumerGroup 才能正确实现负载平衡。并且需要是唯一的。如果不配置默认：`${spring.application.name} + "-" + beanName + "-group"` |              |
-| topic                            | 订阅的主题                                                                                                                                                              |              |
-| subscription                     | 订阅的消息多个 TAG 可以使用`\|\|`隔开。支持 Tag 和 SQL 混搭。例如：`  sql:(clientId = 'leaderrun' and (TAGS is not null and TAGS = 'recpt'))`                           |              |
-| messageModel                     | 消费模式                                                                                                                                                                | `CLUSTERING` |
-| errorHandlerBeanName             | 当该消息消费时出现异常的回调方法 bean 的名称，如果不配置使用全局的拦截器                                                                                                |              |
-| `push.orderly`                   | 控制消费模式，您可以选择并发或有序接收消息。<br/>如果你的消息需要控制消费顺序，请设置成 true，否则设置成 false 提高消费速度                                             | false        |
-| `push.maxReconsumeTimes`         | 一个消息如果消费失败的话，最多重新消费多少次才投递到死信队列. 默认 1 次                                                                                                 | 1            |
-| `push.delayLevelWhenNextConsume` | 消息消费重试策略。<br />-1，不重试，直接放入 DLQ<br/>0 ，由 broker 控制频率<br/>>0，客户端控制重试频率                                                                  | -1           |
+| 字段名称                             | 说明                                                         | 默认值       |
+| ------------------------------------ | ------------------------------------------------------------ | ------------ |
+| consumerGroup                        | 相同角色的消费者需要具有完全相同的订阅和 consumerGroup 才能正确实现负载平衡。并且需要是唯一的。如果不配置默认：`${spring.application.name} + "-" + beanName + "-group"` |              |
+| topic                                | 订阅的主题                                                   |              |
+| subscription                         | 订阅的消息多个 TAG 可以使用`\|\|`隔开。支持 Tag 和 SQL 混搭。例如：`  sql:(clientId = 'leaderrun' and (TAGS is not null and TAGS = 'recpt'))` |              |
+| messageModel                         | 消费模式                                                     | `CLUSTERING` |
+| errorHandlerBeanName                 | 当该消息消费时出现异常的回调方法 bean 的名称，如果不配置使用全局的拦截器 |              |
+| `push.orderly`                       | 控制消费模式，您可以选择并发或有序接收消息。<br/>如果你的消息需要控制消费顺序，请设置成 true，否则设置成 false 提高消费速度 | true         |
+| `push.maxReconsumeTimes`             | 一个消息如果消费失败的话，最多重新消费多少次才投递到死信队列. 默认 1 次 | 1            |
+| `push.delayLevelWhenNextConsume`     | 消息消费重试策略。<br />-1，不重试，直接放入 DLQ<br/>0 ，由 broker 控制频率<br/>>0，客户端控制重试频率 | -1           |
+| `push.suspendCurrentQueueTimeMillis` | 下一次重试的时间。如果消费失败下一次重试的时间，如果maxReconsumeTimes设置成1不重试 | 1000         |
 
 如果是用在类上需要继承`MessageEventListener`并实现`onMessage`接口。**注意：如果使用在类上整个类只能有一个方法，除了类构造器**
 
@@ -60,12 +62,13 @@
     return idempotentConsumer(
         message -> {
          ...
-        },
-        "");
+        });
   }
 ```
 
-### 生产者
+### 配置文件方式
+
+#### 生产者
 
 - 配置
 
@@ -104,7 +107,7 @@
   ```java
   @Autowired
   private MessageQueueTemplate messageQueueTemplate;
-
+  
   messageQueueTemplate.sendDefaultTopic("rule", "om"); // 发送tags为rule的消息，消息内容为om
   ```
 
@@ -126,7 +129,7 @@
        */
     ```
 
-### 消费者
+#### 消费者
 
 - 配置
 
@@ -191,25 +194,38 @@
   @Component
   public class CustomsConsumer extends BaseConsumer {
     private final LogWrapper log = LogWrapper.getLogger(this.getClass());
-
-
-    public CustomsConsumer(RedisService redisService) {
-      super(redisService);
-    }
-
-    @Bean
-    public Consumer<Message<CustomsCmd>> factorySubmitOrder() {
-      return idempotentConsumer(
-          message -> {
-           .....
-          }
-        );
-    }
+      public CustomsConsumer(RedisService redisService) {
+        super(redisService);
+      }
+  
+      @Bean
+      public Consumer<Message<CustomsCmd>> factorySubmitOrder() {
+        return idempotentConsumer(
+            message -> {
+             .....
+            }
+          );
+      }
   }
-  ```
+
+## 监听多RocketMQ消息
+
+:::warning 
+
+目前只支持多RocketMQ监听,其它MQ暂不支持
+
+:::
+
+对于需要监听多个RocketMQ的场景可以通过配置`binders`属性然后继承``AbstractMessageListenerConcurrently`或者`AbstractMessageListenerOrderly`来实现
+
+- `AbstractMessageListenerConcurrently`并发消费。同一个队列有多个线程消费，具有比较高的消费能力
+- `AbstractMessageListenerOrderly`顺序消费。同一个队列的消息只有一个线程消费。
+
+如果消费返回`false`都会进入重试。**需要注意的是并发消费和顺序消费的机制不同，在顺序消费的时候重试会阻塞后面的所有消息，知道重试成功或者到达重试阈值**
 
 ## Bus 消息总线
 
+  ```
 一般用于服务集群所有节点通知，比如通知集群中所有节点清空缓存在
 
 以用户中心字典数据更新为例：在页面更新字典数据之后通知所有节点清空缓存
@@ -262,7 +278,7 @@ public class DictEvent extends RemoteApplicationEvent {
         this.dataValue = dataValue;
     }
 }
-```
+  ```
 
 - 定义消息生产者
 
