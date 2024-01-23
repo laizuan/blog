@@ -510,20 +510,31 @@ export declare const clearStorage: (key: string) => void;
 ## 表单回车
 
 ```ts
+/**
+ * 表单元素回车跳转到下一个元素
+ * @param selectors 表单选择器css id或者ref
+ * @param done 最后一个元素回车执行的函数
+ */
 declare const useFormElementEvent: (
   selectors: string | Ref,
   enterEvent?: ((e: Event) => void | null) | undefined,
   done?: () => void
 ) => {
-  findNextElement: (index: number) => MaybeElement | undefined | null
+  findNextElement: (index: number) => HTMLInputElement | undefined | null
   resetEnterNextEvent: () => void
   inputEnterEvent: (e: Event) => void
 }
+
+/**
+ * 表单元素回车跳转到下一个元素
+ * @param selectors 表单选择器css id或者ref
+ * @param done 最后一个元素回车执行的函数
+ */
 declare const useEnterNextFocus: (
   selectors: string | Ref,
   done?: () => void
 ) => {
-  findNextElement: (index: number) => MaybeElement | undefined | null
+  findNextElement: (index: number) => HTMLInputElement | undefined | null
   resetEnterNextEvent: () => void
   inputEnterEvent: (e: Event) => void
 }
@@ -597,4 +608,16 @@ export declare const clearKeepAlive: (routerName: string) => void
  * @returns 如果包含全角字符返回true
  */
 export function isSBCCase(str: string): boolean
+
+/**
+ * 显示表单校验异常内容
+ * @param invalidFields form 表单校验异常内容
+ * @param formRef form ref 对象
+ * @param fields 动态表单字段配置数据，用来获取label名称
+ */
+export declare function showValidateErrorMessage(
+  invalidFields: ValidateFieldsError,
+  formRef: Ref<any>,
+  fields?: FormField<any>[]
+): void
 ```
