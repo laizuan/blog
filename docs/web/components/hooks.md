@@ -272,6 +272,26 @@ export declare const useOpDict: <T = any>(
 | dictData     | 字典数据         | `Ref<MaybeArray<T>>`           | -       | -       |
 | loadDictData | 获取字典数据函数 | `() => Promise<MaybeArray<T>>` | -       | -       |
 
+## 获取引导项
+
+```ts
+/**
+ * 引导函数。如果NTour组件设置了tourOnce=true，那么引导用户一次之后后面将不会在引导甚至不会在加载数据（loadTourItems永远返回[]数组）
+ * @param loadDoneShowTour 是否加载完item项后显示引导
+ * @param id 引导ID请求参数。需要和NTour组件中的tourId属性保持一致
+ * @param glbUrl 获取引导item的接口地址
+ */
+export function useTour(
+  loadDoneShowTour: boolean = true,
+  id?: string | number,
+  glbUrl?: string
+): {
+  showTour: Ref<boolean>
+  toggle: () => void
+  loadTourItems: (url?: string, params?: string | number) => Promise<NTourItem[]>
+}
+```
+
 ## 表单校验规则
 
 ```tsx
@@ -593,6 +613,13 @@ export declare const defineFormMethod: () => Ref<FormExpose>
  * 定义表格组件Ref，并提供导出方法提示
  */
 export declare const defineTableMethod: () => Ref<TableExpose>
+
+/**
+ * 构建引导item数组
+ * @param items  item数组
+ */
+export declare const defineTourItem = (items: NTourItem[]): NTourItem[]
+
 /**
  * 清空列表页路由缓存，它会保留查询条件。
  * 实际上它只是重新执行了doQuery()方法而已
