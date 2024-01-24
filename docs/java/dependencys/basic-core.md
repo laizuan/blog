@@ -925,3 +925,39 @@ public class OutbdCustomsOrder implements BaseEntityVersion, AuditDiff<OutbdCust
 测试对象.字段2[B] -> [c]，
 测试对象.时间[2023-10-21T16:55:26.738134100] -> [2023-09-21T16:55:26.738134100]，
 ```
+
+## 接口校验
+
+一般情况下接口使用`hibernate validation`校验参数已经满足多少场景。但是如果我们需要提醒用户有某些风险，用户确认风险即可以继续处理业务这时候前者就无法实现了。
+
+我们可以通过`@PreValidation`注解来实现这个功能
+
+## 注解属性
+
+|      属性      |  类型   | 必须指定 | 默认值 | 描述     |
+| :------------: | :-----: | :------: | :----: | -------- |
+|    enabled     | boolean |    是    |  true  | 是否启用 |
+| validateMethod | String  |    是    |   -    | 验证方法 |
+
+### 使用
+
+可以参考`CMS`系统`CustomsDeclareController#invt`
+
+:::warning 注意
+
+- `validateMethod` 方法必须是在接口类中，并且是 `public` 修饰的
+- 校验方法的参数必须和接口参数保持类型一致和顺序一致
+
+:::
+
+```java
+    @PreValidation(validateMethod = "testPreValidate")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void test(Long id, String type) {
+      ...正常处理你的业务请求
+    }
+
+    public LogicResultVO testPreValidate(Long id, String type) {
+      ... 这里处理你的校验逻辑
+    }
+```
