@@ -276,19 +276,20 @@ export default {
 
 ## Props
 
-| Name         | Description                                                     | Type                           | Options | Default                                                                        |
-| :----------- | :-------------------------------------------------------------- | :----------------------------- | :------ | :----------------------------------------------------------------------------- |
-| v-model      | 绑定值                                                          | array\|number\|string\|boolean | -       | -                                                                              |
-| data         | 绑定数据                                                        | array                          | -       | -                                                                              |
-| config       | 配置绑定数据键值，如果是自定义`config`需要正确配置`display-key` | object                         | -       | `{ value: 'value', desc: 'desc', disabled: 'disabled', children: 'children' }` |
-| only-label   | 是否只显示 label                                                | boolean                        | -       | false                                                                          |
-| display-key  | 下拉选项需要显示的 key                                          | array                          | -       | `['value','desc']`                                                             |
-| search-key   | 可搜索字段                                                      | array                          | -       | `['value','desc']`                                                             |
-| clearable    | 是否可以清空选项                                                | boolean                        | -       | true                                                                           |
-| placeholder  | 占位符                                                          | string                         | -       | 请选择                                                                         |
-| to-str       | 是否将值转为 string 类型                                        | boolean                        | -       | false                                                                          |
-| virtual      | 是否启用虚拟列表，下拉项超过 100 项的时候建议启用               | boolean                        | -       | false                                                                          |
-| remoteConfig | 远程加载配置，请参考下面`RemoteConfig`                          | object                         | -       | -                                                                              |
+| Name           | Description                                                     | Type                           | Options | Default                                                                        |
+| :------------- | :-------------------------------------------------------------- | :----------------------------- | :------ | :----------------------------------------------------------------------------- |
+| v-model        | 绑定值                                                          | array\|number\|string\|boolean | -       | -                                                                              |
+| data           | 绑定数据                                                        | `Record<string, any>[]`        | -       | -                                                                              |
+| config         | 配置绑定数据键值，如果是自定义`config`需要正确配置`display-key` | object                         | -       | `{ value: 'value', desc: 'desc', disabled: 'disabled', children: 'children' }` |
+| only-label     | 是否只显示 label                                                | boolean                        | -       | false                                                                          |
+| display-key    | 下拉选项需要显示的 key                                          | array                          | -       | `['value','desc']`                                                             |
+| search-key     | 可搜索字段                                                      | array                          | -       | `['value','desc']`                                                             |
+| clearable      | 是否可以清空选项                                                | boolean                        | -       | true                                                                           |
+| placeholder    | 占位符                                                          | string                         | -       | 请选择                                                                         |
+| to-str         | 是否将值转为 string 类型                                        | boolean                        | -       | false                                                                          |
+| virtual        | 是否启用虚拟列表，下拉项超过 100 项的时候建议启用               | boolean                        | -       | false                                                                          |
+| remoteConfig   | 远程加载配置，请参考下面`RemoteConfig`                          | object                         | -       | -                                                                              |
+| oneDataDefault | 下拉选项只有一条数据的时候是否默认选中                          | boolean                        | -       | false                                                                          |
 
 **支持 [el-select](https://element-plus.gitee.io/zh-CN/component/select.html#select-%E5%B1%9E%E6%80%A7) 全部属性**
 
@@ -322,3 +323,10 @@ export default {
 | Name | Description                   |
 | ---- | ----------------------------- |
 | -    | 自定插槽内容，参数为 { data } |
+
+## Methods
+
+| Name    | Description      |
+| ------- | ---------------- |
+| setData | 设置下拉选项数据 |
+| getData | 获取下拉选项数据 |

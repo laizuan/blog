@@ -79,3 +79,22 @@ UPDATE order SET ..., version=9 WHERE id=479639668122501 AND version=8
 ```
 
 如果一次事务中多次更新数据，需要注意 `version` 是否最新的。如果有多次更新最好是更新前做一次查询获取最新的 `version`。当然你也可以自行 `version + 1`
+
+## 多级缓存避免修改 Cacheable 结果数据
+
+下面的代码中因为使用了多级缓存，如果不拷贝结果直接修改数据，会将内存中缓存的数据给修改掉。
+
+```java
+
+    @Cacheable(key = "#userId", unless = "#result == null")
+    public SysUserVO findByUserId(Long userId) {
+        return vo;
+    }
+
+// 调用 ......
+       SysUserVO userVO = findByUserId(SecurityUserUtils.getUserId());
+        // 这里需要做拷贝动作。因为上面的结果的有双缓存的，如果直接改数据会把内存缓存的数据改掉
+        SysUserVO vo = UserConverter.INSTANT.copy(userVO);
+        vo.setMobile(null);
+        vo.setEmail(null);
+```

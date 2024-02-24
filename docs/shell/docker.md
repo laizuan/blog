@@ -49,6 +49,12 @@ chmod +x /usr/local/bin/docker-compose
 docker-compose -v
 ```
 
+- 卸载 docker compose
+
+```sh
+rm /usr/local/bin/docker-compose
+```
+
 ## 安装 Centos
 
 - [docker](https://so.csdn.net/so/search?q=docker&spm=1001.2101.3001.7020)要求 Centos 系统的内核版本高于 3.10，查看内核版本
@@ -95,10 +101,22 @@ docker-compose -v
   ```sh
   cat > /etc/docker/daemon.json << EOF
   {
-    "registry-mirrors": ["https://b9pmyelo.mirror.aliyuncs.com"]
+    "registry-mirrors": ["https://b9pmyelo.mirror.aliyuncs.com"],
+    "log-opts": {
+       "max-size": "10m",
+       "max-file": "3"
+    }
   }
   EOF
   ```
+
+- 重启 docker
+
+```sh
+systemctl daemon-reload
+
+systemctl restart docker
+```
 
 - 查看是否设置成功
 
