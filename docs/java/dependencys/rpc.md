@@ -23,6 +23,16 @@
     </dependency>
 ```
 
+## 定向请求服务
+
+如果一个服务启动了多个实例，可以通过配置`leaderrun.rpc.target-ip.xx=192.168.xx.xx`来固定调用某一个 IP 的实例
+
+`target-ip`是一个 `Map` 结构，`key` 表示服务名称，`value`表示固定请求的 IP 实例。例如：`leaderrun.rpc.target-ip.upm=192.168.33.10`固定请求`192.168.33.10`的用户中心服务
+
+**正式环境该配置无效**
+
+**`leaderrun.rpc.target-ip`属于个人配置，请不要将配置文件提交到代码仓库**
+
 ## 消费者范例
 
 在`xxx-service > mq > consumer`包中定义消费接口。`DTO`返回值定义到`xxx-service > mq > consumer > dto`中
@@ -63,13 +73,13 @@ import com.leaderrun.rpc.core.AbstractFallbackFactory;
 @Component
 public class AccountServiceFallbackFactory extends AbstractFallbackFactory<AccountService> {
     private final LogWrapper log = LogWrapper.getLogger(this.getClass());
-    
+
     @Override
     public AccountService doCreate(Throwable cause) {
         log.error( "RPC异常：" + cause.getMessage(), cause);
         // 这里不做降级直接把异常抛出
         throw  RpcException.builder(cause.getMessage(), cause);
-        
+
        // 如果要做降级这里可以返回AccountService的实现类
         return AccountServiceImpl
     }
@@ -97,4 +107,3 @@ public class AccountServiceImpl implements AccountService {
     }
 }
 ```
-
