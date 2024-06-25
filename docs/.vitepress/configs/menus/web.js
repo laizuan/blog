@@ -180,6 +180,10 @@ export const createWebMenu = () => {
         {
           text: 'MessageBox 消息弹框',
           link: '/web/element-plus/message-box'
+        },
+        {
+          text: 'Input 输入框',
+          link: '/web/element-plus/index'
         }
       ]
     },
