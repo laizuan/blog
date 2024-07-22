@@ -163,6 +163,10 @@ export const createWebMenu = () => {
         {
           text: 'Tinymce 富文本',
           link: '/web/components/tinymce'
+        },
+        {
+          text: 'DropdownSelect 下拉选项',
+          link: '/web/components/dropdown-select'
         }
       ]
     },
