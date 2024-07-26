@@ -61,7 +61,7 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{ env.SERVER_PRIVATE_KEY }}
           ARGS: '-avz --delete'
-          SOURCE: 'docs/.vitepress/dist/'
+          SOURCE: 'src/.vitepress/dist/'
           REMOTE_HOST: ${{ env.SERVER_HOST }}
           REMOTE_USER: ${{ env.USER_NAME }}
           TARGET: /home/project/client/blog
