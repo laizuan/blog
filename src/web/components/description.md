@@ -34,10 +34,8 @@ meta:
   </div>
 </template>
 
-<script>
+<script setup>
 import { h } from 'vue'
-export default {
-  setup() {
     const mockData = {
       username: 'test',
       nickName: 'testNick',
@@ -156,18 +154,11 @@ export default {
         ],
       },
     ]
-    return {
-      mockData,
-      schema,
-    }
-  },
-}
 </script>
 <style>
 .decoration-dome {
   padding: 16px;
   width: 100%;
-  // background-color: var(--el-bg-color-page);
 }
 .decoration-dome .w-120 {
   width: 120px !important;

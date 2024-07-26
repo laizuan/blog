@@ -114,6 +114,9 @@ export default defineConfig({
     }
   },
   vite: {
+      ssr: {
+        noExternal: ["element-next"],
+      },
     plugins: [demoblockVitePlugin()]
   },
   markdown: {

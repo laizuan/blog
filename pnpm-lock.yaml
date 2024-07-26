@@ -11,6 +11,9 @@ dependencies:
   element-plus:
     specifier: npm:@lhrdc/element-plus@2.7.6-stable.1
     version: /@lhrdc/element-plus@2.7.6-stable.1(vue@3.4.34)
+  vue:
+    specifier: ^3.4.21
+    version: 3.4.34
 
 devDependencies:
   '@types/node':
@@ -34,9 +37,6 @@ devDependencies:
   vitepress-theme-demoblock:
     specifier: ^3.0.7
     version: 3.0.7(@algolia/client-search@4.24.0)(@types/node@20.14.12)(search-insights@2.15.0)
-  vue:
-    specifier: ^3.4.21
-    version: 3.4.34
 
 packages:
 
