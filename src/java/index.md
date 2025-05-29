@@ -28,3 +28,11 @@
     ```
 
     安装后提交代码的时候在根目录执行`sh commit`
+
+5. 安装日志生成辅助工具
+
+    ```sh
+    npm install -g conventional-changelog
+    ```
+
+    mian分支提交代码的时候会通过该工具生成提交记录到CHANGELOG.md文件中
