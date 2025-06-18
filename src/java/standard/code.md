@@ -6,21 +6,43 @@ import Preview from '../../components/Preview.vue'
 
 xxx 需要替换成真实的值。添加完环境变量之后记得重启电脑才能生效
 
-- 固定自己的 IP 地址
+1. 固定自己的 IP 地址
 
-- 添加环境变量
 
-  1.  变量名称：NACOS_ADDR，变量值：http://discovery.leaderrun.com:8848
-  2.  变量名称：NACOS_PASSWORD，变量值：xxx
-  3.  变量名称：NACOS_USERNAME，变量值：xxx
+2. 配置hosts
 
-- 添加 hosts
+    ```txt
+    192.168.33.10 dev.leaderrun.org
+    192.168.33.99 local.leaderrun.org - 这个改成自己本机静态IP
+    ```
 
-```txt
-xxx discovery.leaderrun.com
-192.168.33.10 dev.leaderrun.org
-自己主机固定IP地址 local.leaderrun.org
-```
+3. 配置电脑环境变量
+
+    ```txt
+    NACOS_USERNAME = dev
+    NACOS_PASSWORD = 123456
+    NACOS_ADDR = http://dev.leaderrun.org:8848
+    ```
+
+4. 安装NodeJs
+
+    前后端都需要安装。安装最新LTS版本即可
+
+5. 安装代码提交辅助工具
+
+    ```sh
+    npm install -g czg
+    ```
+
+    安装后提交代码的时候在根目录执行`sh commit`
+
+6. 安装日志生成辅助工具
+
+    ```sh
+    npm install -g conventional-changelog
+    ```
+
+    mian分支提交代码的时候会通过该工具生成提交记录到CHANGELOG.md文件中
 
 ## 项目结构
 
@@ -283,3 +305,21 @@ public class Order {
 我们可以通过监听事务提交完成后来做一些事情，需要注意的时候，如果调用库存服务失败是**不会回滚事务**的。这是你需要记录下日志人工排查，重新发送。
 
 如果你使用了`ApplicationEvent`来解耦业务，也可以使用`@TransactionalEventListener`替代`@EventListener`，他支持`@EventListener`的所有功能以及`TransactionSynchronizationManager`的功能。不过你需要注意`fallbackExecution`的使用，默认是`false`即没有事务的时候该事件不执行
+
+
+## 路径参数
+
+只有主键才能作为路径参数，其它只能是查询参数
+
+- 正确示范
+```txt
+/v1/user/{userId}
+```
+
+- 错误示范
+```txt
+/v1/order/{orderNo}
+```
+::: danger
+如果orderNo不可控，包含了`/`那么会导致请求接口`404`
+:::

@@ -25,7 +25,7 @@
 6. `CodeGlance Pro`代码右侧小地图
 7. `Key-Promoter-X`快捷键提示，熟悉之后可以关闭
 8. `MybatisX`Mapper 和 xml 快速跳转插件
-9. `RestfulTool`通过接口地址快速定位接口所在的方法位置
+9. `Code Request`通过接口地址快速定位接口所在的方法位置
 10. `Save Actions`在保存的时候做一些事情，比如优化导包等
 11. `google-java-format` Google 代码风格格式化
 
